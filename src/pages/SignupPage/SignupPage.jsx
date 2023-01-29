@@ -1,8 +1,78 @@
 import "./SignupPage.css";
 import React from "react";
+import {useImmer} from "use-immer";
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 export default function SignupPage(){
-    return (
-        <h1>Signup Page</h1>
-    )
+  const [formState, updateFormState] = useImmer({
+    username: '',
+    email: '',
+    password: '',
+    passwordConf: '',
+  })
+
+  function handleChange(e) {
+    updateFormState(draft => {
+      draft[e.target.name] = e.target.value;
+    })
+  }
+
+  return (
+    <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as='h2' color='teal' textAlign='center'>
+          <Image src='placeholder' /> Sign Up
+        </Header>
+        <Form autocomplete="off" size='large'>
+          <Segment stacked>
+            <Form.Input
+              name="username"
+              fluid icon='user'
+              iconPosition='left'
+              placeholder='username'
+              value={formState.username}
+              onChange={handleChange}
+              required
+            />
+            <Form.Input
+              name="email"
+              fluid
+              icon='envelope'
+              iconPosition='left'
+              value={formState.email}
+              onChange={handleChange}
+              placeholder='email'
+            />
+            <Form.Input
+              name="password"
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password'
+              value={formState.password}
+              onChange={handleChange}
+              type='password'
+            />
+            <Form.Input
+              name="passwordConf"
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Confirm Password'
+              value={formState.passwordConf}
+              onChange={handleChange}
+              type='password'
+            />
+            <Button color='teal' fluid size='large'>
+              Signup
+            </Button>
+          </Segment>
+        </Form>
+        <Message>
+          Already have an account? <Link to='/login'>Log In</Link>
+        </Message>
+      </Grid.Column>
+    </Grid>
+  )
 }
