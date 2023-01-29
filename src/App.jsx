@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import React, {useState} from 'react';
 import "./App.css";
 import 'semantic-ui-css/semantic.min.css'
@@ -15,11 +15,20 @@ function App() {
     setUser(userService.getUser());
   }
 
+  if (user) {
+    return (
+      <Routes>
+        <Route path="/" element={<h1>Home Pageeeeeeeeeee</h1>} />
+        <Route path="/login" element={<LoginPage handleSignUpOrLogin={handleSignUpOrLogin}/>} />
+        <Route path="/signup" element={<SignupPage handleSignUpOrLogin={handleSignUpOrLogin}/>} />
+      </Routes>
+    );
+  } 
   return (
     <Routes>
-      <Route path="/" element={<h1>Home Pageeeeeeeeeee</h1>} />
       <Route path="/login" element={<LoginPage handleSignUpOrLogin={handleSignUpOrLogin}/>} />
       <Route path="/signup" element={<SignupPage handleSignUpOrLogin={handleSignUpOrLogin}/>} />
+      <Route path="/*" element={<Navigate to="/login" />} />
     </Routes>
   );
 }

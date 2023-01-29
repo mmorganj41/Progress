@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import userService from '../../utils/userService';
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
-export default function SignupPage({handleSignupOrLogin}){
+export default function SignupPage({handleSignUpOrLogin}){
   const [formState, updateFormState] = useImmer({
     username: '',
     email: '',
@@ -26,7 +26,7 @@ export default function SignupPage({handleSignupOrLogin}){
   async function handleSubmit() {
     try {
       await userService.signup(formState);
-      handleSignupOrLogin();
+      handleSignUpOrLogin();
       navigate('/')
     } catch(err) {
       setError(err.message);
