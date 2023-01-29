@@ -4,6 +4,7 @@ import {useImmer} from "use-immer";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import userService from '../../utils/userService';
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 export default function SignupPage({handleSignupOrLogin}){
   const [formState, updateFormState] = useImmer({
@@ -82,7 +83,7 @@ export default function SignupPage({handleSignupOrLogin}){
               Signup
             </Button>
           </Segment>
-          {/* {error ? <ErrorMessage error={error} /> : null} */}
+          {error ? <ErrorMessage error={error} /> : null}
         </Form>
         <Message>
           Already have an account? <Link to='/login'>Log In</Link>
