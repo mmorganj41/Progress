@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Header, Segment, Image, Icon } from "semantic-ui-react";
+import { UserContext } from "../../utils/context";
 
-export default function PageHeader({ loggedUser, handleLogout }){
+export default function PageHeader({ handleLogout }){
+    const loggedUser = useContext(UserContext)
     return (
         <Segment clearing>
         <Header as="h2" floated="right">

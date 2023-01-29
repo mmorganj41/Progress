@@ -3,12 +3,12 @@ import { Outlet } from 'react-router-dom'
 import PageHeader from '../../components/PageHeader/PageHeader'
 
 
-function Layout({loggedUser, handleLogout}) {
+function HeaderLayout({handleLogout}) {
 	return ( 
 		<Grid>
 			<Grid.Row>
 				<Grid.Column>
-					<PageHeader loggedUser={loggedUser}  handleLogout={handleLogout}/>
+					<PageHeader handleLogout={handleLogout}/>
 				</Grid.Column>
 			</Grid.Row>
 			<Grid.Row>
@@ -20,4 +20,4 @@ function Layout({loggedUser, handleLogout}) {
 	 );
 }
 
-export default Layout;
+export default HeaderLayout;
