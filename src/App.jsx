@@ -17,18 +17,25 @@ function App() {
     setUser(userService.getUser());
   }
 
+  function handleLogout() {
+    userService.logout()
+    setUser(null);
+  }
+
   if (user) {
     return (
-      <Routes>
-        <Route path="/" element={<HeaderLayout handleLogout={handleLogout} />} 
-        >
-          <UserContext.Provider value={user}>
-            <Route index element={<h1>Home Pageeeeeeeeeee</h1>} />
-          </UserContext.Provider>
-        </Route>
-        <Route path="/login" element={<LoginPage handleSignUpOrLogin={handleSignUpOrLogin}/>} />
-        <Route path="/signup" element={<SignupPage handleSignUpOrLogin={handleSignUpOrLogin}/>} />
-      </Routes>
+      <UserContext.Provider value={user}>
+        <Routes>
+          <Route path="/" element={<HeaderLayout handleLogout={handleLogout} />} 
+          >
+            
+              <Route index element={<h1>Home Pageeeeeeeeeee</h1>} />
+            
+          </Route>
+          <Route path="/login" element={<Navigate to="/" />} />
+          <Route path="/signup" element={<Navigate to="/" />} />
+        </Routes>
+      </UserContext.Provider>
     );
   } 
   return (
