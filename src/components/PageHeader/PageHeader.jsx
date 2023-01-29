@@ -1,33 +1,30 @@
 import React, {useContext} from "react";
-import { Header, Segment, Image, Icon } from "semantic-ui-react";
+import { Menu, Dropdown, Sidebar, Image, Icon } from "semantic-ui-react";
 import { UserContext } from "../../utils/context";
 import { Link } from "react-router-dom";
 import "./PageHeader.css"
 
 export default function PageHeader({ handleLogout }){
     const loggedUser = useContext(UserContext)
+
+    
     return (
-        <Segment clearing className="PageHeader">
-        <Header as="h2" floated="right">
-          <Link to="/">
-            <Icon name="home"></Icon>
-          </Link>
-          <Link to="" onClick={handleLogout}>
-            Logout
-          </Link>
-        </Header>
-        <Header as="h2" floated="left">
-          <Link to={`/${loggedUser?.username}`}>
-            <Image
-              src={
-                loggedUser?.photoUrl
-                  ? loggedUser?.photoUrl
-                  : "https://react.semantic-ui.com/images/wireframe/square-image.png"
-              }
-              avatar
-            ></Image>
-          </Link>
-        </Header>
-      </Segment>
+        <Menu color='teal' fixed="top">
+            <Menu.Menu position="right">
+                <Dropdown item
+                    name="profile"
+                    image={{ src: "https://react.semantic-ui.com/images/wireframe/square-image.png"}}
+                    text={loggedUser?.username}
+                >
+                    <Dropdown.Menu>
+                        <Dropdown.Header>
+                            
+                        </Dropdown.Header>
+                        <Dropdown.Item icon="user" text="Profile" />
+                        <Dropdown.Item icon="external" text="Logout" onClick={handleLogout}/>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </Menu.Menu>
+        </Menu>
     )
 }

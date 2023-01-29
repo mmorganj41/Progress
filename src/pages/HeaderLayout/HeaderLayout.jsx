@@ -6,11 +6,7 @@ import PageHeader from '../../components/PageHeader/PageHeader'
 function HeaderLayout({handleLogout}) {
 	return ( 
 		<Grid>
-			<Grid.Row>
-				<Grid.Column>
-					<PageHeader handleLogout={handleLogout}/>
-				</Grid.Column>
-			</Grid.Row>
+            <PageHeader handleLogout={handleLogout}/>
 			<Grid.Row>
 				<Grid.Column>
 					<Outlet />
