@@ -1,21 +1,35 @@
 import "./SignupPage.css";
-import React from "react";
+import React, { useState } from "react";
 import {useImmer} from "use-immer";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import userService from '../../utils/userService';
 
-export default function SignupPage(){
+export default function SignupPage({handleSignupOrLogin}){
   const [formState, updateFormState] = useImmer({
     username: '',
     email: '',
     password: '',
     passwordConf: '',
   })
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     updateFormState(draft => {
       draft[e.target.name] = e.target.value;
     })
+  }
+
+  async function handleSubmit() {
+    try {
+      await userService.signup(formState);
+      handleSignupOrLogin();
+      navigate('/')
+    } catch(err) {
+      setError(err.message);
+    }
   }
 
   return (
@@ -24,7 +38,7 @@ export default function SignupPage(){
         <Header as='h2' color='teal' textAlign='center'>
           <Image src='placeholder' /> Sign Up
         </Header>
-        <Form autocomplete="off" size='large'>
+        <Form autoComplete="off" size='large' onSubmit={handleSubmit}>
           <Segment stacked>
             <Form.Input
               name="username"
@@ -68,6 +82,7 @@ export default function SignupPage(){
               Signup
             </Button>
           </Segment>
+          {/* {error ? <ErrorMessage error={error} /> : null} */}
         </Form>
         <Message>
           Already have an account? <Link to='/login'>Log In</Link>
