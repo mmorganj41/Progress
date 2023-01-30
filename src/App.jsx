@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage/SignupPage";
 import HeaderLayout from './pages/HeaderLayout/HeaderLayout'
 
 import userService from "./utils/userService";
+import FeedPage from "./pages/FeedPage/FeedPage";
 
 function App() {
   const [user, setUser] = useState(userService.getUser());
@@ -29,7 +30,7 @@ function App() {
           <Route path="/" element={<HeaderLayout handleLogout={handleLogout} />} 
           >
             
-              <Route index element={<h1>Home Pageeeeeeeeeee</h1>} />
+              <Route index element={<FeedPage />} />
             
           </Route>
           <Route path="/login" element={<Navigate to="/" />} />

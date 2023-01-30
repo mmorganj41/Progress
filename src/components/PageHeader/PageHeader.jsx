@@ -1,15 +1,20 @@
 import React, {useContext} from "react";
 import { Menu, Dropdown, Header, Sidebar, Image, Icon } from "semantic-ui-react";
 import { UserContext } from "../../context/UserContext/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./PageHeader.css"
 
 export default function PageHeader({ handleLogout }){
     const loggedUser = useContext(UserContext)
 
+    const navigate = useNavigate();
+
     
     return (
         <Menu color='teal' fixed="top">
+            <Menu.Item onClick={() => navigate('/')}>
+                    Progress
+            </Menu.Item>
             <Menu.Menu position="right">
                 
 
