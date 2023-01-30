@@ -12,4 +12,6 @@ const subskillSchema = new Schema({
     skill: {type: Schema.Types.ObjectId, ref: 'Skill', required: true},
 })
 
+subskillSchema.index({name: 1, skill: 1}, {unique: true})
+
 module.exports = mongoose.model('Subskill', subskillSchema);
