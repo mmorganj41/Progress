@@ -11,7 +11,7 @@ export default function PageHeader({ handleLogout }){
 
     
     return (
-        <Menu color='teal' fixed="top">
+        <Menu color='teal' inverted fixed="top">
             <Menu.Item onClick={() => navigate('/')}>
                     Progress
             </Menu.Item>
