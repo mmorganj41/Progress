@@ -20,4 +20,4 @@ const skillSchema = new Schema({
 
 skillSchema.index({name: 1, user: 1}, {unique: true})
 
-module.exports = mongoose.model('Skill', skillSchema);
+export default mongoose.model('Skill', skillSchema);

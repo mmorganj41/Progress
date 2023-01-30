@@ -14,4 +14,4 @@ const habitSchema = new Schema({
         enum:['trivial', 'easy', 'average', 'challenging', 'difficult']}
 })
 
-module.exports = mongoose.model('Habit', habitSchema);
+export default mongoose.model('Habit', habitSchema);

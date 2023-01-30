@@ -14,4 +14,4 @@ const subskillSchema = new Schema({
 
 subskillSchema.index({name: 1, skill: 1}, {unique: true})
 
-module.exports = mongoose.model('Subskill', subskillSchema);
+export default mongoose.model('Subskill', subskillSchema);
