@@ -2,7 +2,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import React, {useState} from 'react';
 import "./App.css";
 import 'semantic-ui-css/semantic.min.css'
-import { UserContext } from "./utils/context";
+import { UserContext } from "./context/UserContext/UserContext";
 
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignupPage from "./pages/SignupPage/SignupPage";

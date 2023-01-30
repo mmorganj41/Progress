@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
-import { Menu, Dropdown, Sidebar, Image, Icon } from "semantic-ui-react";
-import { UserContext } from "../../utils/context";
+import { Menu, Dropdown, Header, Sidebar, Image, Icon } from "semantic-ui-react";
+import { UserContext } from "../../context/UserContext/UserContext";
 import { Link } from "react-router-dom";
 import "./PageHeader.css"
 
@@ -11,17 +11,14 @@ export default function PageHeader({ handleLogout }){
     return (
         <Menu color='teal' fixed="top">
             <Menu.Menu position="right">
-                <Dropdown item
-                    name="profile"
-                    image={{ src: "https://react.semantic-ui.com/images/wireframe/square-image.png"}}
-                    text={loggedUser?.username}
-                >
+                
+
+                <Dropdown item icon='user' text={loggedUser.username}>
                     <Dropdown.Menu>
-                        <Dropdown.Header>
-                            
-                        </Dropdown.Header>
-                        <Dropdown.Item icon="user" text="Profile" />
-                        <Dropdown.Item icon="external" text="Logout" onClick={handleLogout}/>
+                        <Dropdown.Item image={{avatar:true, src:(loggedUser?.photoUrl
+                ? loggedUser?.photoUrl
+                : "https://react.semantic-ui.com/images/wireframe/square-image.png")}} text="Profile" />
+                        <Dropdown.Item image={{avatar:true, src:'https://i.imgur.com/yM3EHLc.png'}} text="Logout" onClick={handleLogout}/>
                     </Dropdown.Menu>
                 </Dropdown>
             </Menu.Menu>
