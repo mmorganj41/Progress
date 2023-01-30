@@ -4,6 +4,7 @@ import { Form, Button, Input, Select } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { UserContext } from "../../context/UserContext/UserContext";
 import { colorOptions } from "../../utils/colors";
+import skillsService from "../../utils/skillsService";
 
 export default function CreateSkillForm(){
     const [error, setError] = useState(null);
@@ -18,6 +19,14 @@ export default function CreateSkillForm(){
         updateFormState(draft => {
             draft[e.target.name] = e.target.value;
         })
+    }
+
+    async function handleSubmit() {
+        try {
+
+        } catch(err) {
+            setError(err.message);
+        }
     }
 
 

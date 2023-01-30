@@ -4,6 +4,7 @@ import Subskill from '../models/subskill.js';
 
 export default {
     create,
+    getUserSkills,
 };
 
 async function create(req, res){
@@ -16,7 +17,15 @@ async function create(req, res){
 
         res.status(201).json({skill});
     } catch(err) {
-        res.status(400).json({err})
+        res.status(400).json({err});
     }
 }
 
+async function getUserSkills(req, res) {
+    try {
+        const skills = await Skill.find({user: req.params.userId});
+        res.status(200).json({skills});
+    } catch(err) {
+        res.status(400).json({err});
+    }
+}
