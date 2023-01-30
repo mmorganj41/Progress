@@ -1,5 +1,5 @@
 import './SkillTree.css';
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import { Segment, Header } from "semantic-ui-react";
 import HabitCard from "../HabitCard/HabitCard";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
@@ -7,8 +7,8 @@ import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelCon
 export default function SkillTree({}) {
     const habitList = null;
     const skillList = null;
+    
     const skillLevel = useContext(SkillLevelContext)
-
 
     return(
         <Segment className='SkillTree'>
