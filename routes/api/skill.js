@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
-import habitController  from '../../controllers/habits.js';
+import skillController  from '../../controllers/skill.js';
 
 // router.get('/:date');
-// router.post('/create', habitController.create);
+router.post('/', skillController.create);
 
 export default router;
