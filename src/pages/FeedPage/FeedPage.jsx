@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { CalendarComponent } from '@syncfusion/ej2-react-calendars';
+import HabitList from '../../components/HabitList/HabitList';
 
 export default function FeedPage() {
-    return (<h1>Feedpage</h1>);
+    return (<HabitList />);
 }
