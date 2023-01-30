@@ -11,7 +11,7 @@ async function createSkill(data) {
     try {
         const response = await fetch(`${BASE_URL}`, {
             method: 'POST',
-            body: data,
+            body: JSON.stringify(data),
             headers: {
                 Authorization: `Bearer ${tokenService.getToken()}`
             }
