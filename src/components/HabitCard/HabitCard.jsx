@@ -6,7 +6,7 @@ export default function HabitCard() {
         <Card fluid color='teal'>
             <Card.Content>
                 <Card.Header>
-                    <Icon name='circle' size='large'/>
+                    <Icon name='circle outline' size='large'/>
                     Habit Name
                 </Card.Header>
             </Card.Content>

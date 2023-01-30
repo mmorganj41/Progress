@@ -3,7 +3,7 @@ import {Segment, Input, Grid, Divider, Button } from 'semantic-ui-react';
 
 export default function SearchForm() {
     return(
-        <Segment placeholder>
+        <Segment>
             <Grid columns={2} relaxed='very' stackable>
                 <Grid.Column>
                     <Input
