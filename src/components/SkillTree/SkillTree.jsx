@@ -4,7 +4,8 @@ import { Segment, Header } from "semantic-ui-react";
 import HabitCard from "../HabitCard/HabitCard";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 
-export default function SkillTree({}) {
+export default function SkillTree({skill}) {
+    
     const habitList = null;
     const skillList = null;
     
@@ -12,8 +13,8 @@ export default function SkillTree({}) {
 
     return(
         <Segment className='SkillTree'>
-        <Segment inverted color='teal'>
-            <Header size='medium'>Skill Name</Header>   
+        <Segment inverted color={skill?.color}>
+            <Header size='medium'>{skill?.name}</Header>
         </Segment>
             <SkillLevelContext.Provider value={skillLevel + 1}>
                 <HabitCard />
