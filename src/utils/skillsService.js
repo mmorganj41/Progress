@@ -19,10 +19,12 @@ async function createSkill(data) {
             body: JSON.stringify(data),
             headers: header
         })
-        return await response.json();
+        if (response.ok) return await response.json();
+        
+        throw new Error();
     } catch(err) {
         console.log(err);
-        throw new Error('Could not create skill');
+        throw new Error('You have already used that skill name.');
     }
 }
 
@@ -33,7 +35,9 @@ async function getUserSkills(userId) {
                 Authorization: `Bearer ${tokenService.getToken()}`
             }
         });
-        return await response.json();
+        if (response.ok) return await response.json();
+
+        
     } catch(err) {
         console.log(err);
         throw new Error('Could not render user skills');
