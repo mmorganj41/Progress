@@ -1,0 +1,13 @@
+.FeedSidebar.sidebar {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    height: 300px;
+    padding: 30px 0;
+    background: #555;
+    color: #fff;
+    top: 10px;
+    bottom: auto;
+}

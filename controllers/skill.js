@@ -63,7 +63,7 @@ async function createSkillHabit(req, res) {
             description: req.body.description,
             repeatDays: req.body.repeats ? req.body.repeatDays : 0,
             difficulty: req.body.difficulty,
-            startDate: new Date(),
+            startDate: req.body.date,
         })
         const skillPromise = Skill.findById(req.params.skillId);
 

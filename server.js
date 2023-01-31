@@ -22,6 +22,8 @@ const app = express();
 // app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(express.json());
+
+
 // app.use("/src", assetsRouter);
 // Configure the auth middleware
 // This decodes the jwt token, and assigns

@@ -6,15 +6,16 @@ import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelCon
 import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
 import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 
-export default function SkillTree({skill, createSubskill, createHabit}) {
+export default function SkillTree({skill, createSubskill, createHabit, index}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     
     const skillLevel = useContext(SkillLevelContext)
 
     const subskillList = skill?.subskills ? skill.subskills.map(subskill => {
-        subskill.color = skill.color;
-        return (<SkillTree key={subskill._id} skill={subskill} createHabit={createHabit}/>);
+        const subskillCopy = {...subskill}
+        subskillCopy.color = skill.color;
+        return (<SkillTree key={subskill._id} skill={subskillCopy} createHabit={createHabit}/>);
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map(habit => {
@@ -39,8 +40,8 @@ export default function SkillTree({skill, createSubskill, createHabit}) {
                 {skillLevel < 1 ? (<h3>{skill?.name}</h3>) : (<h5>{skill?.name}</h5>)}
                 <Icon name={showForm ? "minus circle" : "plus circle"} onClick={handleShowForm}/>
                 </div>
-                {showForm && skillLevel < 1 ? <CreateSubskillForm skill={skill} createSubskill={createSubskill}/> : null}
-                {showForm ? <CreateHabitForm skill={skill} createHabit={createHabit}/> : null }
+                {showForm && skillLevel < 1 ? <CreateSubskillForm showTree={showTree} index={index} skill={skill} createSubskill={createSubskill}/> : null}
+                {showForm ? <CreateHabitForm showTree={showTree} skill={skill} createHabit={createHabit}/> : null }
             </Segment>
             {showTree && habitList}
             {showTree && subskillList}

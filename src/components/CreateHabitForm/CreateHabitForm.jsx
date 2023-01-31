@@ -5,6 +5,7 @@ import NumberInput from "semantic-ui-react-numberinput";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { difficultyOptions } from "../../utils/options";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
+import { DateContext } from "../../context/DateContext/DateContext";
 
 export default function CreateHabitForm({skill, createHabit}){
     const [error, setError] = useState(null);
@@ -16,6 +17,7 @@ export default function CreateHabitForm({skill, createHabit}){
         difficulty: 'trivial',
     });
     const skillLevel = useContext(SkillLevelContext);
+    const date = useContext(DateContext);
 
 
     function handleChange(e) {
@@ -41,7 +43,8 @@ export default function CreateHabitForm({skill, createHabit}){
     async function handleSubmit(e) {
         try {
             e.preventDefault();
-            await createHabit(formState, skill, skillLevel);
+            let data = {...formState, date}
+            await createHabit(data, skill, skillLevel);
         } catch(err) {
             setError(err.message);
         }
