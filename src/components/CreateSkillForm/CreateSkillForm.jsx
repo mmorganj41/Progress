@@ -4,9 +4,8 @@ import { Form, Button, Input, Select } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { UserContext } from "../../context/UserContext/UserContext";
 import { colorOptions } from "../../utils/colors";
-import skillsService from "../../utils/skillsService";
 
-export default function CreateSkillForm(){
+export default function CreateSkillForm({createSkill}){
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',
@@ -23,12 +22,7 @@ export default function CreateSkillForm(){
 
     async function handleSubmit(e) {
         e.preventDefault();
-        try {
-            await skillsService.createSkill(formState);
-
-        } catch(err) {
-            setError(err.message);
-        }
+        await createSkill(formState);
     }
 
 

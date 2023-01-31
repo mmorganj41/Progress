@@ -18,9 +18,18 @@ export default function FeedPage() {
         }
     }
 
+    async function createSkill(formState) {
+        try {
+            const response = await skillsService.createSkill(formState);
+            setSkills([response.skill, ...skills]);
+        } catch(err) {
+            setError(err.message);
+        }
+    }
+
     useEffect(() => {
         getSkills();
     }, [])
 
-    return (<HabitList skills={skills} getSkills={getSkills}/>);
+    return (<HabitList skills={skills} getSkills={getSkills} createSkill={createSkill}/>);
 }

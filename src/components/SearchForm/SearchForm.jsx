@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Segment, Input, Grid, Divider, Button } from 'semantic-ui-react';
 import CreateSkillForm from '../CreateSkillForm/CreateSkillForm';
 
-export default function SearchForm() {
+export default function SearchForm({createSkill}) {
     const [showForm, setShowForm] = useState(false);
     
     function handleFormShow(e) {
@@ -39,7 +39,7 @@ export default function SearchForm() {
             {showForm &&
                 (<Grid.Row columns={1}>
                     <Grid.Column>
-                        <CreateSkillForm />
+                        <CreateSkillForm createSkill={createSkill}/>
                     </Grid.Column>
                 </Grid.Row>)}
             </Grid>
