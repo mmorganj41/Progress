@@ -2,6 +2,7 @@ import tokenService from "./tokenService"
 
 export default {
     createSkill,
+    createSubskill,
     getUserSkills
 }
 
@@ -24,7 +25,28 @@ async function createSkill(data) {
         throw new Error();
     } catch(err) {
         console.log(err);
-        throw new Error('You have already used that skill name.');
+        throw new Error('Could not create skill.');
+    }
+}
+
+async function createSubskill(data, skillId) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    console.log(data);
+    try {
+        const response = await fetch(`${BASE_URL}${skillId}`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not create subskill.');
     }
 }
 

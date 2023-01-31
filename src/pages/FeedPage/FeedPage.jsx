@@ -19,17 +19,23 @@ export default function FeedPage() {
     }
 
     async function createSkill(formState) {
-        try {
-            const response = await skillsService.createSkill(formState);
-            setSkills([response.skill, ...skills]);
-        } catch(err) {
-            setError(err.message);
-        }
+        const response = await skillsService.createSkill(formState);
+        setSkills([response.skill, ...skills]);
+    }
+
+    async function createSubskill(formState, skill) {
+        const response = await skillsService.createSubskill(formState, skill._id);
+        setSkills([response.skill, ...skills]);
     }
 
     useEffect(() => {
         getSkills();
     }, [])
 
-    return (<HabitList skills={skills} getSkills={getSkills} createSkill={createSkill}/>);
+    return (<HabitList 
+        skills={skills} 
+        getSkills={getSkills} 
+        createSkill={createSkill}
+        createSubskill={createSubskill}
+        />);
 }

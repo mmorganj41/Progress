@@ -7,6 +7,4 @@ const subskillSchema = new Schema({
     habits: [{type: Schema.Types.ObjectId, ref: 'Skill', required: true}],
 })
 
-subskillSchema.index({name: 1, skill: 1}, {unique: true})
-
 export default mongoose.model('Subskill', subskillSchema);

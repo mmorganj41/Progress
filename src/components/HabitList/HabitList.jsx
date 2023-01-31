@@ -3,9 +3,13 @@ import { Container } from "semantic-ui-react";
 import SearchForm from "../SearchForm/SearchForm";
 import SkillTree from "../SkillTree/SkillTree";
 
-export default function HabitList({skills, createSkill}) {
+export default function HabitList({skills, createSkill, createSubskill}) {
     const skillTrees = skills ? skills.map(skill => {
-        return (<SkillTree key={skill._id} skill={skill}/>)
+        return (<SkillTree 
+            key={skill._id} 
+            skill={skill} 
+            createSubskill={createSubskill}
+        />)
     }) : null;
 
     return (

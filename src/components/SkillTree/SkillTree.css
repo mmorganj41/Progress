@@ -1,3 +1,8 @@
-.SkillTree {
+.SkillTree.main {
     text-align: left;
+}
+
+.SkillTree.header {
+    display: flex;
+    justify-content: space-between;
 }

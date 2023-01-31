@@ -18,6 +18,4 @@ const skillSchema = new Schema({
     habits: [{type: Schema.Types.ObjectId, ref: 'Habit'}]
 })
 
-skillSchema.index({name: 1, user: 1}, {unique: true})
-
 export default mongoose.model('Skill', skillSchema);

@@ -3,14 +3,13 @@ import { useImmer } from "use-immer";
 import { Form, Button, Input, Select } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { UserContext } from "../../context/UserContext/UserContext";
-import { colorOptions } from "../../utils/colors";
 
-export default function CreateSkillForm({createSkill}){
+export default function CreateSubskillForm({skill, createSubskill}){
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',
-        color: 'teal',
     });
+
     const loggedUser = useContext(UserContext);
 
     function handleChange(e) {
@@ -23,7 +22,7 @@ export default function CreateSkillForm({createSkill}){
     async function handleSubmit(e) {
         try {
             e.preventDefault();
-            await createSkill(formState);
+            await createSubskill(formState, skill);
         } catch(err) {
             setError(err.message);
         }
@@ -37,19 +36,9 @@ export default function CreateSkillForm({createSkill}){
                     control={Input}
                     name='name'
                     placeholder='Name'
-                    label='Name'
+                    label='Create Subskill'
                     value={formState.name}
                     onChange={handleChange}
-                />
-                <Form.Field 
-                    label='Color'
-                    name='color'
-                    control={Select}
-                    value={formState.color} 
-                    options={colorOptions}
-                    onChange={(e, data) => updateFormState( draft => {
-                        draft.color = data.value;
-                    })}
                 />
                 <Button type='submit'>Submit</Button>
             </Form.Group>

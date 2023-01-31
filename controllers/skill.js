@@ -32,7 +32,15 @@ async function create(req, res){
 
 async function getUserSkills(req, res) {
     try {
-        const user = await User.findById(req.params.userId).populate("skills").exec();
+        const user = await User.findById(req.params.userId)
+            .populate({
+                path: 'skills',
+                populate: {
+                    path: 'subskills',
+                    model: 'Subskill'
+                }
+            })
+            .exec();
 
         res.status(200).json({skills: user.skills});
     } catch(err) {
@@ -42,19 +50,21 @@ async function getUserSkills(req, res) {
 
 async function createSubskill(req, res) {
     try {
-        const skillPromise = User.findById(req.params.id);
+        const skillPromise = Skill.findById(req.params.skillId);
         const subskillPromise = Subskill.create({
             name: req.body.name,
         });
 
         const [skill, subskill] = await Promise.all([skillPromise, subskillPromise]);
 
+        console.log(skill, '<--- skill');
         skill.subskills.splice(0,0, subskill);
 
         await skill.save();
 
         res.status(201).json({subskill});
     } catch(err) {
+        console.log(err);
         res.status(400).json({err})
     }
 }
