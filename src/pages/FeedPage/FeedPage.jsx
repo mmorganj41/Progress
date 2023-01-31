@@ -11,6 +11,7 @@ export default function FeedPage() {
     async function getSkills() {
         try {
             const response = await skillsService.getUserSkills(loggedUser._id);
+            console.log(response);
             setSkills(response.skills)
         } catch(err) {
             console.log(err);

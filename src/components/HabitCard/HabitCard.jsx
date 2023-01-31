@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, Icon } from 'semantic-ui-react';
 
-export default function HabitCard() {
+export default function HabitCard({color}) {
     return (
-        <Card fluid color='teal'>
+        <Card fluid color={color}>
             <Card.Content>
                 <Card.Header>
                     <Icon name='circle outline' size='large'/>

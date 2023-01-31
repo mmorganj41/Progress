@@ -17,7 +17,7 @@ export default function SkillTree({skill}) {
             <Header size='medium'>{skill?.name}</Header>
         </Segment>
             <SkillLevelContext.Provider value={skillLevel + 1}>
-                <HabitCard />
+                <HabitCard color={skill?.color}/>
                 {skillLevel < 1 ? <SkillTree /> : null}
                 {habitList}
                 {skillList}

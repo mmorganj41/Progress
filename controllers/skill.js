@@ -1,3 +1,4 @@
+import User from '../models/user.js';
 import Habit from '../models/habit.js';
 import Skill from '../models/skill.js';
 import Subskill from '../models/subskill.js';
@@ -9,12 +10,17 @@ export default {
 
 async function create(req, res){
     try {
-        console.log(req.body, '<--- req')
-        const skill = await Skill.create({
-            user: req.user._id,
+        const userPromise = User.findById(req.user._id);
+        const skillPromise = Skill.create({
             name: req.body.name,
             color: req.body.color,
         });
+
+        const [user, skill] = await Promise.all([userPromise, skillPromise]);
+
+        user.skills.splice(0,0, skill);
+
+        await user.save();
 
         res.status(201).json({skill});
     } catch(err) {
@@ -25,8 +31,9 @@ async function create(req, res){
 
 async function getUserSkills(req, res) {
     try {
-        const skills = await Skill.find({user: req.params.userId});
-        res.status(200).json({skills});
+        const user = await User.findById(req.params.userId).populate("skills").exec();
+
+        res.status(200).json({skills: user.skills});
     } catch(err) {
         res.status(400).json({err});
     }
