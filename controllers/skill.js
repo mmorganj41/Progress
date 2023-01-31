@@ -9,6 +9,7 @@ export default {
 
 async function create(req, res){
     try {
+        console.log(req.body, '<--- req')
         const skill = await Skill.create({
             user: req.user._id,
             name: req.body.name,
@@ -17,6 +18,7 @@ async function create(req, res){
 
         res.status(201).json({skill});
     } catch(err) {
+        console.log(err);
         res.status(400).json({err});
     }
 }

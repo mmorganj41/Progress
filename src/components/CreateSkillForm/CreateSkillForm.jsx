@@ -21,8 +21,10 @@ export default function CreateSkillForm(){
         })
     }
 
-    async function handleSubmit() {
+    async function handleSubmit(e) {
+        e.preventDefault();
         try {
+            await skillsService.createSkill(formState);
 
         } catch(err) {
             setError(err.message);
@@ -31,7 +33,7 @@ export default function CreateSkillForm(){
 
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <Form.Group widths='equal'>
                 <Form.Input 
                     control={Input}

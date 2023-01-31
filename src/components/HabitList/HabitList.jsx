@@ -3,7 +3,7 @@ import { Container } from "semantic-ui-react";
 import SearchForm from "../SearchForm/SearchForm";
 import SkillTree from "../SkillTree/SkillTree";
 
-export default function HabitList() {
+export default function HabitList({skills}) {
     const skillTrees = null;
 
     return (

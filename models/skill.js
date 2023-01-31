@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const skillSchema = new Schema({
     name: {type: String, required: true},
     user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-    experience: {type: Number, min:0, default: 0, required: true},
+    experience: {type: Number, min:0, default: 0},
     color: {
         type: String,
         enum: ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'],
@@ -14,7 +14,6 @@ const skillSchema = new Schema({
     order: {
         type: Number,
         default: 0,
-        required: true
     },
 })
 
