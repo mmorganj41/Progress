@@ -6,6 +6,7 @@ import Subskill from '../models/subskill.js';
 export default {
     create,
     getUserSkills,
+    createSubskill,
 };
 
 async function create(req, res){
@@ -36,5 +37,24 @@ async function getUserSkills(req, res) {
         res.status(200).json({skills: user.skills});
     } catch(err) {
         res.status(400).json({err});
+    }
+}
+
+async function createSubskill(req, res) {
+    try {
+        const skillPromise = User.findById(req.params.id);
+        const subskillPromise = Subskill.create({
+            name: req.body.name,
+        });
+
+        const [skill, subskill] = await Promise.all([skillPromise, subskillPromise]);
+
+        skill.subskills.splice(0,0, subskill);
+
+        await skill.save();
+
+        res.status(201).json({subskill});
+    } catch(err) {
+        res.status(400).json({err})
     }
 }

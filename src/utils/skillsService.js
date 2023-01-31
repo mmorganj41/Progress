@@ -30,7 +30,7 @@ async function createSkill(data) {
 
 async function getUserSkills(userId) {
     try {
-        const response = await fetch(`${BASE_URL}${userId}`, {
+        const response = await fetch(`${BASE_URL}user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${tokenService.getToken()}`
             }

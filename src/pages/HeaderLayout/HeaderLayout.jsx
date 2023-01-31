@@ -1,11 +1,13 @@
-import { Grid} from 'semantic-ui-react'
-import { Outlet } from 'react-router-dom'
-import PageHeader from '../../components/PageHeader/PageHeader'
+import { Grid} from 'semantic-ui-react';
+import { Outlet } from 'react-router-dom';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import React from 'react';
+import "./HeaderLayout.css";
 
 
 function HeaderLayout({handleLogout}) {
 	return ( 
-		<Grid>
+		<Grid className='HeaderLayout' id='mainContent'>
             <PageHeader handleLogout={handleLogout}/>
 			<Grid.Row>
 				<Grid.Column>
