@@ -43,8 +43,17 @@ export default function FeedPage() {
         });
     }
 
-    async function createHabit(formState, skill, skillLevel) {
+    async function createHabit(formState, skill, skillIndex, skillLevel, subskillIndex) {
         const response = await skillsService.createHabit(formState, skill._id, skillLevel)
+        if (skillLevel <= 1) {
+            updateSkills(draft => {
+                draft[skillIndex].habits.unshift(response.habit);
+            });
+        } else {
+            updateSkills(draft => {
+                draft[skillIndex].subskills[subskillIndex].habits.unshift(response.habit);
+            });
+        }
     }
 
     useEffect(() => {
