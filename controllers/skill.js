@@ -7,6 +7,8 @@ export default {
     create,
     getUserSkills,
     createSubskill,
+    createSkillHabit,
+    createSubskillHabit
 };
 
 async function create(req, res){
@@ -35,14 +37,66 @@ async function getUserSkills(req, res) {
         const user = await User.findById(req.params.userId)
             .populate({
                 path: 'skills',
-                populate: {
+                populate: [{
                     path: 'subskills',
-                    model: 'Subskill'
-                }
+                    model: 'Subskill',
+                    populate: {
+                        path: 'habits',
+                        model: 'Habit'
+                    }}, {
+                        path: 'habits',
+                         model: 'Habit'
+                }]
             })
             .exec();
 
         res.status(200).json({skills: user.skills});
+    } catch(err) {
+        res.status(400).json({err});
+    }
+}
+
+async function createSkillHabit(req, res) {
+    try {
+        const habitPromise = Habit.create({
+            name: req.body.name,
+            description: req.body.description,
+            repeatDays: req.body.repeats ? req.body.repeatDays : 0,
+            difficulty: req.body.difficulty,
+            startDate: new Date(),
+        })
+        const skillPromise = Skill.findById(req.params.skillId);
+
+        const [skill, habit] = await Promise.all([skillPromise, habitPromise]);
+
+        skill.habits.splice(0,0, habit);
+
+        await skill.save();
+
+        res.status(201).json({habit});
+    } catch(err) {
+        res.status(400).json({err});
+    }
+}
+
+async function createSubskillHabit(req, res) {
+    try {
+        const habitPromise = Habit.create({
+            name: req.body.name,
+            description: req.body.description,
+            repeatDays: req.body.repeats ? req.body.repeatDays : 0,
+            difficulty: req.body.difficulty,
+            startDate: new Date(),
+        })
+        const subskillPromise = Subskill.findById(req.params.subskillId);
+
+        const [subskill, habit] = await Promise.all([subskillPromise, habitPromise]);
+
+        subskill.habits.splice(0,0, habit);
+
+        await subskill.save();
+
+        res.status(201).json({habit});
     } catch(err) {
         res.status(400).json({err});
     }
@@ -57,7 +111,6 @@ async function createSubskill(req, res) {
 
         const [skill, subskill] = await Promise.all([skillPromise, subskillPromise]);
 
-        console.log(skill, '<--- skill');
         skill.subskills.splice(0,0, subskill);
 
         await skill.save();

@@ -21,6 +21,7 @@
     "react-router-dom": "^6.4.3",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
+    "semantic-ui-react-numberinput": "^1.5.1",
     "serve-favicon": "^2.5.0",
     "use-immer": "^0.8.1"
   },

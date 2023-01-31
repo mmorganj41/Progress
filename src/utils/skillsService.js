@@ -3,7 +3,8 @@ import tokenService from "./tokenService"
 export default {
     createSkill,
     createSubskill,
-    getUserSkills
+    getUserSkills,
+    createHabit,
 }
 
 const BASE_URL = '/api/skills/'
@@ -13,7 +14,6 @@ async function createSkill(data) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
-    console.log(data);
     try {
         const response = await fetch(`${BASE_URL}`, {
             method: 'POST',
@@ -34,7 +34,6 @@ async function createSubskill(data, skillId) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
-    console.log(data);
     try {
         const response = await fetch(`${BASE_URL}${skillId}`, {
             method: 'POST',
@@ -47,6 +46,28 @@ async function createSubskill(data, skillId) {
     } catch(err) {
         console.log(err);
         throw new Error('Could not create subskill.');
+    }
+}
+
+async function createHabit(data, skillId, skillLevel) {
+        const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    const url = `${BASE_URL}${(skillLevel <= 1) ? '' : 'subskill/'}${skillId}/habit`; 
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not create habit.');
     }
 }
 

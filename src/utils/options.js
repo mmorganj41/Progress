@@ -13,3 +13,11 @@ export const colorOptions = [
     { key: 'grey', text: 'Grey', value: 'grey' },
     { key: 'black', text: 'Black', value: 'black' },
   ]
+
+  export const difficultyOptions = [
+    { key: 'trivial', text: 'Trivial', value: 'trivial' },
+    { key: 'easy', text: 'Easy', value: 'easy' },
+    { key: 'average', text: 'Average', value: 'average' },
+    { key: 'challenging', text: 'Challenging', value: 'challenging' },
+    { key: 'difficult', text: 'Difficult', value: 'difficult' },
+  ]

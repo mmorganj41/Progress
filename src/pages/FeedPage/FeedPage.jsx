@@ -11,7 +11,6 @@ export default function FeedPage() {
     async function getSkills() {
         try {
             const response = await skillsService.getUserSkills(loggedUser._id);
-            console.log(response);
             setSkills(response.skills)
         } catch(err) {
             console.log(err);
@@ -27,6 +26,10 @@ export default function FeedPage() {
         const response = await skillsService.createSubskill(formState, skill._id);
     }
 
+    async function createHabit(formState, skill, skillLevel) {
+        const response = await skillsService.createHabit(formState, skill._id, skillLevel)
+    }
+
     useEffect(() => {
         getSkills();
     }, [])
@@ -36,5 +39,6 @@ export default function FeedPage() {
         getSkills={getSkills} 
         createSkill={createSkill}
         createSubskill={createSubskill}
+        createHabit={createHabit}
         />);
 }

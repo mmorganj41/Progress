@@ -1,9 +1,8 @@
 import React, {useState, useContext} from "react";
 import { useImmer } from "use-immer";
-import { Form, Button, Input, Select } from "semantic-ui-react";
+import { Form, Button, Input, Select, Divider } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import { UserContext } from "../../context/UserContext/UserContext";
-import { colorOptions } from "../../utils/colors";
+import { colorOptions } from "../../utils/options";
 
 export default function CreateSkillForm({createSkill}){
     const [error, setError] = useState(null);
@@ -11,7 +10,7 @@ export default function CreateSkillForm({createSkill}){
         name: '',
         color: 'teal',
     });
-    const loggedUser = useContext(UserContext);
+
 
     function handleChange(e) {
         e.preventDefault();
@@ -31,29 +30,31 @@ export default function CreateSkillForm({createSkill}){
 
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group widths='equal'>
-                <Form.Input 
-                    control={Input}
-                    name='name'
-                    placeholder='Name'
-                    label='Name'
-                    value={formState.name}
-                    onChange={handleChange}
-                />
-                <Form.Field 
-                    label='Color'
-                    name='color'
-                    control={Select}
-                    value={formState.color} 
-                    options={colorOptions}
-                    onChange={(e, data) => updateFormState( draft => {
-                        draft.color = data.value;
-                    })}
-                />
-                <Button type='submit'>Submit</Button>
-            </Form.Group>
-            {error ? <ErrorMessage error={error} /> : null }
-        </Form>
+        <>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group widths='equal'>
+                    <Form.Input 
+                        control={Input}
+                        name='name'
+                        placeholder='Name'
+                        label='Name'
+                        value={formState.name}
+                        onChange={handleChange}
+                    />
+                    <Form.Field 
+                        label='Color'
+                        name='color'
+                        control={Select}
+                        value={formState.color} 
+                        options={colorOptions}
+                        onChange={(e, data) => updateFormState( draft => {
+                            draft.color = data.value;
+                        })}
+                    />
+                    <Button type='submit'>Submit</Button>
+                </Form.Group>
+                {error ? <ErrorMessage error={error} /> : null }
+            </Form>
+    </>
     )
 }

@@ -1,3 +1,7 @@
+.SkillTree div.ui {
+    transition: all .4s;
+}
+
 .SkillTree.main {
     text-align: left;
 }
@@ -5,4 +9,19 @@
 .SkillTree.header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.SkillTree > h3, .SkillTree > h5{
+    padding: 0px;
+    margin: 0px;
+}
+
+.SkillTree .ui.segment {
+    padding-right: 0;
+    transition: all .4s;
+}
+
+.SkillTree .ui.form {
+    padding-right: 1em;
 }
