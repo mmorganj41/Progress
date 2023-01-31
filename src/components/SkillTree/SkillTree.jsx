@@ -8,25 +8,32 @@ import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
 export default function SkillTree({skill, createSubskill}) {
     const [showForm, setShowForm] = useState(false);
     const habitList = null;
-    const skillList = null;
+    
     
     const skillLevel = useContext(SkillLevelContext)
 
+    console.log(skill);
+    const subskillList = skill?.subskills ? skill.subskills.map(subskill => {
+        subskill.color = skill.color;
+        return (<SkillTree key={subskill._id} skill={subskill} />);
+    }) : null; 
+
+    console.log(subskillList);
+
     return(
+    <SkillLevelContext.Provider value={skillLevel + 1}>
         <Segment className='SkillTree main'>
         <Segment inverted color={skill?.color}>
             <div className='SkillTree header'>
             <Header size='medium'>{skill?.name}</Header>
             <Icon name={showForm ? "minus circle" : "plus circle"} onClick={() => setShowForm(!showForm)}/>
             </div>
-            {showForm ? <CreateSubskillForm skill={skill} createSubskill={createSubskill}/> : null}
-        </Segment>
-            <SkillLevelContext.Provider value={skillLevel + 1}>
-                <HabitCard color={skill?.color}/>
-                {skillLevel < 1 ? <SkillTree /> : null}
-                {habitList}
-                {skillList}
-            </SkillLevelContext.Provider>
-        </Segment>
+            {showForm && skillLevel < 1 ? <CreateSubskillForm skill={skill} createSubskill={createSubskill}/> : null}
+            </Segment>
+                
+                    <HabitCard color={skill?.color}/>
+                    {subskillList}
+            </Segment>
+        </SkillLevelContext.Provider>
     )
 }

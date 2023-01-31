@@ -25,7 +25,6 @@ export default function FeedPage() {
 
     async function createSubskill(formState, skill) {
         const response = await skillsService.createSubskill(formState, skill._id);
-        setSkills([response.skill, ...skills]);
     }
 
     useEffect(() => {
