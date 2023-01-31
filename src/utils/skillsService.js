@@ -5,6 +5,7 @@ export default {
     createSubskill,
     getUserSkills,
     createHabit,
+    completeHabit
 }
 
 const BASE_URL = '/api/skills/'
@@ -50,7 +51,7 @@ async function createSubskill(data, skillId) {
 }
 
 async function createHabit(data, skillId, skillLevel) {
-        const header = new Headers();
+    const header = new Headers();
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
@@ -84,5 +85,25 @@ async function getUserSkills(userId) {
     } catch(err) {
         console.log(err);
         throw new Error('Could not render user skills');
+    }
+}
+
+async function completeHabit(data, habitId) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}/habit/${habitId}`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not create habit.');
     }
 }

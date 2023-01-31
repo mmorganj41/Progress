@@ -7,7 +7,7 @@ const habitSchema = new Schema({
     description: {type: String, required: true},
     startDate: {type: String, required: true, default: dateToday()},
     repeatDays: {type: Number, required: true, default: 0},
-    completionDates: {type: Map, of: Boolean},
+    completionDates: {type: Map, of: Boolean, default: new Map()},
     difficulty: {type: String, required: true, default: 'trivial', 
         enum:['trivial', 'easy', 'average', 'challenging', 'difficult']}
 })

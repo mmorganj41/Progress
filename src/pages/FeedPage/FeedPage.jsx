@@ -5,6 +5,7 @@ import HabitList from '../../components/HabitList/HabitList';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { DateContext } from '../../context/DateContext/DateContext';
 import skillsService from '../../utils/skillsService';
+import { Header } from 'semantic-ui-react';
 
 
 export default function FeedPage() {
@@ -56,6 +57,15 @@ export default function FeedPage() {
         }
     }
 
+    async function completeHabit(data, habit) {
+        try {
+            const response = await skillsService.completeHabit(data, habit._id);
+            getSkills();
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         getSkills();
     }, [])
@@ -63,6 +73,7 @@ export default function FeedPage() {
     return (
         <div className="container">
             <FeedSidebar date={date} setDate={setDate}/>
+            <Header>{selectedDate}</Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
                 skills={skills} 
@@ -70,6 +81,7 @@ export default function FeedPage() {
                 createSkill={createSkill}
                 createSubskill={createSubskill}
                 createHabit={createHabit}
+                completeHabit={completeHabit}
                 />
             </DateContext.Provider>
         </div>
