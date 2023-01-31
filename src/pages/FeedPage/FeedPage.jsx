@@ -57,10 +57,35 @@ export default function FeedPage() {
         }
     }
 
-    async function completeHabit(data, habit) {
+    async function completeHabit(data, habit, skillIndex, skillLevel, subskillIndex, habitIndex) {
         try {
             const response = await skillsService.completeHabit(data, habit._id);
-            getSkills();
+            if (skillLevel <= 1) {
+                updateSkills(draft => {
+                    draft[skillIndex].habits[habitIndex].completionDates[data.date] = true;
+                });
+            } else {
+                updateSkills(draft => {
+                    draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = true;
+                });
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    async function uncompleteHabit(data, habit, skillIndex, skillLevel, subskillIndex, habitIndex) {
+        try {
+            const response = await skillsService.uncompleteHabit(data, habit._id);
+            if (skillLevel <= 1) {
+                updateSkills(draft => {
+                    draft[skillIndex].habits[habitIndex].completionDates[data.date] = false;
+                });
+            } else {
+                updateSkills(draft => {
+                    draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = false;
+                });
+            }
         } catch(err) {
             console.log(err);
         }
@@ -82,6 +107,7 @@ export default function FeedPage() {
                 createSubskill={createSubskill}
                 createHabit={createHabit}
                 completeHabit={completeHabit}
+                uncompleteHabit={uncompleteHabit}
                 />
             </DateContext.Provider>
         </div>

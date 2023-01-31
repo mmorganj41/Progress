@@ -1,19 +1,20 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { Card, Icon } from 'semantic-ui-react';
+import subskill from '../../../models/subskill';
 import { DateContext } from '../../context/DateContext/DateContext';
-import skillsService from '../../utils/skillsService';
+import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 
-export default function HabitCard({habit, color, completeHabit}) {
+export default function HabitCard({habit, color, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
     const date = useContext(DateContext);
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
-
+    const skillLevel = useContext(SkillLevelContext);
     async function handleClick() {
         const data = {date};
         if (complete) {
-
+            await uncompleteHabit(data, habit, index, skillLevel, subskillIndex, habitIndex);
         } else {
-            await completeHabit(data, habit);
+            await completeHabit(data, habit, index, skillLevel, subskillIndex, habitIndex);
         }
     }
 

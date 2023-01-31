@@ -6,6 +6,7 @@ import skillController  from '../../controllers/skill.js';
 router.post('/', skillController.create);
 router.get('/user/:userId', skillController.getUserSkills);
 router.post('/habit/:habitId', skillController.completeHabit);
+router.delete('/habit/:habitId', skillController.uncompleteHabit);
 router.post('/subskill/:subskillId/habit', skillController.createSubskillHabit);
 
 router.post('/:skillId', skillController.createSubskill);

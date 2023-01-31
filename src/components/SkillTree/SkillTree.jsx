@@ -6,7 +6,7 @@ import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelCon
 import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
 import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 
-export default function SkillTree({skill, createSubskill, createHabit, index, subskillIndex, completeHabit}) {
+export default function SkillTree({skill, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     
@@ -15,11 +15,11 @@ export default function SkillTree({skill, createSubskill, createHabit, index, su
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
-        return (<SkillTree key={subskill._id} index={index} subskillIndex={i} skill={subskillCopy} createHabit={createHabit} completeHabit={completeHabit}/>);
+        return (<SkillTree key={subskill._id} index={index} subskillIndex={i} skill={subskillCopy} createHabit={createHabit} completeHabit={completeHabit} uncompleteHabit={uncompleteHabit}/>);
     }) : null; 
 
-    const habitList = skill?.habits ? skill.habits.map(habit => {
-        return (<HabitCard key={habit._id} habit={habit} color={skill.color} completeHabit={completeHabit}/>);
+    const habitList = skill?.habits ? skill.habits.map((habit, i) => {
+        return (<HabitCard key={habit._id} habit={habit} color={skill.color} completeHabit={completeHabit} uncompleteHabit={uncompleteHabit} index={index} subskillIndex={subskillIndex} habitIndex={i}/>);
     }) : null;
 
     function handleShowForm(e) {

@@ -9,7 +9,8 @@ export default {
     createSubskill,
     createSkillHabit,
     createSubskillHabit,
-    completeHabit
+    completeHabit, 
+    uncompleteHabit,
 };
 
 async function create(req, res){
@@ -128,6 +129,21 @@ async function completeHabit(req, res) {
         const habit = await Habit.findById(req.params.habitId);
 
         habit.completionDates.set(req.body.date, true);
+
+        await habit.save();
+
+        res.status(201).json({habit});
+    } catch(err) {
+        console.log(err);
+        res.status(400).json({err})
+    }
+}
+
+async function uncompleteHabit(req, res) {
+    try {
+        const habit = await Habit.findById(req.params.habitId);
+
+        habit.completionDates.delete(req.body.date);
 
         await habit.save();
 
