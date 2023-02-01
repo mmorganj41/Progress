@@ -1,6 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
 import { Card, Icon } from 'semantic-ui-react';
-import subskill from '../../../models/subskill';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 import './HabitCard.css';
@@ -8,6 +7,7 @@ import skillsService from '../../utils/skillsService';
 
 export default function HabitCard({habit, color, state, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
     const [showForm, setShowForm] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
     const date = useContext(DateContext);
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
@@ -22,10 +22,21 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
     }
 
     async function handleDelete(e) {
+        e.stopPropagation();
         e.preventDefault();
         console.log(habit);
         await deleteHabit(habit, skillLevel, index, subskillIndex, habitIndex);
     }
+
+    function handleShowForm(e) {
+        e.stopPropagation();
+        setShowForm(!showForm);
+    }
+
+    function toggleShowDetails(e) {
+        if (e.target.tag !== 'FORM' || e.target.tag !== 'INPUT' || e.target.tag !== 'LABEL') setShowDetails(!showDetails);
+    }
+
 
     const action = () => {
         if (state === 'delete') {
@@ -37,31 +48,37 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
             if (showForm) {
                 return(
                     <div className='HabitCard ActionIcon'>
-                        <Icon name='dot circle outline' onClick={() => setShowForm(false)}/>
+                        <Icon name='dot circle outline' onClick={handleShowForm}/>
                     </div>
                 )    
             } else {
                 return(
                     <div className='HabitCard ActionIcon'>
-                        <Icon name='dot circle' onClick={() => setShowForm(true)}/>
+                        <Icon name='dot circle' onClick={handleShowForm}/>
                     </div>
                 )
             }
         }
     }
 
+    const details = () => {
+       if (showDetails) return(
+            <Card.Content extra>
+                {habit?.description}
+            </Card.Content>
+        )
+    }
+            
     return (
         <Card fluid color={color}>
-            <Card.Content>
+            <Card.Content onClick={toggleShowDetails}>
                 <Card.Header className='HabitCard Header'>
                     <Icon name={icon} size='large' onClick={handleClick}/>
                     {habit?.name}
                     {action()}
                 </Card.Header>
             </Card.Content>
-            <Card.Content extra>
-                {habit?.description}
-            </Card.Content>
+                {details()}
         </Card>
     )
 }
