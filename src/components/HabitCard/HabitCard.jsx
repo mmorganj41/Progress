@@ -3,8 +3,11 @@ import { Card, Icon } from 'semantic-ui-react';
 import subskill from '../../../models/subskill';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
+import './HabitCard.css';
+import skillsService from '../../utils/skillsService';
 
-export default function HabitCard({habit, color, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
+export default function HabitCard({habit, color, state, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
+    const [showForm, setShowForm] = useState(false);
     const date = useContext(DateContext);
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
@@ -18,12 +21,42 @@ export default function HabitCard({habit, color, completeHabit, uncompleteHabit,
         }
     }
 
+    async function handleDelete(e) {
+        e.preventDefault();
+        console.log(habit);
+        await deleteHabit(habit, skillLevel, index, subskillIndex, habitIndex);
+    }
+
+    const action = () => {
+        if (state === 'delete') {
+            return(            
+                <div className='HabitCard ActionIcon'>
+                    <Icon name='remove circle' onClick={handleDelete}/>
+                </div>)
+        } else if (state === 'edit') {
+            if (showForm) {
+                return(
+                    <div className='HabitCard ActionIcon'>
+                        <Icon name='dot circle outline' onClick={() => setShowForm(false)}/>
+                    </div>
+                )    
+            } else {
+                return(
+                    <div className='HabitCard ActionIcon'>
+                        <Icon name='dot circle' onClick={() => setShowForm(true)}/>
+                    </div>
+                )
+            }
+        }
+    }
+
     return (
         <Card fluid color={color}>
             <Card.Content>
-                <Card.Header>
+                <Card.Header className='HabitCard Header'>
                     <Icon name={icon} size='large' onClick={handleClick}/>
                     {habit?.name}
+                    {action()}
                 </Card.Header>
             </Card.Content>
             <Card.Content extra>

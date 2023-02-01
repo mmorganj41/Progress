@@ -9,6 +9,7 @@ export default {
     uncompleteHabit,
     deleteSkill,
     deleteSubkill,
+    deleteHabit,
 }
 
 const BASE_URL = '/api/skills/'
@@ -117,7 +118,7 @@ async function uncompleteHabit(data, habitId) {
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
     try {
-        const response = await fetch(`${BASE_URL}/habit/${habitId}`, {
+        const response = await fetch(`${BASE_URL}/habit/${habitId}/datesComplete`, {
             method: 'DELETE',
             body: JSON.stringify(data),
             headers: header
@@ -166,5 +167,24 @@ async function deleteSubkill(subskillId) {
     } catch(err) {
         console.log(err);
         throw new Error('Could not delete subskill.');
+    } 
+}
+
+async function deleteHabit(habitId) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}habit/${habitId}`, {
+            method: 'DELETE',
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not delete habit.');
     } 
 }

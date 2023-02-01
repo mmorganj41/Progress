@@ -2,6 +2,7 @@ import User from '../models/user.js';
 import Habit from '../models/habit.js';
 import Skill from '../models/skill.js';
 import Subskill from '../models/subskill.js';
+import skill from '../models/skill.js';
 
 export default {
     create,
@@ -12,7 +13,8 @@ export default {
     completeHabit, 
     uncompleteHabit,
     deleteSkill,
-    deleteSubskill
+    deleteSubskill,
+    deleteHabit
 };
 
 async function create(req, res){
@@ -185,16 +187,34 @@ async function deleteSkill(req, res) {
 
 async function deleteSubskill(req, res) {
     try {
-        const subskill = await Subskill.findByIdAndRemove(req.params.subskillId)
+        const subskill = await Subskill.findByIdAndRemove(req.params.subskillId);
 
         if (subskill.habits.length) {
             await Habit.remove({"_id": {$in: subskill.habits }});
         }
+
+        await Skill.findOneAndUpdate({subskills: subskill._id}, {$pull: {subskills: subskill._id}});
          
         res.status(201).json({subskill});
 
     } catch(err) {
         console.log(err);
         res.status(400).json({err})
+    }
+}
+
+async function deleteHabit(req, res) {
+    try {
+        const habit = await Habit.findByIdAndRemove(req.params.habitId);
+
+        const skillP = Skill.findOneAndUpdate({habits: habit._id}, {$pull: {habits: habit._id}});
+        const subskillP = Skill.findOneAndUpdate({habits: habit._id}, {$pull: {habits: habit._id}});
+
+        await Promise.all([skillP, subskillP]);
+
+        res.status(201).json({habit});
+    } catch(err) {
+        console.log(err);
+        res.status(400).json({err});
     }
 }

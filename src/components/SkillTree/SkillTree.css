@@ -8,8 +8,11 @@
 
 .SkillTree.header {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
+}
+.SkillTree.header > *:last-child {
+    margin-left: auto;
 }
 
 .SkillTree > h3, .SkillTree > h5{

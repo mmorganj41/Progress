@@ -3,7 +3,7 @@ import { useImmer } from "use-immer";
 import { Form, Button, Input, Select, Divider } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-export default function CreateSubskillForm({skill, createSubskill, index, showTree}){
+export default function CreateSubskillForm({skill, createSubskill, index, showTree, hideForm}){
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',
@@ -21,6 +21,7 @@ export default function CreateSubskillForm({skill, createSubskill, index, showTr
             e.preventDefault();
             await createSubskill(formState, skill, index);
             showTree();
+            hideForm();
         } catch(err) {
             setError(err.message);
         }

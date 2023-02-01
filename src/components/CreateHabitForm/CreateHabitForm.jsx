@@ -7,7 +7,7 @@ import { difficultyOptions } from "../../utils/options";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import { DateContext } from "../../context/DateContext/DateContext";
 
-export default function CreateHabitForm({skill, createHabit, showTree, index, subskillIndex}){
+export default function CreateHabitForm({skill, createHabit, showTree, hideForm, index, subskillIndex}){
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',
@@ -46,11 +46,11 @@ export default function CreateHabitForm({skill, createHabit, showTree, index, su
             let data = {...formState, date}
             await createHabit(data, skill, index, skillLevel, subskillIndex);
             showTree();
+            hideForm();
         } catch(err) {
             setError(err.message);
         }
     }
-
 
     return (
         <>               

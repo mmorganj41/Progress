@@ -90,6 +90,41 @@ export default function FeedPage() {
             console.log(err);
         }
     }
+    
+    async function deleteSkill(skill, skillLevel, skillIndex, subskillIndex) {
+        try {
+            if (skillLevel < 1) {
+                await skillsService.deleteSkill(skill._id);
+                updateSkills(draft => {
+                    draft.splice(skillIndex, 1);
+                });
+            } else {
+                await skillsService.deleteSubkill(skill._id);
+                updateSkills(draft => {
+                    draft[skillIndex].subskills.splice(subskillIndex, 1);
+                });
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    async function deleteHabit(habit, skillLevel, skillIndex, subskillIndex, habitIndex) {
+        try {
+            await skillsService.deleteHabit(habit._id);
+            if (skillLevel <= 1) {
+                updateSkills(draft => {
+                    draft[skillIndex].habits.splice(habitIndex, 1);
+                });
+            } else {
+                updateSkills(draft => {
+                    draft[skillIndex].subskills[subskillIndex].habits.splice(habitIndex, 1);
+                });
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
 
     useEffect(() => {
         getSkills();
@@ -101,13 +136,15 @@ export default function FeedPage() {
             <Header>{selectedDate}</Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
-                skills={skills} 
-                getSkills={getSkills} 
-                createSkill={createSkill}
-                createSubskill={createSubskill}
-                createHabit={createHabit}
-                completeHabit={completeHabit}
-                uncompleteHabit={uncompleteHabit}
+                    skills={skills} 
+                    getSkills={getSkills} 
+                    createSkill={createSkill}
+                    createSubskill={createSubskill}
+                    createHabit={createHabit}
+                    completeHabit={completeHabit}
+                    uncompleteHabit={uncompleteHabit}
+                    deleteSkill={deleteSkill}
+                    deleteHabit={deleteHabit}
                 />
             </DateContext.Provider>
         </div>

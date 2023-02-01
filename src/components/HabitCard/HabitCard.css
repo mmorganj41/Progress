@@ -1,0 +1,9 @@
+.HabitCard.Header {
+    display: flex!important;
+    justify-content: start;
+    align-items: center;
+}
+
+.HabitCard.ActionIcon {
+    margin-left: auto;
+}
