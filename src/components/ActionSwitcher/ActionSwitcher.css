@@ -1,0 +1,15 @@
+.ActionSwitcher.ButtonGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ActionSwitcher .ui.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ActionSwitcher.ButtonGroup i {
+    margin: 0!important;
+}
