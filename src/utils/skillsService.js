@@ -7,6 +7,7 @@ export default {
     createHabit,
     completeHabit,
     uncompleteHabit,
+    deleteSkill,
 }
 
 const BASE_URL = '/api/skills/'
@@ -127,4 +128,23 @@ async function uncompleteHabit(data, habitId) {
         console.log(err);
         throw new Error('Could not create habit.');
     }
+}
+
+async function deleteSkill(skillId) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}${skillId}`, {
+            method: 'DELETE',
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not delete skill.');
+    } 
 }

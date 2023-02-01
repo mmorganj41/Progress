@@ -11,6 +11,7 @@ export default function HabitList({skills, createSkill, createSubskill, complete
         return (<SkillTree 
             key={skill._id} 
             skill={skill} 
+            state={state}
             createSubskill={createSubskill}
             createHabit={createHabit}
             index={i}

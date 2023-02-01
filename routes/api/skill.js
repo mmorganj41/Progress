@@ -10,6 +10,7 @@ router.delete('/habit/:habitId', skillController.uncompleteHabit);
 router.post('/subskill/:subskillId/habit', skillController.createSubskillHabit);
 
 router.post('/:skillId', skillController.createSubskill);
+router.delete('/:skillId', skillController.deleteSkill);
 router.post('/:skillId/habit', skillController.createSkillHabit);
 
 

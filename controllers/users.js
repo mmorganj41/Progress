@@ -42,6 +42,7 @@ async function login(req, res) {
   }
 }
 
+
 /*----- Helper Functions -----*/
 
 function createJWT(user) {

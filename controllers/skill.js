@@ -11,6 +11,7 @@ export default {
     createSubskillHabit,
     completeHabit, 
     uncompleteHabit,
+    deleteSkill
 };
 
 async function create(req, res){
@@ -148,6 +149,33 @@ async function uncompleteHabit(req, res) {
         await habit.save();
 
         res.status(201).json({habit});
+    } catch(err) {
+        console.log(err);
+        res.status(400).json({err})
+    }
+}
+
+async function deleteSkill(req, res) {
+    try {
+        const skill = await Skill.findByIdAndRemove(req.params.skillId)
+
+        if (skill.habits.length) {
+            await Habit.remove({"_id": {$in: skill.habits }});
+        }
+        
+        if (skill.subskills.length) {
+            const subskills = await Subskill.find({'_id': {$in: skill.subskills}});
+            
+            subskills.forEach(async subskill => {
+            if (subskill.habits.length) {
+                const habitProm = await Habit.remove({"_id": {$in: subskill.habits}});
+                console.log(habitProm)
+            }
+        })
+        }  
+
+        res.status(201).json({skill});
+
     } catch(err) {
         console.log(err);
         res.status(400).json({err})

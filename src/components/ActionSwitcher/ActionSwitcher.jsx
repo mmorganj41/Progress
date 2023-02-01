@@ -3,9 +3,7 @@ import './ActionSwitcher.css';
 import { Button, Icon } from "semantic-ui-react";
 
 export default function ActionSwitcher({state, setState}) {
-    function handleClick(stateName) {
-        setState(stateName)
-    }
+
 
     return(
         <div className='ActionSwitcher ButtonGroup'>
