@@ -8,6 +8,7 @@ export default {
     completeHabit,
     uncompleteHabit,
     deleteSkill,
+    deleteSubkill,
 }
 
 const BASE_URL = '/api/skills/'
@@ -146,5 +147,24 @@ async function deleteSkill(skillId) {
     } catch(err) {
         console.log(err);
         throw new Error('Could not delete skill.');
+    } 
+}
+
+async function deleteSubkill(subskillId) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}subskill/${subskillId}`, {
+            method: 'DELETE',
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not delete subskill.');
     } 
 }

@@ -41,7 +41,9 @@ export default function SkillTree({skill, state, createSubskill, createHabit, in
         e.stopPropagation();
         try {
             if (skillLevel < 1) {
-                skillsService.deleteSkill(skill._id);
+                await skillsService.deleteSkill(skill._id);
+            } else {
+                await skillsService.deleteSubkill(skill._id);
             }
         } catch(err) {
             console.log(err);
