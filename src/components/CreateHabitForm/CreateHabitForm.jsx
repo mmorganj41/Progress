@@ -6,6 +6,8 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { difficultyOptions } from "../../utils/options";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import { DateContext } from "../../context/DateContext/DateContext";
+import SemanticDatepicker from 'react-semantic-ui-datepickers';
+import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 
 export default function CreateHabitForm({skill, createHabit, showTree, hideForm, index, subskillIndex}){
     const [error, setError] = useState(null);
@@ -78,6 +80,8 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                     />
                 </Form.Group>
                 <Form.Group inline>
+                    <SemanticDatepicker />
+                    <SemanticDatepicker />
                     <Form.Checkbox label='Repeats?' checked={formState.repeats} onChange={(e, data) => handleCheck(e, data)}/>
                     {formState.repeats ? 
                     <NumberInput
@@ -101,6 +105,7 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                         buttonPlacement="leftAndRight" 
                     />
                     }
+                    
                 </Form.Group>
                 <Form.TextArea
                     label='Description'

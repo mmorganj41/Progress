@@ -6,6 +6,7 @@ const habitSchema = new Schema({
     name: {type: String, required: true},
     description: {type: String, required: true},
     startDate: {type: String, required: true, default: dateToday()},
+    endDate: {type: String, default: null},
     repeatDays: {type: Number, required: true, default: 0},
     completionDates: {type: Map, of: Boolean, default: new Map()},
     difficulty: {type: String, required: true, default: 'trivial', 
