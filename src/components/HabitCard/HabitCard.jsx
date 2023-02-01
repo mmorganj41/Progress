@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import { Card, Icon } from 'semantic-ui-react';
+import { Card, Icon, Grid, Header } from 'semantic-ui-react';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 import './HabitCard.css';
@@ -12,7 +12,8 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
     const skillLevel = useContext(SkillLevelContext);
-    async function handleClick() {
+    async function handleClick(e) {
+        e.stopPropagation();
         const data = {date};
         if (complete) {
             await uncompleteHabit(data, habit, index, skillLevel, subskillIndex, habitIndex);
@@ -63,9 +64,26 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
 
     const details = () => {
        if (showDetails) return(
+        <>
             <Card.Content extra>
+                <Header as='h4' style={{textTransform: 'capitalize'}}>{habit?.difficulty}</Header>
                 {habit?.description}
             </Card.Content>
+            <Card.Content extra>
+                <div className='HabitCard Details'>
+                    <div>
+                        <Icon name="calendar"/><strong>Start Date: </strong>{habit?.startDate}
+                    </div>
+                    <div>
+                        <strong>End Date: </strong> {habit?.endDate ? habit?.endDate : 'Never'}
+                    </div>
+                    <div>
+                        <strong>Repeats: </strong> {habit?.repeatDays ? `Every ${habit.repeatDays}` : 'Never'}
+                    </div>
+                            
+                </div>
+            </Card.Content>
+        </>
         )
     }
             

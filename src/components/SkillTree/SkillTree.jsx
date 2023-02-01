@@ -6,12 +6,21 @@ import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelCon
 import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
 import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 import skillsService from '../../utils/skillsService';
+import { DateContext } from '../../context/DateContext/DateContext';
 
 export default function SkillTree({skill, state, deleteSkill, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     
-    const skillLevel = useContext(SkillLevelContext)
+    const date = useContext(DateContext);
+    const skillLevel = useContext(SkillLevelContext);
+
+    const dateParsed = parseDays(date);
+
+    function parseDays(date) {
+        const result = Math.round(date/(1000 * 60 * 60 * 24));
+        return result;
+    }
 
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
         const subskillCopy = {...subskill}
@@ -31,18 +40,41 @@ export default function SkillTree({skill, state, deleteSkill, deleteHabit, creat
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
-        return (<HabitCard 
-            key={habit._id} 
-            habit={habit} 
-            color={skill.color} 
-            state={state} 
-            completeHabit={completeHabit} 
-            uncompleteHabit={uncompleteHabit} 
-            index={index} 
-            subskillIndex={subskillIndex} 
-            habitIndex={i}
-            deleteHabit={deleteHabit}
-        />);
+        if (habit.repeatDays) {
+           if (dateParsed - parseDays(Date.parse(habit.startDate)) - 1% habit.repeatDays) {
+            return null;
+            } else {
+                return (<HabitCard 
+                    key={habit._id} 
+                    habit={habit} 
+                    color={skill.color} 
+                    state={state} 
+                    completeHabit={completeHabit} 
+                    uncompleteHabit={uncompleteHabit} 
+                    index={index} 
+                    subskillIndex={subskillIndex} 
+                    habitIndex={i}
+                    deleteHabit={deleteHabit}
+                />);
+            } 
+        } else if (date.toISOString().split('T')[0] === habit.startDate) {
+            return (<HabitCard 
+                key={habit._id} 
+                habit={habit} 
+                color={skill.color} 
+                state={state} 
+                completeHabit={completeHabit} 
+                uncompleteHabit={uncompleteHabit} 
+                index={index} 
+                subskillIndex={subskillIndex} 
+                habitIndex={i}
+                deleteHabit={deleteHabit}
+            />);
+        }
+
+        return null;
+        
+
     }) : null;
 
     function handleShowForm(e) {

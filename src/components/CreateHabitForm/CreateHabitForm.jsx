@@ -9,7 +9,12 @@ import { DateContext } from "../../context/DateContext/DateContext";
 import SemanticDatepicker from 'react-semantic-ui-datepickers';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 
+
+
 export default function CreateHabitForm({skill, createHabit, showTree, hideForm, index, subskillIndex}){
+    const skillLevel = useContext(SkillLevelContext);
+    const date = useContext(DateContext);
+    
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',
@@ -17,36 +22,46 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
         repeats: false,
         repeatDays: '0',
         difficulty: 'trivial',
+        startDate: date,
+        ends: false,
+        endDate: null,
     });
-    const skillLevel = useContext(SkillLevelContext);
-    const date = useContext(DateContext);
+    
 
 
     function handleChange(e) {
         e.preventDefault();
         updateFormState(draft => {
             draft[e.target.name] = e.target.value;
-        })
+        });
     }
 
-    function handleCheck(e, data) {
+    function handleSelectDate(e, data, name) {
+        updateFormState(draft => {
+            draft[name] = data.value;
+        });
+        console.log(formState.startDate?.toISOString());
+    }
+
+    function handleCheck(e, data, name) {
         let checked = data.checked
         updateFormState(draft => {
-            draft.repeats = checked;
-        })
+            draft[name] = checked;
+        });
+        
     }
 
     function handleNumberChange(newValue) {
         updateFormState(draft => {
             draft.repeatDays = newValue
-        })
+        });
     }
 
     async function handleSubmit(e) {
         try {
             e.preventDefault();
-            let data = {...formState, date}
-            await createHabit(data, skill, index, skillLevel, subskillIndex);
+            console.log(formState);
+            await createHabit(formState, skill, index, skillLevel, subskillIndex);
             showTree();
             hideForm();
         } catch(err) {
@@ -80,9 +95,15 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                     />
                 </Form.Group>
                 <Form.Group inline>
-                    <SemanticDatepicker />
-                    <SemanticDatepicker />
-                    <Form.Checkbox label='Repeats?' checked={formState.repeats} onChange={(e, data) => handleCheck(e, data)}/>
+                    <SemanticDatepicker label='Start Date' value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
+                    <Form.Checkbox label='Ends?' checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
+                    {formState.ends ?
+                    <SemanticDatepicker label='End Date'/> 
+                    :
+                    <SemanticDatepicker disabled label='End Date' value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} />
+                    }
+                    
+                    <Form.Checkbox label='Repeats (every x days)?' checked={formState.repeats} onChange={(e, data) => handleCheck(e, data, 'repeats')}/>
                     {formState.repeats ? 
                     <NumberInput
                         control={Input}

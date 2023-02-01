@@ -2,7 +2,6 @@ import User from '../models/user.js';
 import Habit from '../models/habit.js';
 import Skill from '../models/skill.js';
 import Subskill from '../models/subskill.js';
-import skill from '../models/skill.js';
 
 export default {
     create,
@@ -69,8 +68,10 @@ async function createSkillHabit(req, res) {
             description: req.body.description,
             repeatDays: req.body.repeats ? req.body.repeatDays : 0,
             difficulty: req.body.difficulty,
-            startDate: req.body.date,
-        })
+            startDate: req.body.startDate,
+            endDate: req.body.ends ? req.body.endDate : null,
+        });
+
         const skillPromise = Skill.findById(req.params.skillId);
 
         const [skill, habit] = await Promise.all([skillPromise, habitPromise]);
@@ -81,6 +82,7 @@ async function createSkillHabit(req, res) {
 
         res.status(201).json({habit});
     } catch(err) {
+        console.log(err);
         res.status(400).json({err});
     }
 }
@@ -92,7 +94,8 @@ async function createSubskillHabit(req, res) {
             description: req.body.description,
             repeatDays: req.body.repeats ? req.body.repeatDays : 0,
             difficulty: req.body.difficulty,
-            startDate: new Date(),
+            startDate: req.body.startDate,
+            endDate: req.body.ends ? req.body.endDate : null,
         })
         const subskillPromise = Subskill.findById(req.params.subskillId);
 

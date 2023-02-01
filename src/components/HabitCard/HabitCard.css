@@ -7,3 +7,8 @@
 .HabitCard.ActionIcon {
     margin-left: auto;
 }
+
+.HabitCard.Details {
+    display: flex;
+    justify-content: space-between;
+}

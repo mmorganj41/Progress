@@ -11,14 +11,14 @@ import { Header } from 'semantic-ui-react';
 export default function FeedPage() {
     const [skills, updateSkills] = useImmer(null);
     const loggedUser = useContext(UserContext);
-    const [date, setDate] = useState(null);
+    const [date, setDate] = useState(new Date());
 
-    function dateToday() {
-        const date = new Date();
-        return date.toISOString().split('T')[0];
+    const selectedDate = date || new Date();
+
+    function changeDate(e, data) {
+        setDate(data.value);
+        console.log(data.value);
     }
-
-    const selectedDate = date || dateToday();
 
     async function getSkills() {
         try {
@@ -132,8 +132,8 @@ export default function FeedPage() {
 
     return (
         <div className="container">
-            <FeedSidebar date={date} setDate={setDate}/>
-            <Header>{selectedDate}</Header>
+            <FeedSidebar date={date} changeDate={changeDate}/>
+            <Header>{selectedDate.toISOString().split('T')[0]}</Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
                     skills={skills} 

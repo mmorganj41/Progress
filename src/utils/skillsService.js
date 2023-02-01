@@ -59,12 +59,20 @@ async function createHabit(data, skillId, skillLevel) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
+    
+
+    const newData = {
+        ...data,
+        startDate: data.startDate.toISOString().split('T')[0],
+        endDate: data.dateEnd ? data.endStart.toISOString().split('T')[0] : null,
+    };
+    console.log(newData);
     const url = `${BASE_URL}${(skillLevel <= 1) ? '' : 'subskill/'}${skillId}/habit`; 
 
     try {
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(newData),
             headers: header
         })
         if (response.ok) return await response.json();
@@ -85,7 +93,6 @@ async function getUserSkills(userId) {
         });
         if (response.ok) return await response.json();
 
-        
     } catch(err) {
         console.log(err);
         throw new Error('Could not render user skills');
@@ -97,18 +104,22 @@ async function completeHabit(data, habitId) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
+    const newData = {
+        ...data,
+        date: data.date.toISOString().split('T')[0],
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/habit/${habitId}`, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(newData),
             headers: header
         })
         if (response.ok) return await response.json();
         
-        throw new Error();
+        throw new Error('Could not complete habit.');
     } catch(err) {
         console.log(err);
-        throw new Error('Could not create habit.');
     }
 }
 
@@ -117,18 +128,22 @@ async function uncompleteHabit(data, habitId) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
+    const newData = {
+        ...data,
+        date: data.date.toISOString().split('T')[0],
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/habit/${habitId}/datesComplete`, {
             method: 'DELETE',
-            body: JSON.stringify(data),
+            body: JSON.stringify(newData),
             headers: header
         })
         if (response.ok) return await response.json();
         
-        throw new Error();
+        throw new Error('Could not uncomplete habit');
     } catch(err) {
         console.log(err);
-        throw new Error('Could not create habit.');
     }
 }
 

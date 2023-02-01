@@ -1,10 +1,10 @@
 import './FeedSidebar.css'
-import { Calendar } from 'react-calendar-mg';
+import SemanticDatepicker from 'react-semantic-ui-datepickers'
 
-export default function FeedSidebar({date, setDate}) {
+export default function FeedSidebar({date, changeDate}) {
     return (
         <div>
-            <Calendar value={date} onChangeDate={setDate} />
+            <SemanticDatepicker clearable={false} value={date} onChange={(e, data) => changeDate(e, data)} />
         </div>
     )
 }
