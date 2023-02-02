@@ -10,6 +10,7 @@ export default {
     deleteSkill,
     deleteSubkill,
     deleteHabit,
+    editSkill,
 }
 
 const BASE_URL = '/api/skills/'
@@ -202,4 +203,24 @@ async function deleteHabit(habitId) {
         console.log(err);
         throw new Error('Could not delete habit.');
     } 
+}
+
+async function editSkill(skillId, data) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}${skillId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not edit skill.');
+    }
 }

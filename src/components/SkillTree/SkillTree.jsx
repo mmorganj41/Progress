@@ -5,12 +5,13 @@ import HabitCard from "../HabitCard/HabitCard";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
 import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
-import skillsService from '../../utils/skillsService';
+import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 
-export default function SkillTree({skill, state, deleteSkill, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
+export default function SkillTree({skill, state, deleteSkill, editSkill, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     
     const date = useContext(DateContext);
     const skillLevel = useContext(SkillLevelContext);
@@ -82,6 +83,11 @@ export default function SkillTree({skill, state, deleteSkill, deleteHabit, creat
         setShowForm(!showForm);
     }
 
+    function handleShowEdit(e) {
+        if (e) e.stopPropagation();
+        setShowEdit(!showEdit);
+    }
+
     function alwaysShowTree() {
         setShowTree(true)
     }
@@ -97,7 +103,9 @@ export default function SkillTree({skill, state, deleteSkill, deleteHabit, creat
 
     async function handleDelete(e) {
         e.stopPropagation();
-        await deleteSkill(skill, skillLevel, index, subskillIndex)
+        if (window.confirm('Are you sure you wish to delete this item?')) {
+            await deleteSkill(skill, skillLevel, index, subskillIndex);
+        }
     }
 
     const title = () => {
@@ -123,17 +131,23 @@ export default function SkillTree({skill, state, deleteSkill, deleteHabit, creat
                 {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
             </>)
         } else if (state === 'edit') {
-            if (showForm) {
-                return(
-                <div className='SkillTree header'>
-                    {title()}
-                    <Icon name="dot circle outline" onClick={handleShowForm}/>
-                </div>) 
+            if (showEdit) {
+                if (skillLevel < 1) {
+                    return(
+                        <EditSkillForm handleShowEdit={handleShowEdit} editSkill={editSkill} skill={skill} index={index} subskillIndex={subskillIndex}/>
+                    )
+                } else {
+                    return(
+                        <div className='SkillTree header'>
+                            {title()}
+                            <Icon name="dot circle outline" onClick={handleShowEdit}/>
+                        </div>) 
+                }
             } else {
                 return(
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name="dot circle" onClick={handleShowForm}/>
+                    <Icon name="dot circle" onClick={handleShowEdit}/>
                 </div>) 
             }
         } else if (state === 'delete') {
@@ -144,13 +158,12 @@ export default function SkillTree({skill, state, deleteSkill, deleteHabit, creat
                 </div>) 
         }
     }
-
     return(
-    <SkillLevelContext.Provider value={skillLevel + 1}>
-        <Segment className='SkillTree main'>
-            <Segment inverted color={skill?.color} onClick={handleShowTree}>
-                {actionPanel()}
-            </Segment>
+        <SkillLevelContext.Provider value={skillLevel + 1}>
+            <Segment className='SkillTree main'>
+                <Segment inverted color={skill?.color} onClick={handleShowTree}>
+                    {actionPanel()}
+                </Segment>
             {showTree && habitList}
             {showTree && subskillList}
             </Segment>

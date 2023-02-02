@@ -126,6 +126,26 @@ export default function FeedPage() {
         }
     }
 
+    async function editSkill(data, skill, skillLevel, skillIndex, subskillIndex) {
+        try {
+            if (skillLevel <= 1) {
+                await skillsService.editSkill(skill._id, data);
+                updateSkills(draft => {
+                    for (let key in data) {
+                        draft[skillIndex][key] = data[key];
+                    }
+                });
+            } else {
+                // await skillsService.deleteSubkill(skill._id);
+                // updateSkills(draft => {
+                //     draft[skillIndex].subskills.splice(subskillIndex, 1);
+                // });
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         getSkills();
     }, [])
@@ -145,6 +165,7 @@ export default function FeedPage() {
                     uncompleteHabit={uncompleteHabit}
                     deleteSkill={deleteSkill}
                     deleteHabit={deleteHabit}
+                    editSkill={editSkill}
                 />
             </DateContext.Provider>
         </div>

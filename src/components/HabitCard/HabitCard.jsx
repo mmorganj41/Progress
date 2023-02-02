@@ -25,8 +25,9 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
     async function handleDelete(e) {
         e.stopPropagation();
         e.preventDefault();
-        console.log(habit);
-        await deleteHabit(habit, skillLevel, index, subskillIndex, habitIndex);
+        if (window.confirm('Are you sure you wish to delete this item?')) {
+            await deleteHabit(habit, skillLevel, index, subskillIndex, habitIndex);
+        }
     }
 
     function handleShowForm(e) {
@@ -66,7 +67,7 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
        if (showDetails) return(
         <>
             <Card.Content extra>
-                <Header as='h4' style={{textTransform: 'capitalize'}}>{habit?.difficulty}</Header>
+                <Header textAlign='right' as='h4' style={{textTransform: 'capitalize'}}>{habit?.difficulty}</Header>
                 {habit?.description}
             </Card.Content>
             <Card.Content extra>

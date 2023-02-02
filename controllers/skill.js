@@ -13,7 +13,8 @@ export default {
     uncompleteHabit,
     deleteSkill,
     deleteSubskill,
-    deleteHabit
+    deleteHabit,
+    editSkill,
 };
 
 async function create(req, res){
@@ -216,6 +217,19 @@ async function deleteHabit(req, res) {
         await Promise.all([skillP, subskillP]);
 
         res.status(201).json({habit});
+    } catch(err) {
+        console.log(err);
+        res.status(400).json({err});
+    }
+}
+
+async function editSkill(req, res) {
+    try {
+        const skill = await Skill.findByIdAndUpdate(req.params.id, 
+            {name: req.body.name,
+            color: req.body.color})
+
+        res.status(201).json({skill});
     } catch(err) {
         console.log(err);
         res.status(400).json({err});
