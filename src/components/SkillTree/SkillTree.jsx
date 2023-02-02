@@ -43,6 +43,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
+        if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) return null;
         if (habit.repeatDays) {
            if ((dateParsed - parseDays(Date.parse(habit.startDate))) % habit.repeatDays) {
             return null;
@@ -128,7 +129,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
             return (<>
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name={showForm ? "minus circle" : "plus circle"} onClick={handleShowForm}/>
+                    <Icon name={showForm ? "minus circle" : "plus circle"} onClick={handleShowForm} size="large"/>
                 </div>
                 {showForm && skillLevel < 1 ? <CreateSubskillForm showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
                 {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
@@ -142,14 +143,14 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                 return(
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name="dot circle" onClick={handleShowEdit}/>
+                    <Icon name="dot circle" onClick={handleShowEdit} size="large"/>
                 </div>) 
             }
         } else if (state === 'delete') {
             return(
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name="remove circle" onClick={handleDelete}/>
+                    <Icon name="remove circle" onClick={handleDelete} size="large"/>
                 </div>) 
         }
     }

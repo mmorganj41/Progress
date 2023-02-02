@@ -5,7 +5,8 @@ import HabitList from '../../components/HabitList/HabitList';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { DateContext } from '../../context/DateContext/DateContext';
 import skillsService from '../../utils/skillsService';
-import { Header } from 'semantic-ui-react';
+import { Header, Grid } from 'semantic-ui-react';
+import './FeedPage.css';
 
 
 export default function FeedPage() {
@@ -20,6 +21,10 @@ export default function FeedPage() {
     function changeDate(e, data) {
         setDate(data.value);
         console.log(data.value);
+    }
+
+    function setSkills(array) {
+        updateSkills(array);
     }
 
     async function getSkills() {
@@ -204,6 +209,7 @@ export default function FeedPage() {
                     deleteHabit={deleteHabit}
                     editSkill={editSkill}
                     editHabit={editHabit}
+                    setSkills={setSkills}
                 />
             </DateContext.Provider>
         </div>

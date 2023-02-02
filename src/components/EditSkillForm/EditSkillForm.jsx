@@ -51,7 +51,7 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                     </Form.Group>
                     {error ? <ErrorMessage error={error} /> : null }
         </Form>
-        <Icon name="dot circle outline" onClick={handleShowEdit}/>
+        <Icon name="dot circle outline" onClick={handleShowEdit}  size="large"/>
     </div>);
 }
 
