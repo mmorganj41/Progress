@@ -16,7 +16,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     const date = useContext(DateContext);
     const skillLevel = useContext(SkillLevelContext);
 
-    const dateParsed = parseDays(date);
+    const dateParsed = parseDays(Date.parse(date.toISOString().split('T')[0]));
 
     function parseDays(date) {
         const result = Math.round(date/(1000 * 60 * 60 * 24));
@@ -44,7 +44,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
         if (habit.repeatDays) {
-           if (dateParsed - parseDays(Date.parse(habit.startDate)) - 1% habit.repeatDays) {
+           if ((dateParsed - parseDays(Date.parse(habit.startDate))) % habit.repeatDays) {
             return null;
             } else {
                 return (<HabitCard 

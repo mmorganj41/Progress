@@ -67,7 +67,7 @@ async function createHabit(data, skillId, skillLevel) {
     const newData = {
         ...data,
         startDate: data.startDate.toISOString().split('T')[0],
-        endDate: data.dateEnd ? data.endStart.toISOString().split('T')[0] : null,
+        endDate: data.ends ? data.endDate.toISOString().split('T')[0] : null,
     };
     console.log(newData);
     const url = `${BASE_URL}${(skillLevel <= 1) ? '' : 'subskill/'}${skillId}/habit`; 
@@ -252,10 +252,16 @@ async function editHabit(habitId, data) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
+    const newData = {
+        ...data,
+        startDate: data.startDate.toISOString().split('T')[0],
+        endDate: data.dateEnd ? data.endDate.toISOString().split('T')[0] : null,
+    };
+
     try {
         const response = await fetch(`${BASE_URL}subskill/${habitId}`, {
             method: 'PUT',
-            body: JSON.stringify(data),
+            body: JSON.stringify(newData),
             headers: header
         })
         if (response.ok) return await response.json();
