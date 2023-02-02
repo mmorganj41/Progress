@@ -37,10 +37,11 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
     }
 
     function handleSelectDate(e, data, name) {
+        console.log(data, name);
+        console.log(formState);
         updateFormState(draft => {
             draft[name] = data.value;
         });
-        console.log(formState.startDate?.toISOString());
     }
 
     function handleCheck(e, data, name) {
@@ -98,7 +99,7 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                     <SemanticDatepicker label='Start Date' value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
                     <Form.Checkbox label='Ends?' checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
                     {formState.ends ?
-                    <SemanticDatepicker label='End Date'/> 
+                    <SemanticDatepicker label='End Date' value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} /> 
                     :
                     <SemanticDatepicker disabled label='End Date' value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} />
                     }

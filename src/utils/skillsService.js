@@ -253,7 +253,7 @@ async function editHabit(habitId, data) {
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
     try {
-        const response = await fetch(`${BASE_URL}subskill/${subskillId}`, {
+        const response = await fetch(`${BASE_URL}subskill/${habitId}`, {
             method: 'PUT',
             body: JSON.stringify(data),
             headers: header

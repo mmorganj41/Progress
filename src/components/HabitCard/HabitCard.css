@@ -12,3 +12,16 @@
     display: flex;
     justify-content: space-between;
 }
+
+.HabitCard.Details > div.EditHabitForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.HabitCard.Details > div.EditHabitForm > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

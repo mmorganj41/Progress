@@ -1,24 +1,25 @@
 import React, {useState, useContext} from 'react';
 import { useImmer } from "use-immer";
-import { Form, Card, Input, Select, Checkbox, TextArea, Button } from 'semantic-ui-react';
+import { Icon, Card, Header, Input, Select, Checkbox, TextArea, Button } from 'semantic-ui-react';
 import SemanticDatepicker from 'react-semantic-ui-datepickers';
 import NumberInput from 'semantic-ui-react-numberinput';
 import { difficultyOptions } from '../../utils/options';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 
-export default function EditHabitForm({habit, setEditState, index, subskillIndex, habitIndex}) {
+export default function EditHabitForm({habit, setEditState, editHabit, icon, index, handleShowEdit, subskillIndex, habitIndex}) {
     const skillLevel = useContext(SkillLevelContext);
-    
+    const [error, setError] = useState(null);
+
     const [formState, updateFormState] = useImmer({
         name: habit.name,
         description: habit.description,
         repeats: !!habit.repeatDays,
         repeatDays: habit.repeatDays,
         difficulty: habit.difficulty,
-        startDate: Date.parse(habit.date),
+        startDate: new Date(habit.startDate),
         ends: !!habit.endDate,
-        endDate: habit.endDate ? Date.parse(habit.endDate) : null,
+        endDate: habit.endDate ? Date.parse(habit.endDate): null,
     });
 
     function handleChange(e) {
@@ -51,9 +52,11 @@ export default function EditHabitForm({habit, setEditState, index, subskillIndex
         try {
             e.preventDefault();
             console.log(formState);
+            handleShowEdit(e);
             await editHabit(formState, habit, index, skillLevel, subskillIndex, habitIndex);
-            setEditState(false);
+            
         } catch(err) {
+            console.log(err);
             setError(err.message);
         }
     }
@@ -62,12 +65,15 @@ export default function EditHabitForm({habit, setEditState, index, subskillIndex
         <>
             <Card.Content>
                 <Card.Header className='HabitCard Header'>
-                    <Icon name={icon} size='large' onClick={handleClick}/>
+                    <Icon name={icon} size='large'/>
                     <Input 
                         name='name'
                         value={formState.name}
                         onChange={handleChange}
                     />
+                    <div className='HabitCard ActionIcon'>
+                        <Icon name='dot circle outline' onClick={handleShowEdit}/>
+                    </div>
                 </Card.Header>
             </Card.Content>
             <Card.Content extra>
@@ -90,18 +96,54 @@ export default function EditHabitForm({habit, setEditState, index, subskillIndex
             <Card.Content extra>
                 <div className='HabitCard Details'>
                     <div>
-                        <Icon name="calendar" /><strong>Start Date: </strong>{habit?.startDate}
+                        <strong>Start Date: </strong>
+                        <SemanticDatepicker clearable={false} value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
                     </div>
-                    <div>
-                        <strong>End Date: </strong><Input value={formState.endDate}/>
+                    <div className='EditHabitForm'>
+                        <div>
+                        <Checkbox checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
+                        <strong> End Date:</strong>
+                        </div>
+                        <div>
+                        {formState.ends ?
+                        <SemanticDatepicker value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} /> 
+                        :
+                        <SemanticDatepicker disabled value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} />
+                        }
+                        </div>
                     </div>
-                    <div>
-                        <strong>Repeats: </strong><Input value={formState.repeatDays}/> 
+                    <div className='EditHabitForm'>
+                        <div>
+                        <Checkbox checked={formState.repeats} onChange={(e, data) => handleCheck(e, data, 'repeats')}/>
+                        <strong> Repeats: </strong>
+                        </div>
+                        <div>
+                        {formState.repeats ? 
+                        <NumberInput
+                            control={Input}
+                            name='repeatDays'
+                            minValue={0}
+                            value={formState.repeatDays}
+                            onChange={handleNumberChange}
+                            buttonPlacement="leftAndRight" 
+                        />
+                        :
+                        <NumberInput
+                            control={Input}
+                            name='repeatDays'
+                            minValue={0}
+                            disabled
+                            value={formState.repeatDays}
+                            onChange={handleNumberChange}
+                            buttonPlacement="leftAndRight" 
+                        />
+                        }
+                        </div>
                     </div>       
                 </div>
             </Card.Content>
             <Card.Content extra>
-                <Button>Submit</Button>
+                <Button onClick={handleSubmit}>Submit</Button>
             </Card.Content>
         </>
     )

@@ -15,6 +15,8 @@ export default function FeedPage() {
 
     const selectedDate = date || new Date();
 
+    selectedDate.setHours(0,0,0,0);
+
     function changeDate(e, data) {
         setDate(data.value);
         console.log(data.value);

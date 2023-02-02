@@ -3,7 +3,7 @@ import { Card, Icon, Grid, Header } from 'semantic-ui-react';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 import './HabitCard.css';
-import skillsService from '../../utils/skillsService';
+import EditHabitForm from '../EditHabitForm/EditHabitForm';
 
 export default function HabitCard({habit, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
     const [showEdit, setShowEdit] = useState(false);
@@ -87,7 +87,22 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
         </>
         )
     }
-            
+    
+    if (state === 'edit' && showEdit) {
+        return(
+        <Card fluid color={color}>
+            <EditHabitForm 
+                habit={habit}
+                setShowEdit={setShowEdit} 
+                index={index} 
+                subskillIndex={subskillIndex}
+                habitIndex={habitIndex}
+                editHabit={editHabit}
+                handleShowEdit={handleShowEdit}
+                icon={icon}
+            />
+        </Card>);
+    } else {
     return (
         <Card fluid color={color}>
             <Card.Content onClick={toggleShowDetails}>
@@ -98,6 +113,6 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
                 </Card.Header>
             </Card.Content>
                 {details()}
-        </Card>
-    )
+        </Card>);
+    }
 }
