@@ -79,7 +79,7 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
                         <strong>End Date: </strong> {habit?.endDate ? habit?.endDate : 'Never'}
                     </div>
                     <div>
-                        <strong>Repeats: </strong> {habit?.repeatDays ? `Every ${habit.repeatDays}` : 'Never'}
+                        <strong>Repeats: </strong> {habit?.repeatDays ? `Every ${habit.repeatDays} days` : 'Never'}
                     </div>
                             
                 </div>

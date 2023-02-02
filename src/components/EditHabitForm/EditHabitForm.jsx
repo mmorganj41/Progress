@@ -53,7 +53,7 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
             e.preventDefault();
             console.log(formState);
             handleShowEdit(e);
-            await editHabit(formState, habit, index, skillLevel, subskillIndex, habitIndex);
+            await editHabit(formState, habit, skillLevel, index, subskillIndex, habitIndex);
             
         } catch(err) {
             console.log(err);

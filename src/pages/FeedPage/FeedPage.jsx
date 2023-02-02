@@ -32,22 +32,28 @@ export default function FeedPage() {
         }
     }
 
-    async function createSkill(formState) {
-        const response = await skillsService.createSkill(formState);
+    async function createSkill(data) {
+
+        const response = await skillsService.createSkill(data);
         updateSkills(draft => {
             draft.unshift(response.skill)
         });
     }
 
-    async function createSubskill(formState, skill, index) {
-        const response = await skillsService.createSubskill(formState, skill._id);
+    async function createSubskill(data, skill, index) {
+        const response = await skillsService.createSubskill(data, skill._id);
         updateSkills(draft => {
             draft[index].subskills.unshift(response.subskill)
         });
     }
 
-    async function createHabit(formState, skill, skillIndex, skillLevel, subskillIndex) {
-        const response = await skillsService.createHabit(formState, skill._id, skillLevel)
+    async function createHabit(data, skill, skillIndex, skillLevel, subskillIndex) {
+        const newData = {
+            ...data,
+            startDate: data.startDate.toISOString().split('T')[0],
+            endDate: data.ends ? data.endDate.toISOString().split('T')[0] : null,
+        };
+        const response = await skillsService.createHabit(newData, skill._id, skillLevel)
         if (skillLevel <= 1) {
             updateSkills(draft => {
                 draft[skillIndex].habits.unshift(response.habit);
@@ -149,16 +155,27 @@ export default function FeedPage() {
     }
 
     async function editHabit(data, habit, skillLevel, skillIndex, subskillIndex, habitIndex) {
+        const newData = {
+            ...data,
+            startDate: data.startDate.toISOString().split('T')[0],
+            endDate: data.ends ? data.endDate.toISOString().split('T')[0] : null,
+        };
+        console.log(skillIndex, subskillIndex, habitIndex)
         try {
             if (skillLevel <= 1) {
-                await skillsService.editHabit(habit._id, data);
+                await skillsService.editHabit(habit._id, newData);
                 updateSkills(draft => {
-                    for (let key in data) {
-                        draft[skillIndex].habits[habitIndex][key] = data[key];
+                    for (let key in newData) {
+                        draft[skillIndex].habits[habitIndex][key] = newData[key];
                     }
                 });
             } else {
-
+                await skillsService.editHabit(habit._id, newData);
+                updateSkills(draft => {
+                    for (let key in newData) {
+                        draft[skillIndex].subskills[subskillIndex].habits[habitIndex][key] = newData[key];
+                    }
+                });
             }
 
         } catch(err) {
