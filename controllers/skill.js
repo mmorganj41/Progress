@@ -15,6 +15,8 @@ export default {
     deleteSubskill,
     deleteHabit,
     editSkill,
+    editSubskill,
+    editHabit,
 };
 
 async function create(req, res){
@@ -225,9 +227,9 @@ async function deleteHabit(req, res) {
 
 async function editSkill(req, res) {
     try {
-        const skill = await Skill.findByIdAndUpdate(req.params.id, 
+        const skill = await Skill.findByIdAndUpdate(req.params.skillId,
             {name: req.body.name,
-            color: req.body.color})
+            color: req.body.color}, {new: true});
 
         res.status(201).json({skill});
     } catch(err) {
@@ -235,3 +237,32 @@ async function editSkill(req, res) {
         res.status(400).json({err});
     }
 }
+
+async function editSubskill(req, res) {
+    try {
+        const subskill = await Subskill.findByIdAndUpdate(req.params.subskillId, 
+            {name: req.body.name}, {new: true})
+
+        res.status(201).json({subskill});
+    } catch(err) {
+        console.log(err);
+        res.status(400).json({err});
+    }
+}
+
+async function editHabit(req, res) {
+    try {
+        const habit = await Habit.findByIdAndUpdate(req.params.habitId, 
+            {name: req.body.name,
+            description: req.body.description,
+            repeatDays: req.body.repeats ? req.body.repeatDays : 0,
+            difficulty: req.body.difficulty,
+            startDate: req.body.startDate,
+            endDate: req.body.ends ? req.body.endDate : null,}, {new: true});
+            res.status(201).json({habit});
+    } catch(err) {
+        console.log(err);
+        res.status(400).json({err});
+    }
+}
+

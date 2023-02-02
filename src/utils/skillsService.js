@@ -11,6 +11,8 @@ export default {
     deleteSubkill,
     deleteHabit,
     editSkill,
+    editSubskill,
+    editHabit,
 }
 
 const BASE_URL = '/api/skills/'
@@ -222,5 +224,45 @@ async function editSkill(skillId, data) {
     } catch(err) {
         console.log(err);
         throw new Error('Could not edit skill.');
+    }
+}
+
+async function editSubskill(subskillId, data) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}subskill/${subskillId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not edit subskill.');
+    }
+}
+
+async function editHabit(habitId, data) {
+    const header = new Headers();
+    header.append('Content-Type', 'application/json');
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+        const response = await fetch(`${BASE_URL}subskill/${subskillId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: header
+        })
+        if (response.ok) return await response.json();
+        
+        throw new Error();
+    } catch(err) {
+        console.log(err);
+        throw new Error('Could not edit habit.');
     }
 }

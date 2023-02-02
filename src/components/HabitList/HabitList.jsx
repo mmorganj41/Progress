@@ -4,7 +4,7 @@ import ActionSwitcher from "../ActionSwitcher/ActionSwitcher";
 import SearchForm from "../SearchForm/SearchForm";
 import SkillTree from "../SkillTree/SkillTree";
 
-export default function HabitList({skills, createSkill, editSkill, deleteSkill, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
+export default function HabitList({skills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('add');
     
     const skillTrees = skills ? skills.map((skill, i) => {
@@ -20,6 +20,7 @@ export default function HabitList({skills, createSkill, editSkill, deleteSkill, 
             deleteSkill={deleteSkill}
             deleteHabit={deleteHabit}
             editSkill={editSkill}
+            editHabit={editHabit}
         />)
     }) : null;
 

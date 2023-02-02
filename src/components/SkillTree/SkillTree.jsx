@@ -8,7 +8,7 @@ import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 
-export default function SkillTree({skill, state, deleteSkill, editSkill, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
+export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -37,6 +37,8 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, deleteH
             uncompleteHabit={uncompleteHabit}
             deleteSkill={deleteSkill}
             deleteHabit={deleteHabit}
+            editSkill={editSkill}
+            editHabit={editHabit}
         />);
     }) : null; 
 
@@ -56,6 +58,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, deleteH
                     subskillIndex={subskillIndex} 
                     habitIndex={i}
                     deleteHabit={deleteHabit}
+                    editHabit={editHabit}
                 />);
             } 
         } else if (date.toISOString().split('T')[0] === habit.startDate) {
@@ -132,17 +135,9 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, deleteH
             </>)
         } else if (state === 'edit') {
             if (showEdit) {
-                if (skillLevel < 1) {
-                    return(
-                        <EditSkillForm handleShowEdit={handleShowEdit} editSkill={editSkill} skill={skill} index={index} subskillIndex={subskillIndex}/>
-                    )
-                } else {
-                    return(
-                        <div className='SkillTree header'>
-                            {title()}
-                            <Icon name="dot circle outline" onClick={handleShowEdit}/>
-                        </div>) 
-                }
+                return(
+                    <EditSkillForm handleShowEdit={handleShowEdit} editSkill={editSkill} skill={skill} index={index} subskillIndex={subskillIndex}/>
+                )
             } else {
                 return(
                 <div className='SkillTree header'>

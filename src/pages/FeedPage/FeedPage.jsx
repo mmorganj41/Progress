@@ -136,11 +136,29 @@ export default function FeedPage() {
                     }
                 });
             } else {
-                // await skillsService.deleteSubkill(skill._id);
-                // updateSkills(draft => {
-                //     draft[skillIndex].subskills.splice(subskillIndex, 1);
-                // });
+                await skillsService.editSubskill(skill._id, data);
+                updateSkills(draft => {
+                    draft[skillIndex].subskills[subskillIndex].name = data.name;
+                });
             }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    async function editHabit(data, habit, skillLevel, skillIndex, subskillIndex, habitIndex) {
+        try {
+            if (skillLevel <= 1) {
+                await skillsService.editHabit(habit._id, data);
+                updateSkills(draft => {
+                    for (let key in data) {
+                        draft[skillIndex].habits[habitIndex][key] = data[key];
+                    }
+                });
+            } else {
+
+            }
+
         } catch(err) {
             console.log(err);
         }
@@ -166,6 +184,7 @@ export default function FeedPage() {
                     deleteSkill={deleteSkill}
                     deleteHabit={deleteHabit}
                     editSkill={editSkill}
+                    editHabit={editHabit}
                 />
             </DateContext.Provider>
         </div>

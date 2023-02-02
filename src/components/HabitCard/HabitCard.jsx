@@ -5,8 +5,8 @@ import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelCon
 import './HabitCard.css';
 import skillsService from '../../utils/skillsService';
 
-export default function HabitCard({habit, color, state, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
-    const [showForm, setShowForm] = useState(false);
+export default function HabitCard({habit, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
+    const [showEdit, setShowEdit] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const date = useContext(DateContext);
     const complete = !!habit.completionDates[date];
@@ -30,9 +30,9 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
         }
     }
 
-    function handleShowForm(e) {
+    function handleShowEdit(e) {
         e.stopPropagation();
-        setShowForm(!showForm);
+        setShowEdit(!showEdit);
     }
 
     function toggleShowDetails(e) {
@@ -47,16 +47,16 @@ export default function HabitCard({habit, color, state, deleteHabit, completeHab
                     <Icon name='remove circle' onClick={handleDelete}/>
                 </div>)
         } else if (state === 'edit') {
-            if (showForm) {
+            if (showEdit) {
                 return(
                     <div className='HabitCard ActionIcon'>
-                        <Icon name='dot circle outline' onClick={handleShowForm}/>
+                        <Icon name='dot circle outline' onClick={handleShowEdit}/>
                     </div>
                 )    
             } else {
                 return(
                     <div className='HabitCard ActionIcon'>
-                        <Icon name='dot circle' onClick={handleShowForm}/>
+                        <Icon name='dot circle' onClick={handleShowEdit}/>
                     </div>
                 )
             }

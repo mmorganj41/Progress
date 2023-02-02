@@ -16,15 +16,16 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
         })
     }
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
-        editSkill(formState, skill, skillLevel, index, subskillIndex);
+        await editSkill(formState, skill, skillLevel, index, subskillIndex);
         handleShowEdit(false);
     }
 
     return(
         <div className='SkillTree header'>
-        <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar />
+        {skillLevel <= 1 ?
+        <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar /> : null}
         <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
                     <Form.Group widths='equal'>
                         <Form.Input 
@@ -33,16 +34,19 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                             value={formState.name}
                             onChange={handleChange}
                         />
-                         Color:
-                        <Form.Field 
-                            name='color'
-                            control={Select}
-                            value={formState.color} 
-                            options={colorOptions}
-                            onChange={(e, data) => updateFormState( draft => {
-                                draft.color = data.value;
-                            })}
-                        />
+                        {skillLevel <= 1 ?
+                        (<>
+                            Color:
+                            <Form.Field 
+                                name='color'
+                                control={Select}
+                                value={formState.color} 
+                                options={colorOptions}
+                                onChange={(e, data) => updateFormState( draft => {
+                                    draft.color = data.value;
+                                })}
+                            />
+                        </>) : null }
                         <Button type='submit'>Submit</Button>
                     </Form.Group>
                     {error ? <ErrorMessage error={error} /> : null }
