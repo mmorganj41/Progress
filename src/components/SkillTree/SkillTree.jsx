@@ -27,8 +27,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
         return (<div key={subskill._id}>
-            <SkillTree
-                
+            <SkillTree     
                 state={state} 
                 index={index} 
                 subskillIndex={i}
@@ -159,7 +158,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     return(
         <SkillLevelContext.Provider value={skillLevel + 1}>
             <Segment className='SkillTree main'>
-                <Segment inverted color={skill?.color} onClick={handleShowTree}>
+                <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                     {actionPanel()}
                 </Segment>
             {showTree && habitList}

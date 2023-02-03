@@ -6,6 +6,10 @@
     text-align: left;
 }
 
+.SkillTree.main .subskill {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.3);
+}
+
 .SkillTree.header {
     display: flex;
     justify-content: start;
