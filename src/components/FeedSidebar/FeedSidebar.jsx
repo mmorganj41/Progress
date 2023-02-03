@@ -1,11 +1,15 @@
 import './FeedSidebar.css'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
-import { Sidebar } from 'semantic-ui-react'
-import React, {useEffect, useState} from 'react';
+import { Sidebar, Header } from 'semantic-ui-react'
+import React, {useEffect, useRef, useState} from 'react';
+import Burger from '../Burger/Burger';
+import { useOnClickOutside } from '../../hooks/hooks';
 
-export default function FeedSidebar({date, changeDate}) {
+export default function FeedSidebar({skills, date, changeDate}) {
     const [windowSize, setWindowSize] = useState(0);
-    const [visible, setVisible] = useState(false);
+    const [open, setOpen] = useState(false);
+    const node = useRef();
+    useOnClickOutside(node, () => setOpen(false));
 
     useEffect(() => {
         updateWindowSize();
@@ -13,17 +17,30 @@ export default function FeedSidebar({date, changeDate}) {
         return () => {window.removeEventListener("resize", updateWindowSize)};
     }, []);
 
+    const WINDOW_TRANSITION = 1825;
+
+    const largeEnough = windowSize >= WINDOW_TRANSITION;
+
     const updateWindowSize = () => {
+        console.log(window.innerWidth);
         setWindowSize(window.innerWidth);
     }
 
-    return (
-        <div className='FeedSideBar'>
+    function handleOpen() {
+        console.log('why')
+        setOpen(!open);
+    }
 
+
+    return (
+        <div ref={node} className='FeedSideBar'>
+            <Burger open={open} handleOpen={handleOpen} displayCondition={!largeEnough} />
             <Sidebar 
-                visible={windowSize >= 1650 || visible}
+                visible={open || largeEnough}
                 animation="overlay"
+                width="wide"
             >
+                <Header>Selected Day:</Header>
                 <SemanticDatepicker clearable={false} value={date} onChange={(e, data) => changeDate(e, data)} />
             </Sidebar>
 

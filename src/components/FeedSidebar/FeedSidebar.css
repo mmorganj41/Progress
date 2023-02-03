@@ -1,4 +1,57 @@
-.FeedSideBar > div{
+.FeedSideBar > div.sidebar{
     background-color: grey;
     padding-top: 75px;
+}
+
+.FeedSideBar .Burger {
+    display: block;
+    position: fixed;
+    top: 0%;
+    left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 150;
+    margin-top: 75px;
+    height: 26px;
+    width: 32px;
+}
+        
+.FeedSideBar .Burger .line {
+  display: block;
+  height: 4px;
+  width: 100%;
+  border-radius: 10px;
+  background: #0e2431;
+}
+
+.FeedSideBar .Burger .line1 {
+  transform-origin: 0% 0%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.FeedSideBar .Burger .line2 {
+  transition: transform 0.2s ease-in-out;
+}
+
+.FeedSideBar .Burger .line3 {
+  transform-origin: 0% 100%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.FeedSideBar input[type="checkbox"]:checked ~ .menu-items {
+    transform: translateX(0);
+}
+
+.FeedSideBar input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
+transform: rotate(45deg);
+}
+
+.FeedSideBar input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
+transform: scaleY(0);
+}
+
+.FeedSideBar input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
+transform: rotate(-45deg);
 }
