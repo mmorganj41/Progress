@@ -99,15 +99,11 @@ async function completeHabit(data, habitId) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
-    const newData = {
-        ...data,
-        date: data.date.toISOString().split('T')[0],
-    }
 
     try {
         const response = await fetch(`${BASE_URL}/habit/${habitId}`, {
             method: 'POST',
-            body: JSON.stringify(newData),
+            body: JSON.stringify(data),
             headers: header
         })
         if (response.ok) return await response.json();
@@ -123,15 +119,11 @@ async function uncompleteHabit(data, habitId) {
     header.append('Content-Type', 'application/json');
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
-    const newData = {
-        ...data,
-        date: data.date.toISOString().split('T')[0],
-    }
 
     try {
         const response = await fetch(`${BASE_URL}/habit/${habitId}/datesComplete`, {
             method: 'DELETE',
-            body: JSON.stringify(newData),
+            body: JSON.stringify(data),
             headers: header
         })
         if (response.ok) return await response.json();

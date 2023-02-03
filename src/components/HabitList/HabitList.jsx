@@ -56,7 +56,8 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
                         editHabit={editHabit}
                         dragEnter={dragEnter}
                         dragging={dragging.dragged === i}
-                        draggedOver={dragging.dragOver === i}    
+                        draggedOver={dragging.dragOver === i}  
+                        parentVisible={false}  
                     />
             </div>)
     }) : null;
@@ -65,15 +66,15 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
         <Container>
             <SearchForm createSkill={createSkill} search={search} setSearch={setSearch}/>
             <ActionSwitcher state={state} setState={setState}/>
-                <SearchContext.Provider value={new RegExp(search, 'i')}>
-                <Masonry 
-                    breakpointCols={{default: 2, 1500: 1}}
-                    className="my-masonry-grid"
-                    columnClassName="my-masonry-grid_column"
-                >
-                    {skillTrees}
-                </Masonry>
-                </SearchContext.Provider>
+            <SearchContext.Provider value={search ? new RegExp(search, 'i') : ''}>
+            <Masonry 
+                breakpointCols={{default: 2, 1500: 1}}
+                className="my-masonry-grid"
+                columnClassName="my-masonry-grid_column"
+            >
+                {skillTrees}
+            </Masonry>
+            </SearchContext.Provider>
         </Container>
     );
 }

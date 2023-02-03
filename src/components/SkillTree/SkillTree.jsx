@@ -9,7 +9,7 @@ import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SearchContext } from '../../context/SearchContext/SearchContext';
 
-export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit, dragging, draggedOver, key}) {
+export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, parentVisible, completeHabit, uncompleteHabit, dragging, draggedOver, key, childrenRef}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -18,7 +18,10 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     const date = useContext(DateContext);
     const skillLevel = useContext(SkillLevelContext);
 
+    const hasVisibleChildren = useRef(null);
+
     const dateParsed = parseDays(Date.parse(date.toISOString().split('T')[0]));
+    const nameMatch = (search ? !!skill.name.match(search)?.[0] : true);
 
     let foundChild = false;
 
@@ -28,8 +31,9 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     }
 
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
-        if (!subskill.name.match(search) && !skill.name.match(search)) return null;
-        foundChild = true;
+        if (nameMatch || subskill.name.match(search)) {
+            foundChild = true;
+        } 
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
         return (<div key={subskill._id}>
@@ -45,12 +49,14 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                 deleteHabit={deleteHabit}
                 editSkill={editSkill}
                 editHabit={editHabit}
+                parentVisible={nameMatch}
+                childrenRef={hasVisibleChildren}
         /></div>);
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
         let applicable = false;
-        if (!habit.name.match(search) && !skill.name.match(search)) {
+         if (!habit.name.match(search) && !nameMatch) {
         } else if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
         } else if (habit.repeatDays) {
             if ((dateParsed - parseDays(Date.parse(habit.startDate))) % habit.repeatDays) {
@@ -61,10 +67,12 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
             applicable = true;
         }
 
+        if (applicable) foundChild = true;
 
+        if (!showTree) applicable = false;
         return (
-            <Transition visible={applicable} duration={250} animation='fade down' transitionOnMount>
-                <HabitCard
+            <Transition key={habit._id} visible={applicable} duration={250} animation='fade down' transitionOnMount>
+                <HabitCard 
                     key={habit._id} 
                     habit={habit} 
                     color={skill.color} 
@@ -155,16 +163,21 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
         }
     }
     
+
+    let visible = foundChild || nameMatch || parentVisible || !!hasVisibleChildren?.current;
+    if (skillLevel >= 1) {
+        childrenRef.current = foundChild
+    }
     return(
         
         <SkillLevelContext.Provider value={skillLevel + 1}>
-            <Transition duration={250} animation='fade down' transitionOnMount visible={foundChild || skill.name.match(search)}>
+            <Transition unmountOnHide key={key} duration={250} animation='fade down' transitionOnMount visible={visible}>
                 <Segment basic inverted={draggedOver} disabled={dragging} className='SkillTree main'>
                     <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                         {actionPanel()}
                     </Segment>
-                    {showTree && habitList}
-                    {showTree && subskillList}
+                    {habitList}
+                    {subskillList}
                 </Segment>
             </Transition>
         </SkillLevelContext.Provider>

@@ -2,6 +2,7 @@ import User from '../models/user.js';
 import Habit from '../models/habit.js';
 import Skill from '../models/skill.js';
 import Subskill from '../models/subskill.js';
+import { experienceDictionary } from '../src/utils/leveling.js';
 
 import S3 from 'aws-sdk/clients/s3.js';
 // initialize the S3 constructor function to give us the object that can perform crud operations to aws
@@ -140,12 +141,28 @@ async function createSubskill(req, res) {
 
 async function completeHabit(req, res) {
     try {
-        const habit = await Habit.findById(req.params.habitId);
+        const habitP = Habit.findById(req.params.habitId);
+        const skillP = Skill.findOne({'habits': req.params.habitId});
+        const subskillP = Subskill.findOne({'habits': req.params.habitId});
+
+        const [skill, subskill, habit] = await Promise.all([skillP, subskillP, habitP]);
 
         habit.completionDates.set(req.body.date, true);
 
-        await habit.save();
+        console.log(habit);
 
+        if (subskill) {
+            const [skillNested] = await Promise.all([
+                Skill.findOne({'subskills': subskill._id}),
+                subskill.updateOne({$inc: {experience: experienceDictionary[habit?.difficulty]}}), 
+            ])
+
+            await skillNested.updateOne({$inc: {experience: experienceDictionary[habit?.difficulty]}});
+        } else if (skill) {
+            await skill.updateOne({$inc: {experience: experienceDictionary[habit?.difficulty]}})
+        }      
+
+        await habit.save();
         res.status(201).json({habit});
     } catch(err) {
         console.log(err);
@@ -155,9 +172,24 @@ async function completeHabit(req, res) {
 
 async function uncompleteHabit(req, res) {
     try {
-        const habit = await Habit.findById(req.params.habitId);
+        const habitP = Habit.findById(req.params.habitId);
+        const skillP = Skill.findOne({'habits': req.params.habitId});
+        const subskillP = Subskill.findOne({'habits': req.params.habitId});
+
+        const [skill, subskill, habit] = await Promise.all([skillP, subskillP, habitP]);
 
         habit.completionDates.delete(req.body.date);
+
+        if (subskill) {
+            const [skillNested] = await Promise.all([
+                Skill.findOne({'subskills': subskill._id}),
+                subskill.updateOne({$inc: {experience: -experienceDictionary[habit?.difficulty]}}), 
+            ])
+
+            await skillNested.updateOne({$inc: {experience: -experienceDictionary[habit?.difficulty]}});
+        } else if (skill) {
+            await skill.updateOne({$inc: {experience: -experienceDictionary[habit?.difficulty]}})
+        }      
 
         await habit.save();
 

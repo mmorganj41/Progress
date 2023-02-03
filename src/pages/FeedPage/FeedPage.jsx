@@ -8,6 +8,9 @@ import skillsService from '../../utils/skillsService';
 import { Header, Grid } from 'semantic-ui-react';
 import userService from '../../utils/userService';
 import './FeedPage.css';
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { experienceDictionary, levelByExperience} from '../../utils/leveling';
 
 
 export default function FeedPage() {
@@ -38,6 +41,16 @@ export default function FeedPage() {
             updateSkills(response.skills)
         } catch(err) {
             console.log(err);
+        }
+    }
+
+    function createNotification(type, message) {
+        switch (type) {
+            case 'complete':
+                NotificationManager.info(`You gained ${message?.experience} experience.`, `${message?.habit} complete`, 2000);
+                break;
+            case 'level up':
+                NotificationManager.success('You reached level in.', 'Level Up', 3000, null, true)
         }
     }
 
@@ -86,6 +99,7 @@ export default function FeedPage() {
                     draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = true;
                 });
             }
+            createNotification('complete', {habit: habit.name, experience: experienceDictionary[habit.difficulty]});
         } catch(err) {
             console.log(err);
         }
@@ -227,6 +241,7 @@ export default function FeedPage() {
                 />
             </DateContext.Provider>
         </div>
+        <NotificationContainer></NotificationContainer>
         </>
     )
 }

@@ -8,7 +8,7 @@ import EditHabitForm from '../EditHabitForm/EditHabitForm';
 export default function HabitCard({habit, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
     const [showEdit, setShowEdit] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
-    const date = useContext(DateContext);
+    const date = useContext(DateContext)?.toISOString().split('T')[0];
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
     const skillLevel = useContext(SkillLevelContext);
