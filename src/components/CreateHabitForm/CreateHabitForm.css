@@ -1,0 +1,12 @@
+.CreateHabitCard.Details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.CreateHabitCard.Details > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

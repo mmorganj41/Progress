@@ -1,7 +1,7 @@
 import React, {useState, useContext} from "react";
 import { useImmer } from "use-immer";
 import { Form, Button, Input, Select, Divider } from "semantic-ui-react";
-import NumberInput from "semantic-ui-react-numberinput";
+import NumericInput from 'react-numeric-input'; 
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { difficultyOptions } from "../../utils/options";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
@@ -97,7 +97,7 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                         })}
                     />
                 </Form.Group>
-                <Form.Group inline>
+                <div className="CreateHabitCard Details">
                     <SemanticDatepicker label='Start Date' value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
                     <Form.Checkbox label='Ends?' checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
                     {formState.ends ?
@@ -108,29 +108,26 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                     
                     <Form.Checkbox label='Repeats (every x days)?' checked={formState.repeats} onChange={(e, data) => handleCheck(e, data, 'repeats')}/>
                     {formState.repeats ? 
-                    <NumberInput
-                        control={Input}
+                    <NumericInput
                         name='repeatDays'
                         placeholder='0'
-                        minValue={0}
+                        min={0}
                         value={formState.repeatDays}
                         onChange={handleNumberChange}
                         buttonPlacement="leftAndRight" 
                     />
                     :
-                    <NumberInput
-                        control={Input}
+                    <NumericInput
                         name='repeatDays'
                         placeholder='0'
-                        minValue={0}
+                        min={0}
                         disabled
                         value={formState.repeatDays}
                         onChange={handleNumberChange}
                         buttonPlacement="leftAndRight" 
                     />
                     }
-                    
-                </Form.Group>
+                    </div>
                 <Form.TextArea
                     label='Description'
                     name='description'
