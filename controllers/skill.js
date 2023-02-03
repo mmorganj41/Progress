@@ -3,6 +3,10 @@ import Habit from '../models/habit.js';
 import Skill from '../models/skill.js';
 import Subskill from '../models/subskill.js';
 
+import S3 from 'aws-sdk/clients/s3.js';
+// initialize the S3 constructor function to give us the object that can perform crud operations to aws
+const s3 = new S3();
+
 export default {
     create,
     getUserSkills,
