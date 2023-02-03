@@ -2,6 +2,7 @@
     display: flex!important;
     justify-content: start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .HabitCard.ActionIcon {
@@ -11,6 +12,7 @@
 .HabitCard.Details {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .HabitCard.Details > div.EditHabitForm {
@@ -20,8 +22,13 @@
     align-items: center;
 }
 
+.EditHabitForm.HabitCard.Details {
+    flex-direction: column;
+}
+
 .HabitCard.Details > div.EditHabitForm > div {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }

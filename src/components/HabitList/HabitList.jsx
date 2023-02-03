@@ -4,6 +4,7 @@ import ActionSwitcher from "../ActionSwitcher/ActionSwitcher";
 import SearchForm from "../SearchForm/SearchForm";
 import SkillTree from "../SkillTree/SkillTree";
 import './HabitList.css';
+import Masonry from "react-masonry-css";
 
 export default function HabitList({skills, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('add');
@@ -12,14 +13,19 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
     const dragOverItem = useRef();
     
     const dragStart = (e, position, item) => {
+        if (e.target.tagname === 'INPUT') return false;
+        console.dir(e.target);
         dragItem.current = {position, item};
     }
 
     const dragEnter = (e, position, item) => {
-        dragOverItem.current = {position, item};
+        if (dragItem.current.item === item) {
+            dragOverItem.current = {position, item};
+        }
     }
 
-    const drop = (e) => {
+    const drop = async (e) => {
+        e.stopPropagation();
         if (dragOverItem.current.item !== dragItem.current.item) return;
         const copySkillList = [...skills];
         const dragItemContent = copySkillList[dragItem.current.position];
@@ -27,7 +33,7 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
         copySkillList.splice(dragOverItem.current.position, 0, dragItemContent);
         dragItem.current = null;
         dragOverItem.current = null;
-        setSkills(copySkillList);
+        await setSkills(copySkillList);
         
     }
 
@@ -51,17 +57,22 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
                 deleteHabit={deleteHabit}
                 editSkill={editSkill}
                 editHabit={editHabit}
+                dragEnter={dragEnter}
             />
         </div>)
     }) : null;
 
     return (
-        <Container style={{maxWidth: 500}}>
-            <SearchForm createSkill={createSkill}/>
+        <Container>
+            <SearchForm createSkill={createSkill} />
             <ActionSwitcher state={state} setState={setState}/>
-            <div className='HabitList'>
-            {skillTrees}
-            </div>
+                <Masonry 
+                    breakpointCols={{default: 2, 1500: 1}}
+                    className="my-masonry-grid"
+                    columnClassName="my-masonry-grid_column"
+                >
+                {skillTrees}
+                </Masonry>
         </Container>
     );
 }

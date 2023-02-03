@@ -29,7 +29,9 @@ export default function CreateSubskillForm({skill, createSubskill, index, showTr
 
 
     return (
-        <>
+        <div draggable onDragStart={(e) => {
+            e.preventDefault(); 
+            e.stopPropagation();}}>
             <Divider inverted />
             <Form onSubmit={handleSubmit}>
                 <strong>Create Subskill:</strong>
@@ -45,6 +47,6 @@ export default function CreateSubskillForm({skill, createSubskill, index, showTr
                 </Form.Group>
                 {error ? <ErrorMessage error={error} /> : null }
             </Form>
-        </>
+        </div>
     )
 }

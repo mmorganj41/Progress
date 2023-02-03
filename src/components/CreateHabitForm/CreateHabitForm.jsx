@@ -71,7 +71,9 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
     }
 
     return (
-        <>               
+        <div draggable onDragStart={(e) => {
+            e.preventDefault(); 
+            e.stopPropagation();}}>               
             <Divider inverted />
             <Form onSubmit={handleSubmit}>
                 <strong>Create Habit:</strong>
@@ -140,6 +142,6 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                 
                 {error ? <ErrorMessage error={error} /> : null }
             </Form>
-        </>
+        </div>
     )
 }

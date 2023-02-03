@@ -6,6 +6,7 @@ import { UserContext } from '../../context/UserContext/UserContext';
 import { DateContext } from '../../context/DateContext/DateContext';
 import skillsService from '../../utils/skillsService';
 import { Header, Grid } from 'semantic-ui-react';
+import userService from '../../utils/userService';
 import './FeedPage.css';
 
 
@@ -23,7 +24,10 @@ export default function FeedPage() {
         console.log(data.value);
     }
 
-    function setSkills(array) {
+    async function setSkills(array) {
+        const data = {skills: array.map(skill => skill._id)}
+        console.log(data);
+        await userService.reorderSkills(data);
         updateSkills(array);
     }
 
@@ -193,7 +197,7 @@ export default function FeedPage() {
     }, [])
 
     return (
-        <div className="container">
+        <div className="container" style={{width:'100%'}}>
             <FeedSidebar date={date} changeDate={changeDate}/>
             <Header>{selectedDate.toISOString().split('T')[0]}</Header>
             <DateContext.Provider value={selectedDate}>

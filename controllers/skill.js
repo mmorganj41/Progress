@@ -181,7 +181,8 @@ async function deleteSkill(req, res) {
                 console.log(habitProm)
             }
         })
-        }  
+        }  User.findByIdAndUpdate(req.user._id, {$pull: {skill: skill._id}});
+        await 
 
         res.status(201).json({skill});
 

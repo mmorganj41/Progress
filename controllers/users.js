@@ -6,7 +6,8 @@ const SECRET = process.env.SECRET;
 
 export default {
   signup,
-  login
+  login,
+  reorderSkills,
 };
 
 
@@ -42,6 +43,18 @@ async function login(req, res) {
   }
 }
 
+async function reorderSkills(req, res) {
+  try {
+    const user = await User.findByIdAndUpdate(req.user._id, 
+      {skills: req.body.skills}, {new: true});
+
+      console.log(user);
+    return res.status(200).json({user})
+  } catch(err) {
+    console.log(err);
+    return res.status(401).json(err);
+  }
+}
 
 /*----- Helper Functions -----*/
 

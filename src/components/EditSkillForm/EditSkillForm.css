@@ -1,6 +1,7 @@
 .EditSkillForm.Form > div{
     margin: 0!important;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }

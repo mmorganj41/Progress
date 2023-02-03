@@ -91,20 +91,27 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
     
     if (state === 'edit' && showEdit) {
         return(
-        <Card fluid color={color}>
-            <EditHabitForm 
-                habit={habit}
-                setShowEdit={setShowEdit} 
-                index={index} 
-                subskillIndex={subskillIndex}
-                habitIndex={habitIndex}
-                editHabit={editHabit}
-                handleShowEdit={handleShowEdit}
-                icon={icon}
-            />
-        </Card>);
+        <div draggable onDragStart={(e) => {
+            e.preventDefault(); 
+            e.stopPropagation();}}>
+            <Card fluid color={color}>
+                <EditHabitForm 
+                    habit={habit}
+                    setShowEdit={setShowEdit} 
+                    index={index} 
+                    subskillIndex={subskillIndex}
+                    habitIndex={habitIndex}
+                    editHabit={editHabit}
+                    handleShowEdit={handleShowEdit}
+                    icon={icon}
+                />
+            </Card>
+        </div>);
     } else {
     return (
+        <div draggable onDragStart={(e) => {
+            e.preventDefault(); 
+            e.stopPropagation();}}>
         <Card fluid color={color}>
             <Card.Content onClick={toggleShowDetails}>
                 <Card.Header className='HabitCard Header'>
@@ -114,6 +121,7 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
                 </Card.Header>
             </Card.Content>
                 {details()}
-        </Card>);
+        </Card>
+        </div>);
     }
 }

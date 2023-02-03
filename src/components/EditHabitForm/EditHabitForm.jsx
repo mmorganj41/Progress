@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import { useImmer } from "use-immer";
 import { Icon, Card, Header, Input, Select, Checkbox, TextArea, Button } from 'semantic-ui-react';
 import SemanticDatepicker from 'react-semantic-ui-datepickers';
-import NumberInput from 'semantic-ui-react-numberinput';
+import NumericInput from 'react-numeric-input'; 
 import { difficultyOptions } from '../../utils/options';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
@@ -91,10 +91,11 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
                     name='description'
                     value={formState.description}
                     onChange={handleChange}
+                    fluid
                 />
             </Card.Content>
             <Card.Content extra>
-                <div className='HabitCard Details'>
+                <div className='EditHabitForm HabitCard Details'>
                     <div>
                         <strong>Start Date: </strong>
                         <SemanticDatepicker clearable={false} value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
@@ -119,19 +120,17 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
                         </div>
                         <div>
                         {formState.repeats ? 
-                        <NumberInput
-                            control={Input}
+                        <NumericInput
                             name='repeatDays'
-                            minValue={0}
+                            min={0}
                             value={formState.repeatDays}
                             onChange={handleNumberChange}
                             buttonPlacement="leftAndRight" 
                         />
                         :
-                        <NumberInput
-                            control={Input}
+                        <NumericInput
                             name='repeatDays'
-                            minValue={0}
+                            min={0}
                             disabled
                             value={formState.repeatDays}
                             onChange={handleNumberChange}

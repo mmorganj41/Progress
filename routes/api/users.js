@@ -5,6 +5,7 @@ import usersCtrl  from '../../controllers/users.js';
 /*---------- Public Routes ----------*/
 router.post('/signup', usersCtrl.signup);
 router.post('/login', usersCtrl.login);
+router.put('/reorder', usersCtrl.reorderSkills);
 
 
 /*---------- Protected Routes ----------*/

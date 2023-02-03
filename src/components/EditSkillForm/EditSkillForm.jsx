@@ -23,35 +23,40 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
     }
 
     return(
-        <div className='SkillTree header'>
-        {skillLevel <= 1 ?
-        <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar /> : null}
-        <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
-                    <Form.Group widths='equal'>
-                        <Form.Input 
-                            name='name'
-                            placeholder='Name'
-                            value={formState.name}
-                            onChange={handleChange}
-                        />
-                        {skillLevel <= 1 ?
-                        (<>
-                            Color:
-                            <Form.Field 
-                                name='color'
-                                control={Select}
-                                value={formState.color} 
-                                options={colorOptions}
-                                onChange={(e, data) => updateFormState( draft => {
-                                    draft.color = data.value;
-                                })}
+        <div className='SkillTree header'
+            draggable 
+            onDragStart={(e) => {
+                e.preventDefault(); 
+                e.stopPropagation();}}
+        >
+            {skillLevel <= 1 ?
+            <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar /> : null}
+            <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
+                        <Form.Group widths='equal'>
+                            <Form.Input 
+                                name='name'
+                                placeholder='Name'
+                                value={formState.name}
+                                onChange={handleChange}
                             />
-                        </>) : null }
-                        <Button type='submit'>Submit</Button>
-                    </Form.Group>
-                    {error ? <ErrorMessage error={error} /> : null }
-        </Form>
-        <Icon name="dot circle outline" onClick={handleShowEdit}  size="large"/>
-    </div>);
+                            {skillLevel <= 1 ?
+                            (<>
+                                Color:
+                                <Form.Field 
+                                    name='color'
+                                    control={Select}
+                                    value={formState.color} 
+                                    options={colorOptions}
+                                    onChange={(e, data) => updateFormState( draft => {
+                                        draft.color = data.value;
+                                    })}
+                                />
+                            </>) : null }
+                            <Button type='submit'>Submit</Button>
+                        </Form.Group>
+                        {error ? <ErrorMessage error={error} /> : null }
+            </Form>
+            <Icon name="dot circle outline" onClick={handleShowEdit}  size="large"/>
+        </div>);
 }
 

@@ -1,5 +1,5 @@
 import './SkillTree.css';
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useRef} from "react";
 import { Segment, Divider, Header, Image, Icon } from "semantic-ui-react";
 import HabitCard from "../HabitCard/HabitCard";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
@@ -26,20 +26,21 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
-        return (<SkillTree 
-            key={subskill._id} 
-            state={state} 
-            index={index} 
-            subskillIndex={i}
-            skill={subskillCopy} 
-            createHabit={createHabit} 
-            completeHabit={completeHabit} 
-            uncompleteHabit={uncompleteHabit}
-            deleteSkill={deleteSkill}
-            deleteHabit={deleteHabit}
-            editSkill={editSkill}
-            editHabit={editHabit}
-        />);
+        return (<div>
+            <SkillTree 
+                
+                state={state} 
+                index={index} 
+                subskillIndex={i}
+                skill={subskillCopy} 
+                createHabit={createHabit} 
+                completeHabit={completeHabit} 
+                uncompleteHabit={uncompleteHabit}
+                deleteSkill={deleteSkill}
+                deleteHabit={deleteHabit}
+                editSkill={editSkill}
+                editHabit={editHabit}
+        /></div>);
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
@@ -74,6 +75,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                 subskillIndex={subskillIndex} 
                 habitIndex={i}
                 deleteHabit={deleteHabit}
+                editHabit={editHabit}
             />);
         }
 
