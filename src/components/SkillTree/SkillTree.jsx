@@ -1,22 +1,26 @@
 import './SkillTree.css';
 import React, {useContext, useState, useRef} from "react";
-import { Segment, Divider, Header, Image, Icon } from "semantic-ui-react";
+import { Segment, Divider, Header, Image, Icon, Search, Transition } from "semantic-ui-react";
 import HabitCard from "../HabitCard/HabitCard";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
 import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
+import { SearchContext } from '../../context/SearchContext/SearchContext';
 
-export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit, dragging, draggedOver}) {
+export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit, dragging, draggedOver, key}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     
+    const search = useContext(SearchContext);
     const date = useContext(DateContext);
     const skillLevel = useContext(SkillLevelContext);
 
     const dateParsed = parseDays(Date.parse(date.toISOString().split('T')[0]));
+
+    let foundChild = false;
 
     function parseDays(date) {
         const result = Math.round(date/(1000 * 60 * 60 * 24));
@@ -24,6 +28,8 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     }
 
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
+        if (!subskill.name.match(search) && !skill.name.match(search)) return null;
+        foundChild = true;
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
         return (<div key={subskill._id}>
@@ -43,12 +49,22 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
-        if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) return null;
-        if (habit.repeatDays) {
-           if ((dateParsed - parseDays(Date.parse(habit.startDate))) % habit.repeatDays) {
-            return null;
+        let applicable = false;
+        if (!habit.name.match(search) && !skill.name.match(search)) {
+        } else if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
+        } else if (habit.repeatDays) {
+            if ((dateParsed - parseDays(Date.parse(habit.startDate))) % habit.repeatDays) {
             } else {
-                return (<HabitCard 
+                applicable = true;
+            }
+        } else if (date.toISOString().split('T')[0] === habit.startDate) {
+            applicable = true;
+        }
+
+
+        return (
+            <Transition visible={applicable} duration={250} animation='fade down' transitionOnMount>
+                <HabitCard
                     key={habit._id} 
                     habit={habit} 
                     color={skill.color} 
@@ -60,25 +76,8 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                     habitIndex={i}
                     deleteHabit={deleteHabit}
                     editHabit={editHabit}
-                />);
-            } 
-        } else if (date.toISOString().split('T')[0] === habit.startDate) {
-            return (<HabitCard 
-                key={habit._id} 
-                habit={habit} 
-                color={skill.color} 
-                state={state} 
-                completeHabit={completeHabit} 
-                uncompleteHabit={uncompleteHabit} 
-                index={index} 
-                subskillIndex={subskillIndex} 
-                habitIndex={i}
-                deleteHabit={deleteHabit}
-                editHabit={editHabit}
-            />);
-        }
-
-        return null;
+                />
+            </Transition>);
         
 
     }) : null;
@@ -155,15 +154,20 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                 </div>) 
         }
     }
+    
     return(
+        
         <SkillLevelContext.Provider value={skillLevel + 1}>
-            <Segment basic inverted={draggedOver} disabled={dragging} className='SkillTree main'>
-                <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
-                    {actionPanel()}
+            <Transition duration={250} animation='fade down' transitionOnMount visible={foundChild || skill.name.match(search)}>
+                <Segment basic inverted={draggedOver} disabled={dragging} className='SkillTree main'>
+                    <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
+                        {actionPanel()}
+                    </Segment>
+                    {showTree && habitList}
+                    {showTree && subskillList}
                 </Segment>
-            {showTree && habitList}
-            {showTree && subskillList}
-            </Segment>
+            </Transition>
         </SkillLevelContext.Provider>
+        
     )
 }

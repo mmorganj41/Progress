@@ -40,18 +40,4 @@
   transition: transform 0.4s ease-in-out;
 }
 
-.FeedSideBar input[type="checkbox"]:checked ~ .menu-items {
-    transform: translateX(0);
-}
 
-.FeedSideBar input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
-transform: rotate(45deg);
-}
-
-.FeedSideBar input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
-transform: scaleY(0);
-}
-
-.FeedSideBar input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
-transform: rotate(-45deg);
-}

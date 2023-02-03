@@ -13,6 +13,7 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
     const icon = complete ? 'check circle' : 'circle outline';
     const skillLevel = useContext(SkillLevelContext);
     
+    
     async function handleClick(e) {
         e.stopPropagation();
         const data = {date};

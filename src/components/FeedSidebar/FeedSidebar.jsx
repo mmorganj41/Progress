@@ -22,7 +22,6 @@ export default function FeedSidebar({skills, date, changeDate}) {
     const largeEnough = windowSize >= WINDOW_TRANSITION;
 
     const updateWindowSize = () => {
-        console.log(window.innerWidth);
         setWindowSize(window.innerWidth);
     }
 
