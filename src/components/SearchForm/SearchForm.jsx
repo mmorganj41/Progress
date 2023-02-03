@@ -2,12 +2,20 @@ import React, {useState} from 'react';
 import {Segment, Input, Grid, Divider, Button } from 'semantic-ui-react';
 import CreateSkillForm from '../CreateSkillForm/CreateSkillForm';
 
-export default function SearchForm({createSkill}) {
+export default function SearchForm({createSkill, search, setSearch}) {
     const [showForm, setShowForm] = useState(false);
     
     function handleFormShow(e) {
         e.preventDefault();
         setShowForm(!showForm);
+    }
+
+    function handleSearch(e) {
+        setSearch(e.target.value);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault(e);
     }
 
     return(
@@ -20,6 +28,9 @@ export default function SearchForm({createSkill}) {
                             icon='search'
                             iconPosition='left'
                             placeholder='Habit'
+                            value={search}
+                            onChange={handleSearch}
+                            onClick={handleSubmit}
                         />
                     </Grid.Column>
 

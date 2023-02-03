@@ -8,6 +8,7 @@ import Masonry from "react-masonry-css";
 
 export default function HabitList({skills, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('add');
+    const [search, setSearch] = useState('');
 
     const dragItem = useRef();
     const dragOverItem = useRef();
@@ -61,7 +62,7 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
 
     return (
         <Container>
-            <SearchForm createSkill={createSkill} />
+            <SearchForm createSkill={createSkill} search={search} setSearch={setSearch}/>
             <ActionSwitcher state={state} setState={setState}/>
                 <Masonry 
                     breakpointCols={{default: 2, 1500: 1}}
