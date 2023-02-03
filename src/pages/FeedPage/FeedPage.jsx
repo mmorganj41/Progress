@@ -205,8 +205,10 @@ export default function FeedPage() {
     }
 
     return (
+        <>
+        <FeedSidebar date={date} changeDate={changeDate}/>
         <div className="container" style={{width:'100%'}}>
-            <FeedSidebar date={date} changeDate={changeDate}/>
+            
             <Header as="h1">Habits for {readableDateString(selectedDate)}</Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
@@ -225,5 +227,6 @@ export default function FeedPage() {
                 />
             </DateContext.Provider>
         </div>
+        </>
     )
 }

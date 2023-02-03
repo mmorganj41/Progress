@@ -11,6 +11,7 @@ export default function PageHeader({ handleLogout }){
 
     
     return (
+        <div className="PageHeader">
         <Menu color='teal' inverted fixed="top">
             <Menu.Item onClick={() => navigate('/')}>
                     Progress
@@ -27,6 +28,6 @@ export default function PageHeader({ handleLogout }){
                     </Dropdown.Menu>
                 </Dropdown>
             </Menu.Menu>
-        </Menu>
+        </Menu></div>
     )
 }
