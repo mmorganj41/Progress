@@ -149,8 +149,6 @@ async function completeHabit(req, res) {
 
         habit.completionDates.set(req.body.date, true);
 
-        console.log(habit);
-
         if (subskill) {
             const [skillNested] = await Promise.all([
                 Skill.findOne({'subskills': subskill._id}),
@@ -205,18 +203,21 @@ async function deleteSkill(req, res) {
         const skill = await Skill.findByIdAndRemove(req.params.skillId)
 
         if (skill.habits.length) {
-            await Habit.remove({"_id": {$in: skill.habits }});
+            await Habit.deleteMany({"_id": {$in: skill.habits }});
         }
         
         if (skill.subskills.length) {
             const subskills = await Subskill.find({'_id': {$in: skill.subskills}});
             
-            subskills.forEach(async subskill => {
-            if (subskill.habits.length) {
-                const habitProm = await Habit.remove({"_id": {$in: subskill.habits}});
-                console.log(habitProm)
-            }
-        })
+            const habits = [];
+            subskills.forEach(subskill => {
+                if (subskill.habits.length) {
+                    habits.push(Habit.deleteMany({"_id": {$in: subskill.habits}}));
+                }
+            });
+            habits.push(Subskill.deleteMany({'_id': {$in: skill.subskills}}));
+            await Promise.all(habits);
+
         }  User.findByIdAndUpdate(req.user._id, {$pull: {skill: skill._id}});
         await 
 
@@ -233,7 +234,7 @@ async function deleteSubskill(req, res) {
         const subskill = await Subskill.findByIdAndRemove(req.params.subskillId);
 
         if (subskill.habits.length) {
-            await Habit.remove({"_id": {$in: subskill.habits }});
+            await Habit.deleteMany({"_id": {$in: subskill.habits }});
         }
 
         await Skill.findOneAndUpdate({subskills: subskill._id}, {$pull: {subskills: subskill._id}});
