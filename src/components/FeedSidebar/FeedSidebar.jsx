@@ -27,7 +27,6 @@ export default function FeedSidebar({skills, date, changeDate}) {
     }
 
     function handleOpen() {
-        console.log('why')
         setOpen(!open);
     }
 
