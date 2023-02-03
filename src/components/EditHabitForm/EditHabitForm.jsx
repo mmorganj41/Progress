@@ -19,7 +19,7 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
         difficulty: habit.difficulty,
         startDate: new Date(habit.startDate),
         ends: !!habit.endDate,
-        endDate: habit.endDate ? Date.parse(habit.endDate): null,
+        endDate: habit.endDate ? new Date(habit.endDate): null,
     });
 
     function handleChange(e) {
@@ -51,6 +51,7 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
     async function handleSubmit(e) {
         try {
             e.preventDefault();
+            console.log(habit);
             console.log(formState);
             handleShowEdit(e);
             await editHabit(formState, habit, skillLevel, index, subskillIndex, habitIndex);

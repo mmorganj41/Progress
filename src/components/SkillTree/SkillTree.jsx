@@ -26,8 +26,8 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
-        return (<div>
-            <SkillTree 
+        return (<div key={subskill._id}>
+            <SkillTree
                 
                 state={state} 
                 index={index} 

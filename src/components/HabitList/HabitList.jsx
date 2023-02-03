@@ -13,8 +13,6 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
     const dragOverItem = useRef();
     
     const dragStart = (e, position, item) => {
-        if (e.target.tagname === 'INPUT') return false;
-        console.dir(e.target);
         dragItem.current = {position, item};
     }
 
@@ -44,8 +42,7 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
             onDragEnter={(e) => dragEnter(e, i, 'skill')}
             onDragEnd={drop}
             draggable>
-
-                <SkillTree 
+                <SkillTree
                 skill={skill} 
                 state={state}
                 createSubskill={createSubskill}
