@@ -8,7 +8,7 @@ import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 
-export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit}) {
+export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, completeHabit, uncompleteHabit, dragging, draggedOver}) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -157,7 +157,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     }
     return(
         <SkillLevelContext.Provider value={skillLevel + 1}>
-            <Segment className='SkillTree main'>
+            <Segment basic inverted={draggedOver} disabled={dragging} className='SkillTree main'>
                 <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                     {actionPanel()}
                 </Segment>

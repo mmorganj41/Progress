@@ -9,29 +9,25 @@ import Masonry from "react-masonry-css";
 export default function HabitList({skills, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('add');
     const [search, setSearch] = useState('');
+    const [dragging, setDragging] = useState({dragged: null, dragOver: null});
 
-    const dragItem = useRef();
-    const dragOverItem = useRef();
     
-    const dragStart = (e, position, item) => {
-        dragItem.current = {position, item};
+    const dragStart = (e, position) => {
+        setDragging({...dragging, dragged: position})
     }
 
-    const dragEnter = (e, position, item) => {
-        if (dragItem.current.item === item) {
-            dragOverItem.current = {position, item};
-        }
+    const dragEnter = (e, position) => {
+        setDragging({...dragging, dragOver: position})
+
     }
 
     const drop = async (e) => {
         e.stopPropagation();
-        if (dragOverItem.current.item !== dragItem.current.item) return;
         const copySkillList = [...skills];
-        const dragItemContent = copySkillList[dragItem.current.position];
-        copySkillList.splice(dragItem.current.position, 1);
-        copySkillList.splice(dragOverItem.current.position, 0, dragItemContent);
-        dragItem.current = null;
-        dragOverItem.current = null;
+        const dragItemContent = copySkillList[dragging.dragged];
+        copySkillList.splice(dragging.dragged, 1);
+        copySkillList.splice(dragging.dragOver, 0, dragItemContent);
+        setDragging({dragged: null, dragOver: null});
         await setSkills(copySkillList);
         
     }
@@ -56,6 +52,8 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
                 editSkill={editSkill}
                 editHabit={editHabit}
                 dragEnter={dragEnter}
+                dragging={dragging.dragged === i}
+                draggedOver={dragging.dragOver === i}
             />
         </div>)
     }) : null;

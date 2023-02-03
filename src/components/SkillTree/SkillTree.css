@@ -4,6 +4,7 @@
 
 .SkillTree.main {
     text-align: left;
+    border-radius: 10px!important;
 }
 
 .SkillTree.main .subskill {
