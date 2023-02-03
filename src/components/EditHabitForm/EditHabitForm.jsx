@@ -17,10 +17,17 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
         repeats: !!habit.repeatDays,
         repeatDays: habit.repeatDays,
         difficulty: habit.difficulty,
-        startDate: new Date(habit.startDate),
+        startDate: offsetDate(habit.startDate),
         ends: !!habit.endDate,
-        endDate: habit.endDate ? new Date(habit.endDate): null,
+        endDate: habit.endDate ? offsetDate(habit.endDate): null,
     });
+
+
+    function offsetDate(string) {
+        let time = new Date(string).getTime();
+        const offset = new Date().getTimezoneOffset()*60*1000;
+        return new Date(time + offset);
+    }
 
     function handleChange(e) {
         e.preventDefault();
