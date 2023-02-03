@@ -196,10 +196,18 @@ export default function FeedPage() {
         getSkills();
     }, [])
 
+    const readableDateString = (date) => {
+        return date.toLocaleDateString('en-US', 
+            {weekday: 'long',
+            year: "numeric",
+            month: "long",
+            day: "numeric",});
+    }
+
     return (
         <div className="container" style={{width:'100%'}}>
             <FeedSidebar date={date} changeDate={changeDate}/>
-            <Header>{selectedDate.toISOString().split('T')[0]}</Header>
+            <Header as="h1">Habits for {readableDateString(selectedDate)}</Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
                     skills={skills} 
