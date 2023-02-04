@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './Bar.css';
+import { levelByExperience, experienceThresholdLevel, calculateTotalExperience} from '../../utils/leveling';
 
-export default function Bar({skill}) {
+export default function Bar({skill, level, tier, color, createNotification}) {
 
-    const width = `${skill.experienceForCurrentLevel/skill.experienceForNextLevel*100}%`
+    const experienceNeedForNextLevel = experienceThresholdLevel(level);
+
+    const experienceInCurrentLevel = skill?.experience - calculateTotalExperience(level);
+
+    const width = `${experienceInCurrentLevel/experienceNeedForNextLevel*100}%`
 
 
     return(
         <div className='Bar'>
-            <div style={{fontWeight: skill.tier ? 300 : 900}}>{skill.name} - Lvl. {skill.level} :&nbsp;</div>
+            <div style={{fontWeight: tier ? 300 : 900}}>{skill.name} - Lvl. {level} :&nbsp;</div>
             <div>
                 <div className='outer-bar'>
-                    <div className={`bar ${skill.tier ? 'subskill' : ''}`} style={{width: width, backgroundColor: skill.color}}></div> 
+                    <div className={`bar ${tier ? 'subskill' : ''}`} style={{width: width, backgroundColor: color}}></div> 
                 </div>
             </div>
         </div>

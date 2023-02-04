@@ -5,8 +5,9 @@ import React, {useEffect, useRef, useState} from 'react';
 import Burger from '../Burger/Burger';
 import { useOnClickOutside } from '../../hooks/hooks';
 import Bar from '../Bar/Bar.jsx';
+import ExperienceGraph from '../ExperienceGraph/ExperienceGraph';
 
-export default function FeedSidebar({levels, skills, totals, date, changeDate}) {
+export default function FeedSidebar({skills, totals, date, changeDate, createNotification}) {
     const [windowSize, setWindowSize] = useState(0);
     const [open, setOpen] = useState(false);
     const node = useRef();
@@ -18,14 +19,6 @@ export default function FeedSidebar({levels, skills, totals, date, changeDate}) 
         window.addEventListener("resize", updateWindowSize);
         return () => {window.removeEventListener("resize", updateWindowSize)};
     }, []);
-
-    
-    const levelsArray = levels?.map(skill => {
-        console.log(skill);
-        return (<Bar skill={skill} />)
-    }) 
-
-
 
     const WINDOW_TRANSITION = 1825;
 
@@ -63,11 +56,8 @@ export default function FeedSidebar({levels, skills, totals, date, changeDate}) 
                     </Message.Content>
                     
                 </Message>
-                <Segment>
-                    {levelsArray}
-                </Segment>
-                    
-
+                 
+                <ExperienceGraph skills={skills} createNotification={createNotification}/>
                 
             </Sidebar>
             

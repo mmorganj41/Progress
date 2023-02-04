@@ -10,14 +10,13 @@ import userService from '../../utils/userService';
 import './FeedPage.css';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { experienceDictionary, levelByExperience, experienceThresholdLevel, calculateTotalExperience} from '../../utils/leveling';
+import {experienceDictionary, levelByExperience} from '../../utils/leveling';
 
 
 export default function FeedPage() {
     const [skills, updateSkills] = useImmer(null);
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
-    const [levels, setLevels] = useState([]);
 
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
 
@@ -52,7 +51,8 @@ export default function FeedPage() {
                 NotificationManager.info(`You gained ${message?.experience} experience.`, `${message?.habit} complete`, 2000);
                 break;
             case 'level up':
-                NotificationManager.success('You reached level in.', 'Level Up', 3000, null, true)
+                NotificationManager.success(`You reached level ${message?.level} in ${message?.skill}.`, 'Level Up', 3000, null, true);
+                break;
         }
     }
 
@@ -91,17 +91,34 @@ export default function FeedPage() {
 
     async function completeHabit(data, habit, skillIndex, skillLevel, subskillIndex, habitIndex) {
         try {
+            let levelUp = 0;
+            let levelUpSubskill = 0;
             const response = await skillsService.completeHabit(data, habit._id);
             if (skillLevel <= 1) {
-                updateSkills(draft => {
+                if (levelByExperience(skills[skillIndex].experience) < levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty])) {
+                    levelUp = levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty]);
+                }
+                    updateSkills(draft => {
                     draft[skillIndex].habits[habitIndex].completionDates[data.date] = true;
+                    draft[skillIndex].experience += experienceDictionary[habit.difficulty];
                 });
+                
             } else {
+                if (levelByExperience(skills[skillIndex].experience) < levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty])) {
+                    levelUp = levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty]);
+                }
+                if (levelByExperience(skills[skillIndex].subskills[subskillIndex].experience) < levelByExperience(skills[skillIndex].subskills[subskillIndex].experience + experienceDictionary[habit.difficulty])) {
+                    levelUpSubskill = levelByExperience(skills[skillIndex].subskills[subskillIndex].experience + experienceDictionary[habit.difficulty]);
+                }
                 updateSkills(draft => {
                     draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = true;
+                    draft[skillIndex].experience += experienceDictionary[habit.difficulty];
+                    draft[skillIndex].subskills[subskillIndex].experience += experienceDictionary[habit.difficulty];
                 });
             }
             createNotification('complete', {habit: habit.name, experience: experienceDictionary[habit.difficulty]});
+            if (levelUp) createNotification('level up', {skill: skills[skillIndex].name, level: levelUp});
+            if (levelUpSubskill) createNotification('level up', {skill: skills[skillIndex].subskills[subskillIndex].name, level: levelUpSubskill});
         } catch(err) {
             console.log(err);
         }
@@ -113,10 +130,13 @@ export default function FeedPage() {
             if (skillLevel <= 1) {
                 updateSkills(draft => {
                     draft[skillIndex].habits[habitIndex].completionDates[data.date] = false;
+                    draft[skillIndex].experience -= experienceDictionary[habit.difficulty];
                 });
             } else {
                 updateSkills(draft => {
                     draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = false;
+                    draft[skillIndex].experience -= experienceDictionary[habit.difficulty];
+                    draft[skillIndex].subskills[subskillIndex].experience -= experienceDictionary[habit.difficulty];
                 });
             }
         } catch(err) {
@@ -208,46 +228,6 @@ export default function FeedPage() {
         }
     }
 
-    useEffect(() => {
-        getSkills();
-    }, [])
-
-    function makeLevelArray() {
-        const tempLevels = [];
-        skills?.forEach(skill => {
-            const level = levelByExperience(skill.experience)
-        tempLevels.push({
-            name: skill.name,
-            experience: skill.experience,
-            level: level,
-            experienceForNextLevel: experienceThresholdLevel(level), 
-            experienceForCurrentLevel: skill.experience - calculateTotalExperience(level), 
-            color: skill.color,
-            tier: 0,
-        });
-        skill.subskills.forEach(subskill => {
-            const subskillLevel = levelByExperience(subskill.experience);
-            tempLevels.push({
-                name: subskill.name,
-                experience: subskill.experience,
-                level: subskillLevel,
-                experienceForNextLevel: experienceThresholdLevel(subskillLevel), 
-                experienceForCurrentLevel: skill.experience - calculateTotalExperience(subskillLevel), 
-                color: skill.color,
-                tier: 1,
-            })
-        })
-        });
-        setLevels(tempLevels);
-    }
-
-    useEffect(() => {
-        makeLevelArray();
-        return () => {
-            setLevels([]);
-        }
-    }, [skills])
-
     const readableDateString = (date) => {
         return date.toLocaleDateString('en-US', 
             {weekday: 'long',
@@ -256,9 +236,13 @@ export default function FeedPage() {
             day: "numeric",});
     }
 
+    useEffect(() => {
+        getSkills()
+    }, []);
+
     return (
         <>
-        <FeedSidebar levels={levels} totals={totals} skills={skills} date={date} changeDate={changeDate} /> 
+        <FeedSidebar totals={totals} skills={skills} date={date} changeDate={changeDate} createNotification={createNotification}/> 
         <div className="container" style={{width:'100%'}}>
             
             <Header as="h1">Habits for {readableDateString(selectedDate)}</Header>

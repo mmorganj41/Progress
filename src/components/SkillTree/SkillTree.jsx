@@ -148,8 +148,6 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     {title()}
                     <Icon name={showForm ? "minus circle" : "plus circle"} onClick={handleShowForm} size="large"/>
                 </div>
-                {showForm && skillLevel < 1 ? <CreateSubskillForm showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
-                {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
             </>)
         } else if (state === 'edit') {
             if (showEdit) {
@@ -186,7 +184,10 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                         {actionPanel()}
                     </Segment>
                     {habitList}
+                    {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
                     {subskillList}
+                    {showForm && skillLevel < 1 ? <CreateSubskillForm showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
+                    
                 </Segment>
             </Transition>
         </SkillLevelContext.Provider>

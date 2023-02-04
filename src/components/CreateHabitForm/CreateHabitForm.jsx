@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import { useImmer } from "use-immer";
-import { Form, Button, Input, Select, Divider } from "semantic-ui-react";
+import { Card, Form, Button, Input, Select, Divider } from "semantic-ui-react";
 import NumericInput from 'react-numeric-input'; 
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { difficultyOptions } from "../../utils/options";
@@ -74,29 +74,32 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
         <div draggable onDragStart={(e) => {
             e.preventDefault(); 
             e.stopPropagation();}}>               
-            <Divider inverted />
+            <Card fluid>
             <Form onSubmit={handleSubmit}>
-                <strong>Create Habit:</strong>
-                <Form.Group widths='equal'>
-                    <Form.Input 
-                        control={Input}
-                        name='name'
-                        placeholder='Name'
-                        label='Name'
-                        value={formState.name}
-                        onChange={handleChange}
-                    />
-                    <Form.Field 
-                        label='Difficulty'
-                        name='difficulty'
-                        control={Select}
-                        value={formState.difficulty} 
-                        options={difficultyOptions}
-                        onChange={(e, data) => updateFormState( draft => {
-                            draft.difficulty = data.value;
-                        })}
-                    />
-                </Form.Group>
+                <Card.Content>
+                        <strong>Create Habit:</strong>
+                        <Form.Group widths='equal'>
+                            <Form.Input 
+                                control={Input}
+                                name='name'
+                                placeholder='Name'
+                                label='Name'
+                                value={formState.name}
+                                onChange={handleChange}
+                            />
+                            <Form.Field 
+                                label='Difficulty'
+                                name='difficulty'
+                                control={Select}
+                                value={formState.difficulty} 
+                                options={difficultyOptions}
+                                onChange={(e, data) => updateFormState( draft => {
+                                    draft.difficulty = data.value;
+                                })}
+                            />
+                        </Form.Group>
+                </Card.Content>
+                <Card.Content extra>
                 <div className="CreateHabitCard Details">
                     <SemanticDatepicker label='Start Date' value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
                     <Form.Checkbox label='Ends?' checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
@@ -134,9 +137,10 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                     onChange={handleChange}
                 />
                 <Button type='submit'>Submit</Button>
-                
+                </Card.Content>
                 {error ? <ErrorMessage error={error} /> : null }
             </Form>
+            </Card>
         </div>
     )
 }
