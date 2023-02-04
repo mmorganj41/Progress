@@ -185,7 +185,7 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     </Segment>
                     {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
                     {habitList}
-                    {showForm && skillLevel < 1 ? <CreateSubskillForm showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
+                    {showForm && skillLevel < 1 ? <CreateSubskillForm draggedOver={draggedOver} disabled={dragging} showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
                     {subskillList}
                     
                 </Segment>
