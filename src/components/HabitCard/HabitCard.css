@@ -15,12 +15,16 @@
     flex-wrap: wrap;
 }
 
-.HabitCard.Details > div.EditHabitForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.HabitCard.Details.EditHabitForm{
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(3, auto);
 }
+
+.HabitCard.Details > div.EditHabitForm .checkbox {
+    margin-right: 5px;
+}
+
 
 .EditHabitForm.HabitCard.Details {
     flex-direction: column;

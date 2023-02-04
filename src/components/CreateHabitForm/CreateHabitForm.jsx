@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import { useImmer } from "use-immer";
-import { Card, Form, Button, Input, Select, Divider } from "semantic-ui-react";
+import { Card, Form, Icon, Header, Button, Input, Select, TextArea, Checkbox, Divider } from "semantic-ui-react";
 import NumericInput from 'react-numeric-input'; 
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { difficultyOptions } from "../../utils/options";
@@ -75,7 +75,84 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
             e.preventDefault(); 
             e.stopPropagation();}}>               
             <Card fluid>
-            <Form onSubmit={handleSubmit}>
+                        <Card.Content>
+                <Card.Header className='HabitCard Header'>
+                    <Icon name='circle outline' size='large'/>
+                    <Input 
+                        name='name'
+                        value={formState.name}
+                        onChange={handleChange}
+                        placeholder='Name'
+                    />
+                    <div className='HabitCard ActionIcon'>
+                        <Icon name='times circle' onClick={hideForm}/>
+                    </div>
+                </Card.Header>
+            </Card.Content>
+            <Card.Content extra>
+                <Header textAlign='right' as='h4'>
+                    {'Difficulty: '}       
+                    <Select
+                        name='difficulty'
+                        value={formState.difficulty} 
+                        options={difficultyOptions}
+                        onChange={(e, data) => updateFormState( draft => {
+                            draft.difficulty = data.value;
+                        })}
+                    />
+                </Header>
+                <TextArea
+                    name='description'
+                    value={formState.description}
+                    onChange={handleChange}
+                    fluid
+                    inverse
+                    placeHolder='Description'
+                />
+            </Card.Content>
+            <Card.Content extra>
+                <div className='EditHabitForm HabitCard Details'>
+                    <div><strong>Start Date: </strong></div>
+                    <div><SemanticDatepicker clearable={false} value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/></div>
+                    <div>
+                        <Checkbox checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
+                        <strong>{` End Date: `}</strong>
+                    </div>
+                    <div>
+                        {formState.ends ?
+                        <SemanticDatepicker value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} /> 
+                        :
+                        <SemanticDatepicker disabled value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} />
+                        }
+                    </div>
+                    <div>
+                        <Checkbox checked={formState.repeats} onChange={(e, data) => handleCheck(e, data, 'repeats')}/>
+                        <strong> Repeats? (Every X Days): </strong>
+                    </div>
+                    <div>
+                        {formState.repeats ? 
+                        <NumericInput
+                            name='repeatDays'
+                            min={0}
+                            value={formState.repeatDays}
+                            onChange={handleNumberChange}
+                        />
+                        :
+                        <NumericInput
+                            name='repeatDays'
+                            min={0}
+                            disabled
+                            value={formState.repeatDays}
+                            onChange={handleNumberChange}
+                        />
+                        }
+                    </div>       
+                </div>
+            </Card.Content>
+            <Card.Content extra>
+                <Button onClick={handleSubmit}>Submit</Button>
+            </Card.Content>
+            {/* <Form onSubmit={handleSubmit}>
                 <Card.Content>
                         <strong>Create Habit:</strong>
                         <Form.Group widths='equal'>
@@ -139,7 +216,7 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                 <Button type='submit'>Submit</Button>
                 </Card.Content>
                 {error ? <ErrorMessage error={error} /> : null }
-            </Form>
+            </Form> */}
             </Card>
         </div>
     )

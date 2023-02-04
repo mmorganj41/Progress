@@ -104,29 +104,24 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
             </Card.Content>
             <Card.Content extra>
                 <div className='EditHabitForm HabitCard Details'>
+                    <div><strong>Start Date: </strong></div>
+                    <div><SemanticDatepicker clearable={false} value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/></div>
                     <div>
-                        <strong>Start Date: </strong>
-                        <SemanticDatepicker clearable={false} value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/>
-                    </div>
-                    <div className='EditHabitForm'>
-                        <div>
                         <Checkbox checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
-                        <strong> End Date:</strong>
-                        </div>
-                        <div>
+                        <strong>{` End Date: `}</strong>
+                    </div>
+                    <div>
                         {formState.ends ?
                         <SemanticDatepicker value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} /> 
                         :
                         <SemanticDatepicker disabled value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} />
                         }
-                        </div>
                     </div>
-                    <div className='EditHabitForm'>
-                        <div>
+                    <div>
                         <Checkbox checked={formState.repeats} onChange={(e, data) => handleCheck(e, data, 'repeats')}/>
-                        <strong> Repeats: </strong>
-                        </div>
-                        <div>
+                        <strong> Repeats? (Every X Days): </strong>
+                    </div>
+                    <div>
                         {formState.repeats ? 
                         <NumericInput
                             name='repeatDays'
@@ -143,7 +138,6 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
                             onChange={handleNumberChange}
                         />
                         }
-                        </div>
                     </div>       
                 </div>
             </Card.Content>

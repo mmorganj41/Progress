@@ -183,10 +183,10 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                         {actionPanel()}
                     </Segment>
-                    {habitList}
                     {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
-                    {subskillList}
+                    {habitList}
                     {showForm && skillLevel < 1 ? <CreateSubskillForm showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
+                    {subskillList}
                     
                 </Segment>
             </Transition>

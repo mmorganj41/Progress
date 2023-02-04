@@ -93,7 +93,6 @@ export default function HabitCard({habit, totals, updateTotals, color, state, ed
                     <div>
                         <strong>Repeats: </strong> {habit?.repeatDays ? `Every ${habit.repeatDays} days` : 'Never'}
                     </div>
-                            
                 </div>
             </Card.Content>
         </>
