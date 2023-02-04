@@ -10,7 +10,7 @@ import userService from '../../utils/userService';
 import './FeedPage.css';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { experienceDictionary, levelByExperience} from '../../utils/leveling';
+import { experienceDictionary, levelByExperience, experienceThresholdLevel, calculateTotalExperience} from '../../utils/leveling';
 
 
 export default function FeedPage() {
@@ -215,21 +215,30 @@ export default function FeedPage() {
 
     function makeLevelArray(levels) {
         skills?.forEach(skill => {
+            const level = levelByExperience(skill.experience)
         levels.push({
             name: skill.name,
             experience: skill.experience,
-            level: levelByExperience(skill.experience),
+            level: level,
+            experienceForNextLevel: experienceThresholdLevel(level), 
+            experienceForCurrentLevel: skill.experience - calculateTotalExperience(level), 
+            color: skill.color,
             tier: 0,
         });
         skill.subskills.forEach(subskill => {
+            const subskillLevel = levelByExperience(subskill.experience);
             levels.push({
                 name: subskill.name,
                 experience: subskill.experience,
-                level: levelByExperience(subskill.experience),
+                level: subskillLevel,
+                experienceForNextLevel: experienceThresholdLevel(subskillLevel), 
+                experienceForCurrentLevel: skill.experience - calculateTotalExperience(subskillLevel), 
+                color: skill.color,
                 tier: 1,
             })
         })
         });
+        console.log(levels);
     }
 
     useEffect(() => {
