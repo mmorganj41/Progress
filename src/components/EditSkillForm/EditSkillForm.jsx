@@ -53,7 +53,9 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                             <Button type='submit'>Submit</Button>
                         {error ? <ErrorMessage error={error} /> : null }
             </Form>
-            <Icon name="dot circle outline" onClick={handleShowEdit}  size="large"/>
+            <Button icon onClick={handleShowEdit}>
+            <Icon name="stop" size="large"/>
+            </Button>
         </div>);
 }
 

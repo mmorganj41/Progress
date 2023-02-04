@@ -1,15 +1,35 @@
 import React from "react";
 import './ActionSwitcher.css';
-import { Button, Icon } from "semantic-ui-react";
+import { Button, Icon, Message } from "semantic-ui-react";
 
 export default function ActionSwitcher({state, setState}) {
 
 
+    function handleClick(e) {
+        let button = e.target.name
+        if (state === button) setState('default')
+        else {
+            switch (button) {
+                case 'add':
+                    setState('add');
+                    break;
+                case 'edit':
+                    setState('edit');
+                    break;
+                case 'delete':
+                    setState('delete');
+                    break;
+            }
+        }
+    }
+
     return(
+        <Message compact>
         <div className='ActionSwitcher ButtonGroup'>
-            <Button disabled={/add/.test(state)} className='Button' onClick={() => setState('add')}><Icon name='add circle' /></Button>
-            <Button disabled={/edit/.test(state)} className='Button' onClick={() => setState('edit')}><Icon name='minus circle' /></Button>
-            <Button disabled={/delete/.test(state)} className='Button' onClick={() => setState('delete')}><Icon name='remove circle' /></Button>
+            <Button icon labelPosition='left' toggle={/add/.test(state)} name='add' className='Button' onClick={handleClick}><Icon name='add circle' />Add</Button>
+            <Button icon labelPosition='left' toggle={/edit/.test(state)} name='edit' className='Button' onClick={handleClick}><Icon name='minus circle' />Edit</Button>
+            <Button icon labelPosition='left' toggle={/delete/.test(state)} name='delete' className='Button' onClick={handleClick}><Icon name='remove circle' />Delete</Button>
         </div>
+        </Message>
     )
 }

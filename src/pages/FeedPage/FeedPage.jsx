@@ -245,7 +245,9 @@ export default function FeedPage() {
         <FeedSidebar totals={totals} skills={skills} date={date} changeDate={changeDate} createNotification={createNotification}/> 
         <div className="container" style={{width:'100%'}}>
             
-            <Header as="h1">Habits for {readableDateString(selectedDate)}</Header>
+            <Header as="h1">Habits for  
+                <span style={{color: '#008080', textDecoration: 'underline'}}> {readableDateString(selectedDate)}</span>
+            </Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
                     skills={skills} 

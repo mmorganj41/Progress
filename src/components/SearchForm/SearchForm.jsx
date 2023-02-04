@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Segment, Input, Grid, Divider, Button } from 'semantic-ui-react';
-import CreateSkillForm from '../CreateSkillForm/CreateSkillForm';
 
 export default function SearchForm({handleCreateSkillFormShow, showCreateSkillForm, search, setSearch}) {
 
@@ -32,7 +31,7 @@ export default function SearchForm({handleCreateSkillFormShow, showCreateSkillFo
                         <Button
                             color='teal'
                             content={showCreateSkillForm ? 'Remove New Skill' : 'Create New Skill'}
-                            icon='add'
+                            icon={showCreateSkillForm ? 'stop' : 'add'}
                             labelPosition='left'
                             onClick={handleCreateSkillFormShow}
                         />

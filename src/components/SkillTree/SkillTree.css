@@ -17,7 +17,8 @@
     align-items: center;
     flex-wrap: wrap;
 }
-.SkillTree.header > *:last-child {
+
+.SkillTree.header:not(.default) > *:last-child {
     margin-left: auto;
 }
 
@@ -28,9 +29,4 @@
 
 .SkillTree .ui.segment {
     padding-right: 0;
-    transition: all .4s;
-}
-
-.SkillTree .ui.form {
-    padding-right: 1em;
 }

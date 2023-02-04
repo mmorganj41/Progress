@@ -1,6 +1,6 @@
 import './SkillTree.css';
 import React, {useContext, useState, useRef} from "react";
-import { Segment, Divider, Header, Image, Icon, Search, Transition } from "semantic-ui-react";
+import { Segment,  Image, Icon, Button, Transition } from "semantic-ui-react";
 import HabitCard from "../HabitCard/HabitCard";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import CreateSubskillForm from '../CreateSubskillForm/CreateSubskillForm';
@@ -146,7 +146,16 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
             return (<>
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name={showForm ? "minus circle" : "plus circle"} onClick={handleShowForm} size="large"/>
+                    <div>
+                    <Button animated='vertical' onClick={handleShowForm}>
+                    <Button.Content hidden>Subskill</Button.Content>
+                    <Button.Content visible><Icon name={showForm ? "minus circle" : "plus circle"}  size="large"/></Button.Content>
+                    </Button>
+                    <Button animated='vertical' onClick={handleShowForm}> 
+                    <Button.Content hidden>Habit</Button.Content>
+                    <Button.Content visible><Icon inverted name={showForm ? "minus circle" : "plus circle"}  size="large"/></Button.Content>
+                    </Button>
+                    </div>
                 </div>
             </>)
         } else if (state === 'edit') {
@@ -158,14 +167,25 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                 return(
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name="dot circle" onClick={handleShowEdit} size="large"/>
+                    <div>
+                        <Button icon onClick={handleShowEdit}>
+                            <Icon name="dot circle" onClick={handleShowEdit} size="large"/>
+                        </Button>
+                    </div>
                 </div>) 
             }
         } else if (state === 'delete') {
             return(
                 <div className='SkillTree header'>
                     {title()}
-                    <Icon name="remove circle" onClick={handleDelete} size="large"/>
+                    <Button icon onClick={handleDelete}>
+                        <Icon name="remove circle" size="large"/>
+                    </Button>
+                </div>) 
+        } else {
+            return(
+                <div className='SkillTree header default'>
+                    {title()}
                 </div>) 
         }
     }
@@ -183,9 +203,9 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                         {actionPanel()}
                     </Segment>
-                    {showForm ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
+                    {showForm && (state === 'add') ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
                     {habitList}
-                    {showForm && skillLevel < 1 ? <CreateSubskillForm draggedOver={draggedOver} disabled={dragging} showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
+                    {showForm && (state === 'add') && skillLevel < 1 ? <CreateSubskillForm draggedOver={draggedOver} disabled={dragging} showTree={alwaysShowTree} hideForm={hideForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
                     {subskillList}
                     
                 </Segment>

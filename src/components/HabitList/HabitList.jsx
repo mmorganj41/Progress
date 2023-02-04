@@ -9,7 +9,7 @@ import { SearchContext } from "../../context/SearchContext/SearchContext";
 import CreateSkillForm from "../CreateSkillForm/CreateSkillForm";
 
 export default function HabitList({skills, totals, updateTotals, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
-    const [state, setState] = useState('add');
+    const [state, setState] = useState('default');
     const [search, setSearch] = useState('');
     const [dragging, setDragging] = useState({dragged: null, dragOver: null});
     const [showCreateSkillForm, setCreateSkillShowForm] = useState(false);
