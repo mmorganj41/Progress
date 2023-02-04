@@ -1,0 +1,6 @@
+.loading.flex {
+    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

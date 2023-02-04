@@ -8,6 +8,13 @@ import S3 from 'aws-sdk/clients/s3.js';
 // initialize the S3 constructor function to give us the object that can perform crud operations to aws
 const s3 = new S3();
 
+// We'll use this module to help us generate random names for our photo files on aws
+import { v4 as uuidv4 } from 'uuid';
+
+// So we don't have to worry about people having different bucket names we'll make the bucketname an environment variable
+const BUCKET_NAME = process.env.BUCKET_NAME
+console.log(BUCKET_NAME, 'bucketname')
+
 export default {
     create,
     getUserSkills,
@@ -265,11 +272,35 @@ async function deleteHabit(req, res) {
 
 async function editSkill(req, res) {
     try {
-        const skill = await Skill.findByIdAndUpdate(req.params.skillId,
-            {name: req.body.name,
-            color: req.body.color}, {new: true});
+        let skill;
+        if (req.file) {
+            const filePath = `progress/${uuidv4()}-${req.file.originalname}`;
+            const params = {Bucket: BUCKET_NAME, Key: filePath, Body: req.file.buffer}; // req.file.buffer is the actually from the form when it was sent to our express server
+            // s3.upload is making the request to s3
+            s3.upload(params, async function(err, data){ // < inside the function in the response from aws
+                if(err){
+                console.log('===============================')
+                console.log(err, ' <- error from aws, Probably telling you your keys arent correct')
+                console.log('===============================')
+                return;
+                }
+                console.log('location', data.Location)
+                skill = await Skill.findByIdAndUpdate(req.params.skillId,
+                    {name: req.body.name,
+                    color: req.body.color,
+                    photoUrl: data.Location,
+                    }, {new: true});
+                console.log('skill', skill)
+                res.status(201).json({skill});
+            });
 
-        res.status(201).json({skill});
+        } else {
+            skill = await Skill.findByIdAndUpdate(req.params.skillId,
+                {name: req.body.name,
+                color: req.body.color,
+                }, {new: true});
+            res.status(201).json({skill});
+        }
     } catch(err) {
         console.log(err);
         res.status(400).json({err});

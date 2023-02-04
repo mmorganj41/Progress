@@ -17,6 +17,7 @@ export default function FeedPage() {
     const [skills, updateSkills] = useImmer(null);
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
+    const [loading, setLoading] = useState(true);
 
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
 
@@ -182,10 +183,16 @@ export default function FeedPage() {
     async function editSkill(data, skill, skillLevel, skillIndex, subskillIndex) {
         try {
             if (skillLevel <= 1) {
-                await skillsService.editSkill(skill._id, data);
+                const response = await skillsService.editSkill(skill._id, data);
+                console.log(data);
                 updateSkills(draft => {
-                    for (let key in data) {
-                        draft[skillIndex][key] = data[key];
+                    for (let key of data.keys()) {
+                        if (key === 'photo') {
+                            console.log(data.get(key));
+                            draft[skillIndex].photoUrl = response.skill.photoUrl;
+                        } else {
+                            draft[skillIndex][key] = data.get(key);
+                        }
                     }
                 });
             } else {
@@ -237,7 +244,8 @@ export default function FeedPage() {
     }
 
     useEffect(() => {
-        getSkills()
+        getSkills();
+        setLoading(false);
     }, []);
 
     return (
@@ -250,6 +258,7 @@ export default function FeedPage() {
             </Header>
             <DateContext.Provider value={selectedDate}>
                 <HabitList 
+                    loading={loading}
                     skills={skills} 
                     getSkills={getSkills} 
                     createSkill={createSkill}

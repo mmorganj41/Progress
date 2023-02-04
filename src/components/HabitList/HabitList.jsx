@@ -1,5 +1,5 @@
 import React,{useState, useRef, useContext} from "react";
-import { Container, Transition} from "semantic-ui-react";
+import { Container, Segment} from "semantic-ui-react";
 import ActionSwitcher from "../ActionSwitcher/ActionSwitcher";
 import SearchForm from "../SearchForm/SearchForm";
 import SkillTree from "../SkillTree/SkillTree";
@@ -7,8 +7,9 @@ import './HabitList.css';
 import Masonry from "react-masonry-css";
 import { SearchContext } from "../../context/SearchContext/SearchContext";
 import CreateSkillForm from "../CreateSkillForm/CreateSkillForm";
+import Loading from "../Loading/Loading";
 
-export default function HabitList({skills, totals, updateTotals, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
+export default function HabitList({loading, skills, totals, updateTotals, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('default');
     const [search, setSearch] = useState('');
     const [dragging, setDragging] = useState({dragged: null, dragOver: null});
@@ -75,16 +76,24 @@ export default function HabitList({skills, totals, updateTotals, setSkills, crea
         <Container>
             <SearchForm showCreateSkillForm={showCreateSkillForm} handleCreateSkillFormShow={handleCreateSkillFormShow} search={search} setSearch={setSearch}/>
             <ActionSwitcher state={state} setState={setState}/>
+            <div>
             <SearchContext.Provider value={search ? new RegExp(search, 'i') : ''}>
-            <Masonry 
-                breakpointCols={{default: 2, 1500: 1}}
-                className="my-masonry-grid"
-                columnClassName="my-masonry-grid_column"
-            >
-                {showCreateSkillForm && <CreateSkillForm handleCreateSkillFormShow={handleCreateSkillFormShow} createSkill={createSkill}/>}
-                {skillTrees}
-            </Masonry>
+            {loading ?  
+                <Segment placeholder>
+                    <Loading />
+                </Segment> 
+                :
+                <Masonry 
+                    breakpointCols={{default: 2, 1500: 1}}
+                    className="my-masonry-grid"
+                    columnClassName="my-masonry-grid_column"
+                    >
+                    {showCreateSkillForm && <CreateSkillForm handleCreateSkillFormShow={handleCreateSkillFormShow} createSkill={createSkill}/>}
+                    {skillTrees}
+                </Masonry>
+                }
             </SearchContext.Provider>
+            </div>
         </Container>
     );
 }

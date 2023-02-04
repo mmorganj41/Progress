@@ -192,19 +192,14 @@ async function deleteHabit(habitId) {
 }
 
 async function editSkill(skillId, data) {
-    const header = new Headers();
-    header.append('Content-Type', 'application/json');
-    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
-
     try {
         const response = await fetch(`${BASE_URL}${skillId}`, {
             method: 'PUT',
-            body: JSON.stringify(data),
-            headers: header
+            body: data,
         })
         if (response.ok) return await response.json();
         
-        throw new Error();
+        throw new Error('Bad response');
     } catch(err) {
         console.log(err);
         throw new Error('Could not edit skill.');

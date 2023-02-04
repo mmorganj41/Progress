@@ -7,7 +7,8 @@ import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelCon
 
 export default function EditSkillForm({skill, handleShowEdit, editSkill, index, subskillIndex}) {
     const [formState, updateFormState] = useImmer(skill);
-    const [error, setError] = useState(null);
+    const [file, setFile] = useState(null);
+    const [error, setError] = useState('');
     const skillLevel = useContext(SkillLevelContext);
 
     function handleChange(e) {
@@ -18,8 +19,23 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
 
     async function handleSubmit(e){
         e.preventDefault();
-        await editSkill(formState, skill, skillLevel, index, subskillIndex);
-        handleShowEdit(false);
+
+        const formData = new FormData();
+        formData.append("photo", file);
+
+        formData.append('color', formState.color);
+        formData.append('name', formState.name)
+        try {
+            await editSkill(formData, skill, skillLevel, index, subskillIndex);
+            handleShowEdit(false);
+        } catch(err) {
+            setError('Error. Could not edit skill.');
+        }
+        
+    }
+
+    function handleFileInput(e) {
+        setFile(e.target.files[0]);
     }
 
     return(
@@ -30,7 +46,13 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                 e.stopPropagation();}}
         >
             {skillLevel <= 1 ?
-            <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar /> : null}
+            <Form.Input
+                type="file"
+                name="photo"
+                placeholder="upload image"
+                onChange={handleFileInput}
+            />
+            : null}
             <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
                             <Form.Input 
                                 name='name'

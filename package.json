@@ -17,6 +17,7 @@
     "jsonwebtoken": "~9.0.0",
     "mongoose": "^6.7.3",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "npm": "^9.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,7 +30,8 @@
     "semantic-ui-react": "^2.1.4",
     "serve-favicon": "^2.5.0",
     "styled-components": "^5.3.6",
-    "use-immer": "^0.8.1"
+    "use-immer": "^0.8.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",

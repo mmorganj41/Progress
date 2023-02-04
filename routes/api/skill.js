@@ -1,6 +1,8 @@
 import express from "express";
 const router = express.Router();
 import skillController  from '../../controllers/skill.js';
+import multer from 'multer'
+const upload = multer()
 
 // router.get('/:date');
 router.post('/', skillController.create);
@@ -17,7 +19,7 @@ router.put('/habit/:habitId', skillController.editHabit);
 router.post('/:skillId', skillController.createSubskill);
 router.delete('/:skillId', skillController.deleteSkill);
 router.post('/:skillId/habit', skillController.createSkillHabit);
-router.put('/:skillId', skillController.editSkill);
+router.put('/:skillId', upload.single('photo'), skillController.editSkill);
 
 
 export default router;
