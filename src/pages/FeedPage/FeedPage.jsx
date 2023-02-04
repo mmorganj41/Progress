@@ -20,7 +20,7 @@ export default function FeedPage() {
 
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
 
-
+    const levels = [];
 
     const selectedDate = date || new Date();
 
@@ -213,6 +213,32 @@ export default function FeedPage() {
         getSkills();
     }, [])
 
+    function makeLevelArray(levels) {
+        skills?.forEach(skill => {
+        levels.push({
+            name: skill.name,
+            experience: skill.experience,
+            level: levelByExperience(skill.experience),
+            tier: 0,
+        });
+        skill.subskills.forEach(subskill => {
+            levels.push({
+                name: subskill.name,
+                experience: subskill.experience,
+                level: levelByExperience(subskill.experience),
+                tier: 1,
+            })
+        })
+        });
+    }
+
+    useEffect(() => {
+        makeLevelArray(levels);
+        return () => {
+            levels.length = 0;
+        }
+    }, [skills])
+
     const readableDateString = (date) => {
         return date.toLocaleDateString('en-US', 
             {weekday: 'long',
@@ -223,7 +249,7 @@ export default function FeedPage() {
 
     return (
         <>
-        <FeedSidebar totals={totals} skills={skills} date={date} changeDate={changeDate} /> 
+        <FeedSidebar levels={levels} totals={totals} skills={skills} date={date} changeDate={changeDate} /> 
         <div className="container" style={{width:'100%'}}>
             
             <Header as="h1">Habits for {readableDateString(selectedDate)}</Header>

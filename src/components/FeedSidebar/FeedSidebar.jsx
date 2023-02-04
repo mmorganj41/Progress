@@ -1,21 +1,32 @@
 import './FeedSidebar.css'
 import SemanticDatepicker from 'react-semantic-ui-datepickers'
-import { Sidebar, Header, Message, Icon } from 'semantic-ui-react'
+import { Sidebar, Header, Message, Icon, Segment } from 'semantic-ui-react'
 import React, {useEffect, useRef, useState} from 'react';
 import Burger from '../Burger/Burger';
 import { useOnClickOutside } from '../../hooks/hooks';
+import { levelByExperience } from '../../utils/leveling';
 
-export default function FeedSidebar({skills, totals, date, changeDate}) {
+export default function FeedSidebar({levels, skills, totals, date, changeDate}) {
     const [windowSize, setWindowSize] = useState(0);
     const [open, setOpen] = useState(false);
     const node = useRef();
     useOnClickOutside(node, () => setOpen(false));
+
 
     useEffect(() => {
         updateWindowSize();
         window.addEventListener("resize", updateWindowSize);
         return () => {window.removeEventListener("resize", updateWindowSize)};
     }, []);
+
+    
+    const levelsArray = levels?.map(skill => {
+        return (<div>
+            {skill.name} Lvl. {skill.level}
+        </div>)
+    }) 
+
+
 
     const WINDOW_TRANSITION = 1825;
 
@@ -53,6 +64,11 @@ export default function FeedSidebar({skills, totals, date, changeDate}) {
                     </Message.Content>
                     
                 </Message>
+                <Segment>
+                    {levelsArray}
+                </Segment>
+                    
+
                 
             </Sidebar>
             
