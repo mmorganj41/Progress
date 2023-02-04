@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import { useImmer } from "use-immer";
-import { Form, Button, Segment, Select, Icon, Divider } from "semantic-ui-react";
+import { Form, Button, Segment, Select, Icon, Transition } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { colorOptions } from "../../utils/options";
 
@@ -23,6 +23,7 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
         try {
             e.preventDefault();
             await createSkill(formState);
+            handleCreateSkillFormShow(e);
         } catch(err) {
             setError(err.message);
         }
@@ -30,7 +31,8 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
 
 
     return (
-        <div>
+        <Transition animation='drop' transitionOnMount unmountOnHide>
+            <div>
             <Segment basic className='SkillTree main'>
                     <Segment inverted color={formState.color}>
                     <div className='SkillTree header'>
@@ -58,5 +60,7 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
                 </Segment>
             </Segment>
             </div>
+        </Transition>
+            
     )
 }

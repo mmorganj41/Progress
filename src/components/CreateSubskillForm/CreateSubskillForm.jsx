@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useImmer } from "use-immer";
-import { Form, Button, Icon, Input, Segment } from "semantic-ui-react";
+import { Form, Button, Icon, Transition, Segment } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 export default function CreateSubskillForm({skill, createSubskill, index, showTree, hideForm, draggedOver, dragging}){
@@ -29,6 +29,7 @@ export default function CreateSubskillForm({skill, createSubskill, index, showTr
 
 
     return (
+        <Transition animation='drop' transitionOnMount unmountOnHide> 
         <div draggable onDragStart={(e) => {
             e.preventDefault(); 
             e.stopPropagation();}}>
@@ -52,5 +53,6 @@ export default function CreateSubskillForm({skill, createSubskill, index, showTr
             </Segment>
         </Segment>
         </div>
+        </Transition>
     )
 }
