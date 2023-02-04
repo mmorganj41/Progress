@@ -4,7 +4,7 @@ import { Sidebar, Header, Message, Icon, Segment } from 'semantic-ui-react'
 import React, {useEffect, useRef, useState} from 'react';
 import Burger from '../Burger/Burger';
 import { useOnClickOutside } from '../../hooks/hooks';
-import { levelByExperience } from '../../utils/leveling';
+import Bar from '../Bar/Bar.jsx';
 
 export default function FeedSidebar({levels, skills, totals, date, changeDate}) {
     const [windowSize, setWindowSize] = useState(0);
@@ -21,9 +21,8 @@ export default function FeedSidebar({levels, skills, totals, date, changeDate}) 
 
     
     const levelsArray = levels?.map(skill => {
-        return (<div>
-            {skill.name} Lvl. {skill.level}
-        </div>)
+        console.log(skill);
+        return (<Bar skill={skill} />)
     }) 
 
 

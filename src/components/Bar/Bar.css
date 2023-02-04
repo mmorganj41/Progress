@@ -1,0 +1,23 @@
+.Bar .outer-bar {
+	box-sizing: border-box;
+	width: 300px;
+	height: 30px;
+	padding: 5px;
+	background: #ddd;
+	border-radius: 5px;
+	position: relative;
+}
+
+
+.Bar .bar {
+	background: rgb(43, 178, 41);
+	width: 100%;
+	height: 20px;
+	position: relative;
+	
+	transition: width .5s linear;
+}
+
+.Bar .bar.subskill {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.3);
+}

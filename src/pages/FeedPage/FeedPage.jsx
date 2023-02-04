@@ -17,10 +17,9 @@ export default function FeedPage() {
     const [skills, updateSkills] = useImmer(null);
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
+    const [levels, setLevels] = useState([]);
 
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
-
-    const levels = [];
 
     const selectedDate = date || new Date();
 
@@ -213,10 +212,11 @@ export default function FeedPage() {
         getSkills();
     }, [])
 
-    function makeLevelArray(levels) {
+    function makeLevelArray() {
+        const tempLevels = [];
         skills?.forEach(skill => {
             const level = levelByExperience(skill.experience)
-        levels.push({
+        tempLevels.push({
             name: skill.name,
             experience: skill.experience,
             level: level,
@@ -227,7 +227,7 @@ export default function FeedPage() {
         });
         skill.subskills.forEach(subskill => {
             const subskillLevel = levelByExperience(subskill.experience);
-            levels.push({
+            tempLevels.push({
                 name: subskill.name,
                 experience: subskill.experience,
                 level: subskillLevel,
@@ -238,13 +238,13 @@ export default function FeedPage() {
             })
         })
         });
-        console.log(levels);
+        setLevels(tempLevels);
     }
 
     useEffect(() => {
-        makeLevelArray(levels);
+        makeLevelArray();
         return () => {
-            levels.length = 0;
+            setLevels([]);
         }
     }, [skills])
 
