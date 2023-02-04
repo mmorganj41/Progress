@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import { useImmer } from 'use-immer';
 import FeedSidebar from '../../components/FeedSidebar/FeedSidebar';
 import HabitList from '../../components/HabitList/HabitList';
@@ -18,13 +18,16 @@ export default function FeedPage() {
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
 
+    const [totals, updateTotals] = useImmer({complete: 0, total: 0});
+
+
+
     const selectedDate = date || new Date();
 
     selectedDate.setHours(0,0,0,0);
 
     function changeDate(e, data) {
         setDate(data.value);
-        console.log(data.value);
     }
 
     async function setSkills(array) {
@@ -220,7 +223,7 @@ export default function FeedPage() {
 
     return (
         <>
-        <FeedSidebar skills={skills} date={date} changeDate={changeDate}/>
+        <FeedSidebar totals={totals} skills={skills} date={date} changeDate={changeDate} /> 
         <div className="container" style={{width:'100%'}}>
             
             <Header as="h1">Habits for {readableDateString(selectedDate)}</Header>
@@ -238,6 +241,8 @@ export default function FeedPage() {
                     editSkill={editSkill}
                     editHabit={editHabit}
                     setSkills={setSkills}
+                    totals={totals}
+                    updateTotals={updateTotals}
                 />
             </DateContext.Provider>
         </div>

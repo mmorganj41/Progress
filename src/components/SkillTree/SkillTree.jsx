@@ -9,7 +9,7 @@ import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SearchContext } from '../../context/SearchContext/SearchContext';
 
-export default function SkillTree({skill, state, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, parentVisible, completeHabit, uncompleteHabit, dragging, draggedOver, key, childrenRef}) {
+export default function SkillTree({skill, state, totals, updateTotals, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, parentVisible, completeHabit, uncompleteHabit, dragging, draggedOver, childrenRef, }) {
     const [showTree, setShowTree] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -21,7 +21,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     const hasVisibleChildren = useRef(null);
 
     const dateParsed = parseDays(Date.parse(date.toISOString().split('T')[0]));
-    const nameMatch = (search ? !!skill.name.match(search)?.[0] : true);
+    const nameMatch = (search ? !!skill.name.match(search)?.[0] : true) || !!parentVisible;
 
     let foundChild = false;
 
@@ -51,27 +51,34 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                 editHabit={editHabit}
                 parentVisible={nameMatch}
                 childrenRef={hasVisibleChildren}
+                totals={totals}
+                    updateTotals={updateTotals}
         /></div>);
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
         let applicable = false;
-         if (!habit.name.match(search) && !nameMatch) {
-        } else if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
+        // if (!habit.name.match(search) && !nameMatch) {
+
+        const startDateParsed = parseDays(Date.parse(habit.startDate));
+        if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
         } else if (habit.repeatDays) {
-            if ((dateParsed - parseDays(Date.parse(habit.startDate))) % habit.repeatDays) {
+            if (dateParsed < startDateParsed || (dateParsed - startDateParsed) % habit.repeatDays) {
             } else {
                 applicable = true;
             }
-        } else if (date.toISOString().split('T')[0] === habit.startDate) {
+        } else if (dateParsed === startDateParsed) {
             applicable = true;
         }
 
-        if (applicable) foundChild = true;
+        if (applicable && !habit.name.match(search) && !nameMatch) applicable = false;
+        if (applicable) {
+            foundChild = true;
+        }
 
         if (!showTree) applicable = false;
         return (
-            <Transition key={habit._id} visible={applicable} duration={250} animation='fade down' transitionOnMount>
+            <Transition key={habit._id} visible={applicable} duration={250} animation='fade down' transitionOnMount unmountOnHide>
                 <HabitCard 
                     key={habit._id} 
                     habit={habit} 
@@ -84,6 +91,8 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
                     habitIndex={i}
                     deleteHabit={deleteHabit}
                     editHabit={editHabit}
+                    totals={totals}
+                    updateTotals={updateTotals}
                 />
             </Transition>);
         
@@ -171,7 +180,7 @@ export default function SkillTree({skill, state, deleteSkill, editSkill, editHab
     return(
         
         <SkillLevelContext.Provider value={skillLevel + 1}>
-            <Transition unmountOnHide key={key} duration={250} animation='fade down' transitionOnMount visible={visible}>
+            <Transition duration={250} animation='fade down' transitionOnMount visible={visible}>
                 <Segment basic inverted={draggedOver} disabled={dragging} className='SkillTree main'>
                     <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                         {actionPanel()}

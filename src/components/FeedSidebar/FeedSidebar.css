@@ -40,4 +40,8 @@
   transition: transform 0.4s ease-in-out;
 }
 
+.FeedSideBar.Message {
+  width: 90%!important;
+  text-align: left;
+}
 

@@ -133,7 +133,6 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
                             min={0}
                             value={formState.repeatDays}
                             onChange={handleNumberChange}
-                            buttonPlacement="leftAndRight" 
                         />
                         :
                         <NumericInput
@@ -142,7 +141,6 @@ export default function EditHabitForm({habit, setEditState, editHabit, icon, ind
                             disabled
                             value={formState.repeatDays}
                             onChange={handleNumberChange}
-                            buttonPlacement="leftAndRight" 
                         />
                         }
                         </div>

@@ -7,7 +7,7 @@ import './HabitList.css';
 import Masonry from "react-masonry-css";
 import { SearchContext } from "../../context/SearchContext/SearchContext";
 
-export default function HabitList({skills, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
+export default function HabitList({skills, totals, updateTotals, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('add');
     const [search, setSearch] = useState('');
     const [dragging, setDragging] = useState({dragged: null, dragOver: null});
@@ -58,6 +58,8 @@ export default function HabitList({skills, setSkills, createSkill, editSkill, de
                         dragging={dragging.dragged === i}
                         draggedOver={dragging.dragOver === i}  
                         parentVisible={false}  
+                        totals={totals}
+                        updateTotals={updateTotals}
                     />
             </div>)
     }) : null;

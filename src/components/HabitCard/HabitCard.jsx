@@ -5,7 +5,7 @@ import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelCon
 import './HabitCard.css';
 import EditHabitForm from '../EditHabitForm/EditHabitForm';
 
-export default function HabitCard({habit, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
+export default function HabitCard({habit, totals, updateTotals, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
     const [showEdit, setShowEdit] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const date = useContext(DateContext)?.toISOString().split('T')[0];
@@ -13,7 +13,17 @@ export default function HabitCard({habit, color, state, editHabit, deleteHabit, 
     const icon = complete ? 'check circle' : 'circle outline';
     const skillLevel = useContext(SkillLevelContext);
     
-    
+    useEffect(() => {
+        updateTotals(draft => {
+            if (complete) draft.complete += 1;
+            draft.total += 1;
+        })
+        return () => updateTotals(draft => {
+            if (complete) draft.complete -= 1;
+            draft.total -= 1;
+        })
+    }, [date, complete])
+
     async function handleClick(e) {
         e.stopPropagation();
         const data = {date};

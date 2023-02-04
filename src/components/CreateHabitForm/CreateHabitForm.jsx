@@ -114,7 +114,6 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                         min={0}
                         value={formState.repeatDays}
                         onChange={handleNumberChange}
-                        buttonPlacement="leftAndRight" 
                     />
                     :
                     <NumericInput
@@ -124,7 +123,6 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
                         disabled
                         value={formState.repeatDays}
                         onChange={handleNumberChange}
-                        buttonPlacement="leftAndRight" 
                     />
                     }
                     </div>
