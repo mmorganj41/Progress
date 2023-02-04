@@ -49,7 +49,7 @@ export default function CreateSubskillForm({skill, createSubskill, index, showTr
                         <Icon name="remove circle" onClick={hideForm} size="large"/>
                     </div>
             
-        </Segment>
+            </Segment>
         </Segment>
         </div>
     )

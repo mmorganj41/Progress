@@ -6,11 +6,18 @@ import SkillTree from "../SkillTree/SkillTree";
 import './HabitList.css';
 import Masonry from "react-masonry-css";
 import { SearchContext } from "../../context/SearchContext/SearchContext";
+import CreateSkillForm from "../CreateSkillForm/CreateSkillForm";
 
 export default function HabitList({skills, totals, updateTotals, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
     const [state, setState] = useState('add');
     const [search, setSearch] = useState('');
     const [dragging, setDragging] = useState({dragged: null, dragOver: null});
+    const [showCreateSkillForm, setCreateSkillShowForm] = useState(false);
+    
+    function handleCreateSkillFormShow(e) {
+        e.preventDefault();
+        setCreateSkillShowForm(!showCreateSkillForm);
+    }
 
 
     const dragStart = (e, position) => {
@@ -66,7 +73,7 @@ export default function HabitList({skills, totals, updateTotals, setSkills, crea
 
     return (
         <Container>
-            <SearchForm createSkill={createSkill} search={search} setSearch={setSearch}/>
+            <SearchForm showCreateSkillForm={showCreateSkillForm} handleCreateSkillFormShow={handleCreateSkillFormShow} search={search} setSearch={setSearch}/>
             <ActionSwitcher state={state} setState={setState}/>
             <SearchContext.Provider value={search ? new RegExp(search, 'i') : ''}>
             <Masonry 
@@ -74,6 +81,7 @@ export default function HabitList({skills, totals, updateTotals, setSkills, crea
                 className="my-masonry-grid"
                 columnClassName="my-masonry-grid_column"
             >
+                {showCreateSkillForm && <CreateSkillForm handleCreateSkillFormShow={handleCreateSkillFormShow} createSkill={createSkill}/>}
                 {skillTrees}
             </Masonry>
             </SearchContext.Provider>

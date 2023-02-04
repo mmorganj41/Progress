@@ -2,13 +2,7 @@ import React, {useState} from 'react';
 import {Segment, Input, Grid, Divider, Button } from 'semantic-ui-react';
 import CreateSkillForm from '../CreateSkillForm/CreateSkillForm';
 
-export default function SearchForm({createSkill, search, setSearch}) {
-    const [showForm, setShowForm] = useState(false);
-    
-    function handleFormShow(e) {
-        e.preventDefault();
-        setShowForm(!showForm);
-    }
+export default function SearchForm({handleCreateSkillFormShow, showCreateSkillForm, search, setSearch}) {
 
     function handleSearch(e) {
         setSearch(e.target.value);
@@ -37,22 +31,13 @@ export default function SearchForm({createSkill, search, setSearch}) {
                     <Grid.Column verticalAlign='middle'>
                         <Button
                             color='teal'
-                            content='Create New Skill'
+                            content={showCreateSkillForm ? 'Remove New Skill' : 'Create New Skill'}
                             icon='add'
                             labelPosition='left'
-                            onClick={handleFormShow}
+                            onClick={handleCreateSkillFormShow}
                         />
                     </Grid.Column>
                 </Grid.Row>
-                
-
-            
-            {showForm &&
-                (<Grid.Row columns={1}>
-                    <Grid.Column>
-                        <CreateSkillForm createSkill={createSkill}/>
-                    </Grid.Column>
-                </Grid.Row>)}
             </Grid>
         </Segment>
 )
