@@ -5,7 +5,7 @@ import multer from 'multer'
 const upload = multer()
 
 // router.get('/:date');
-router.post('/', skillController.create);
+router.post('/', upload.single('photo'), skillController.create);
 router.get('/user/:userId', skillController.getUserSkills);
 router.post('/habit/:habitId', skillController.completeHabit);
 router.delete('/habit/:habitId/datesComplete', skillController.uncompleteHabit);

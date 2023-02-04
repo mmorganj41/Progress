@@ -18,15 +18,15 @@ export default {
 const BASE_URL = '/api/skills/'
 
 async function createSkill(data) {
-    const header = new Headers();
-    header.append('Content-Type', 'application/json');
-    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
     try {
+        console.log(data);
         const response = await fetch(`${BASE_URL}`, {
             method: 'POST',
-            body: JSON.stringify(data),
-            headers: header
+            body: data, 
+            headers: {
+            Authorization: `Bearer ${tokenService.getToken()}`
+        }
         })
         if (response.ok) return await response.json();
         
@@ -196,6 +196,9 @@ async function editSkill(skillId, data) {
         const response = await fetch(`${BASE_URL}${skillId}`, {
             method: 'PUT',
             body: data,
+            headers: {
+                Authorization: `Bearer ${tokenService.getToken()}`
+            }
         })
         if (response.ok) return await response.json();
         

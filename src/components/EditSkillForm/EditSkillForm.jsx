@@ -45,15 +45,16 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                 e.preventDefault(); 
                 e.stopPropagation();}}
         >
-            {skillLevel <= 1 ?
-            <Form.Input
-                type="file"
-                name="photo"
-                placeholder="upload image"
-                onChange={handleFileInput}
-            />
-            : null}
-            <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
+
+            <Form className='EditSkillForm Form' onSubmit={handleSubmit}>            
+                            {skillLevel <= 1 ?
+                            <Form.Input
+                                type="file"
+                                name="photo"
+                                placeholder="upload image"
+                                onChange={handleFileInput}
+                            />
+                            : null}
                             <Form.Input 
                                 name='name'
                                 placeholder='Name'

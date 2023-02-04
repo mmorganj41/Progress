@@ -33,19 +33,47 @@ export default {
 
 async function create(req, res){
     try {
+        console.log(req);
         const userPromise = User.findById(req.user._id);
-        const skillPromise = Skill.create({
-            name: req.body.name,
-            color: req.body.color,
-        });
+        if (req.file) {
+            
+            const filePath = `progress/${uuidv4()}-${req.file.originalname}`;
+            const params = {Bucket: BUCKET_NAME, Key: filePath, Body: req.file.buffer}; // req.file.buffer is the actually from the form when it was sent to our express server
+            // s3.upload is making the request to s3
+            s3.upload(params, async function(err, data){ // < inside the function in the response from aws
+                if(err){
+                console.log('===============================')
+                console.log(err, ' <- error from aws, Probably telling you your keys arent correct')
+                console.log('===============================')
+                return;
+                }
+            
+                const skillPromise = Skill.create({
+                    name: req.body.name,
+                    color: req.body.color,
+                    photoUrl: data.Location
+                });
 
-        const [user, skill] = await Promise.all([userPromise, skillPromise]);
+                const [user, skill] = await Promise.all([userPromise, skillPromise]);
 
-        user.skills.splice(0,0, skill);
+                user.skills.splice(0,0, skill);
 
-        await user.save();
+                await user.save();
+                res.status(201).json({skill});
+            });
+        } else {
+                const skillPromise = Skill.create({
+                    name: req.body.name,
+                    color: req.body.color,
+                });
 
-        res.status(201).json({skill});
+                const [user, skill] = await Promise.all([userPromise, skillPromise]);
+
+                user.skills.splice(0,0, skill);
+
+                await user.save();
+                res.status(201).json({skill});
+        }        
     } catch(err) {
         console.log(err);
         res.status(400).json({err});

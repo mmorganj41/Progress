@@ -58,7 +58,6 @@ export default function FeedPage() {
     }
 
     async function createSkill(data) {
-
         const response = await skillsService.createSkill(data);
         updateSkills(draft => {
             draft.unshift(response.skill)

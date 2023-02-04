@@ -10,7 +10,11 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
         name: '',
         color: 'teal',
     });
+    const [file, setFile] = useState(null);
 
+    function handleFileInput(e) {
+        setFile(e.target.files[0]);
+    }
 
     function handleChange(e) {
         e.preventDefault();
@@ -22,7 +26,12 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
     async function handleSubmit(e) {
         try {
             e.preventDefault();
-            await createSkill(formState);
+            const formData = new FormData();
+            formData.append("photo", file);
+
+            formData.append('color', formState.color);
+            formData.append('name', formState.name)
+            await createSkill(formData);
             handleCreateSkillFormShow(e);
         } catch(err) {
             setError(err.message);
@@ -36,6 +45,12 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
             <Segment basic className='SkillTree main'>
                     <Segment inverted color={formState.color}>
                     <div className='SkillTree header'>
+                        <Form.Input
+                            type="file"
+                            name="photo"
+                            placeholder="upload image"
+                            onChange={handleFileInput}
+                        />
                         <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
                             <Form.Input 
                                 name='name'
