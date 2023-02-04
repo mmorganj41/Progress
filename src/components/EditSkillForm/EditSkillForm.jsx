@@ -32,7 +32,6 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
             {skillLevel <= 1 ?
             <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar /> : null}
             <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
-                        <Form.Group widths='equal'>
                             <Form.Input 
                                 name='name'
                                 placeholder='Name'
@@ -41,7 +40,6 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                             />
                             {skillLevel <= 1 ?
                             (<>
-                                Color:
                                 <Form.Field 
                                     name='color'
                                     control={Select}
@@ -53,7 +51,6 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
                                 />
                             </>) : null }
                             <Button type='submit'>Submit</Button>
-                        </Form.Group>
                         {error ? <ErrorMessage error={error} /> : null }
             </Form>
             <Icon name="dot circle outline" onClick={handleShowEdit}  size="large"/>
