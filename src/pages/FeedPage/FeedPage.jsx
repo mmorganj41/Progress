@@ -12,6 +12,7 @@ import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {experienceDictionary, levelByExperience} from '../../utils/leveling';
 import { readableDateString } from '../../utils/date';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 
 
 export default function FeedPage() {
@@ -19,6 +20,7 @@ export default function FeedPage() {
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
 
@@ -44,6 +46,7 @@ export default function FeedPage() {
             updateSkills(response.skills)
         } catch(err) {
             console.log(err);
+            setError('Error loading skills');
         }
     }
 
@@ -238,6 +241,8 @@ export default function FeedPage() {
         getSkills();
         setLoading(false);
     }, []);
+
+    if (error) return (<ErrorMessage error={error} />);
 
     return (
         <>
