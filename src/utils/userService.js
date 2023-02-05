@@ -2,6 +2,19 @@ import tokenService from './tokenService';
 
 const BASE_URL = '/api/users/';
 
+function getProfile(username){
+  return fetch(BASE_URL + username, {
+    headers: {
+			Authorization: "Bearer " + tokenService.getToken() 
+			//this is how we grab the token from local storage
+		}
+  }).then(res => {
+    if(res.ok) return res.json() // decoding the json from the server response
+    // so that we can interact with it like a regular javascript object
+    throw new Error('Error from getProfile request, check the server terminal')
+  })
+}
+
 function signup(user) {
   return fetch(BASE_URL + 'signup', {
     method: 'POST',
@@ -66,5 +79,6 @@ export default {
   getUser,
   logout,
   login,
+  getProfile,
   reorderSkills,
 };
