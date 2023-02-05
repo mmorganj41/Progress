@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Card, Input, TextArea } from 'semantic-ui-react';
 import ErrorMessage from '../ErrorMessage/ErrorMessage'
-import userService from '../../utils/userService';
 
-export default function EditProfile({user, setShowEdit}) {
+export default function EditProfile({user, setShowEdit, editProfile}) {
     const [description, setDescription] = useState(user.bio);
     const [file, setFile] = useState(null);
     const [error, setError] = useState('');
@@ -16,7 +15,7 @@ export default function EditProfile({user, setShowEdit}) {
         setFile(e.target.files[0]);
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
         const formData = new FormData();
@@ -24,7 +23,7 @@ export default function EditProfile({user, setShowEdit}) {
 
         formData.append('bio', description);
         try {
-            userService.editProfile(formData);
+            editProfile(formData);
             setShowEdit(false);
         } catch(err) {
             setError('Error. Could not edit Profile.');
@@ -33,6 +32,8 @@ export default function EditProfile({user, setShowEdit}) {
 
     return (
             <Card.Description>
+                Profile Photo 
+                <br/ >
                 <Input
                     type='file'
                     name='photo'
@@ -40,6 +41,9 @@ export default function EditProfile({user, setShowEdit}) {
                     onChange={handleFileInput}
                     size='small'
                 />
+                <br />
+                Bio
+                <br />
                 <TextArea
                     name='description'
                     value={description}

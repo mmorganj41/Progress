@@ -7,7 +7,7 @@ import './ProfileCard.css'
 import BasicLoader from '../BasicLoader/BasicLoader';
 import EditProfile from '../EditProfile/EditProfile';
 
-export default function ProfileCard({profileUser, loading}) {
+export default function ProfileCard({profileUser, loading, editProfile}) {
     const user = useContext(UserContext);
     const [showEdit, setShowEdit] = useState(false);
 
@@ -68,7 +68,7 @@ export default function ProfileCard({profileUser, loading}) {
               <span className='date'>Joined {profileUser?.createdAt?.split('T')[0]}</span>
             </Card.Meta>
             {showEdit ? 
-            <EditProfile user={profileUser} setShowEdit={setShowEdit}/>
+            <EditProfile user={profileUser} setShowEdit={setShowEdit} editProfile={editProfile}/>
             :
             <Card.Description>
               {profileUser?.bio ? profileUser.bio : 'Looks like their biography is empty.'}

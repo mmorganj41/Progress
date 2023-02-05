@@ -27,6 +27,12 @@ export default function ProfilePage() {
         }
     }
 
+
+    async function editProfile(data) {
+        const newUserData = await userService.editProfile(data);
+        setProfileUser(newUserData);
+    }
+
     useEffect(() => {
         getProfile();
     }, []);
@@ -38,7 +44,7 @@ export default function ProfilePage() {
                 <Header as='h2' color='teal'>{profileUser?.username}</Header>
                 <Transition animation='fade right' transitionOnMount unmountOnHide duration={500}>
                     <div>
-                    <ProfileCard profileUser={profileUser} loading={loading}/>
+                    <ProfileCard profileUser={profileUser} editProfile={editProfile} loading={loading}/>
                     </div>
                 </Transition>
             </div>

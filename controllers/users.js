@@ -107,17 +107,31 @@ async function editProfile(req, res) {
             user = await User.findByIdAndUpdate(req.user._id , {
               bio: req.body.bio,
               photoUrl: data.Location
-            })
+            }, {new: true}).populate({
+                path: 'skills',
+                populate: [{
+                    path: 'subskills',
+                    model: 'Subskill',}]}).exec();
+            const token = createJWT(user);
+
+            res.status(200).json({user, token});
+                  
           });
+          
     } else {
       user = await User.findByIdAndUpdate(req.user._id, {
         bio: req.body.bio,
-      })
+      }, {new: true}).populate({
+                path: 'skills',
+                populate: [{
+                    path: 'subskills',
+                    model: 'Subskill',}]}).exec();
+
+      const token = createJWT(user);
+
+      res.status(200).json({user, token});
     }
 
-    const token = createJWT(user);
-
-    res.status(200).json({user, token});
   } catch(err){
     console.log(err)
     res.status(400).json({err})

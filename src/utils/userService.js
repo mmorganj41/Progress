@@ -87,8 +87,6 @@ async function editProfile(data) {
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log(response.token);
-      tokenService.removeToken();
       tokenService.setToken(responseData.token);
       return responseData.user;
     }
