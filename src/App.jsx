@@ -11,6 +11,7 @@ import HeaderLayout from './pages/HeaderLayout/HeaderLayout'
 import userService from "./utils/userService";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import ChangePassPage from "./pages/ChangePassPage/ChangePassPage";
 
 function App() {
   const [user, setUser] = useState(userService.getUser());
@@ -31,7 +32,9 @@ function App() {
           <Route path="/" element={<HeaderLayout handleLogout={handleLogout} />} 
           >
               <Route index element={<FeedPage />} />
-              <Route path="/:username" element={<ProfilePage />} /> 
+              
+              <Route path="/:username" element={<ProfilePage />} />
+              <Route path="/:username/changePassword" element={<ChangePassPage />} />
           </Route>
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} />

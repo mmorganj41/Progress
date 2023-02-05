@@ -55,10 +55,30 @@ function login(creds) {
   .then(({token}) => tokenService.setToken(token));
 }
 
+async function changePassword(data) {
+  const header = new Headers();
+  header.append('Content-Type', 'application/json');
+  header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+  try {
+    const response = await fetch(BASE_URL + 'changePassword', {
+      method: 'PUT',
+      headers: header,
+      body: JSON.stringify(data),
+    })
+    if (response.ok) {
+      const responseData = await response.json();
+      tokenService.setToken(responseData.token);
+    }
+
+  } catch(err) {
+    console.log(err);
+  }
+}
+
 async function reorderSkills(data) {
-    const header = new Headers();
-    header.append('Content-Type', 'application/json');
-    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+  const header = new Headers();
+  header.append('Content-Type', 'application/json');
+  header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
   try {
     const response = await fetch(BASE_URL + 'reorder', {
@@ -104,4 +124,5 @@ export default {
   getProfile,
   reorderSkills,
   editProfile,
+  changePassword,
 };

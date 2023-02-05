@@ -16,7 +16,8 @@ export default {
   login,
   reorderSkills,
   profile,
-  editProfile
+  editProfile,
+  changePassword
 };
 
 async function profile(req, res){
@@ -87,10 +88,27 @@ async function login(req, res) {
   }
 }
 
+async function changePassword(req, res) {
+  try {
+    const user = await User.findById(req.user._id);
+
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (isMatch) {
+        user.update({password: req.body.password});
+        const token = createJWT(user);
+        res.json({token});
+      } else {
+        return res.status(401).json({err: 'bad password'});
+      }
+    });
+  } catch (err) {
+    return res.status(401).json(err);
+  }
+}
+
 async function editProfile(req, res) {
   try {
     let user;
-    console.log(req);
     if (req.file) {
             const filePath = `progress/profile/${uuidv4()}-${req.file.originalname}`;
             const params = {Bucket: BUCKET_NAME, Key: filePath, Body: req.file.buffer}; // req.file.buffer is the actually from the form when it was sent to our express server
@@ -143,7 +161,6 @@ async function reorderSkills(req, res) {
     const user = await User.findByIdAndUpdate(req.user._id, 
       {skills: req.body.skills}, {new: true});
 
-      console.log(user);
     return res.status(200).json({user})
   } catch(err) {
     console.log(err);

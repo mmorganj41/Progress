@@ -1,19 +1,20 @@
-import "./SignupPage.css";
-import React, { useState } from "react";
+import "./ChangePassPage.css";
+import React, { useState, useContext } from "react";
 import {useImmer} from "use-immer";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, useNavigate } from 'react-router-dom';
 import userService from '../../utils/userService';
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import { UserContext } from "../../context/UserContext/UserContext";
 
-export default function SignupPage({handleSignUpOrLogin}){
+export default function ChangePassPage(){
   const [formState, updateFormState] = useImmer({
-    username: '',
-    email: '',
     password: '',
+    newPassword: '',
     passwordConf: '',
   })
   const [error, setError] = useState(null);
+  const user = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -25,10 +26,9 @@ export default function SignupPage({handleSignUpOrLogin}){
 
   async function handleSubmit() {
     try {
-      if (formState.password !== formState.passwordConf) throw new Error("Password do not match")
-      await userService.signup(formState);
-      handleSignUpOrLogin();
-      navigate('/')
+      if (formState.newPassword !== formState.passwordConf) throw new Error("Password do not match")
+      await userService.changePassword(formState);
+      navigate(`/${user.username}`);
     } catch(err) {
       setError(err.message);
     }
@@ -38,35 +38,27 @@ export default function SignupPage({handleSignUpOrLogin}){
     <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as='h2' color='teal' textAlign='center'>
-          <Image src='https://i.imgur.com/2o8gKIA.png' /> Sign Up
+          Change Password:
         </Header>
         <Form autoComplete="off" size='large' onSubmit={handleSubmit}>
           <Segment stacked>
-            <Form.Input
-              name="username"
-              fluid icon='user'
-              iconPosition='left'
-              placeholder='username'
-              value={formState.username}
-              onChange={handleChange}
-              required
-            />
-            <Form.Input
-              name="email"
-              fluid
-              icon='envelope'
-              iconPosition='left'
-              value={formState.email}
-              onChange={handleChange}
-              placeholder='email'
-            />
             <Form.Input
               name="password"
               fluid
               icon='lock'
               iconPosition='left'
-              placeholder='Password'
+              placeholder='Current Password'
               value={formState.password}
+              onChange={handleChange}
+              type='password'
+            />
+            <Form.Input
+              name="newPassword"
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='New Password'
+              value={formState.newPassword}
               onChange={handleChange}
               type='password'
             />
@@ -75,20 +67,17 @@ export default function SignupPage({handleSignUpOrLogin}){
               fluid
               icon='lock'
               iconPosition='left'
-              placeholder='Confirm Password'
+              placeholder='Confirm New Password'
               value={formState.passwordConf}
               onChange={handleChange}
               type='password'
             />
             <Button color='teal' fluid size='large'>
-              Signup
+              Change Password
             </Button>
           </Segment>
           {error ? <ErrorMessage error={error} /> : null}
         </Form>
-        <Message>
-          Already have an account? <Link to='/login'>Log In</Link>
-        </Message>
       </Grid.Column>
     </Grid>
   )
