@@ -17,7 +17,8 @@ export default {
   reorderSkills,
   profile,
   editProfile,
-  changePassword
+  changePassword,
+  search
 };
 
 async function profile(req, res){
@@ -166,6 +167,23 @@ async function reorderSkills(req, res) {
     console.log(err);
     return res.status(401).json(err);
   }
+}
+
+async function search(req, res) {
+  try {
+
+    if (!req.query.username) res.status(200).json({users: []});
+
+    const query = new RegExp(req.query.username);
+
+    const users = await User.find({username: {$regex: query, $options: 'i'}});
+
+    return res.status(200).json({users})
+  } catch(err) {
+    console.log(err);
+    return res.status(401).json(err);
+  }  
+  
 }
 
 /*----- Helper Functions -----*/

@@ -116,11 +116,28 @@ async function editProfile(data) {
   }
 }
 
+async function search(query) {
+    const header = new Headers();
+    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+    try {
+      const response = await fetch(`${BASE_URL}search?username={query}`, {
+        method: 'GET',
+        headers: header,
+      });
+
+      if (response.ok) return await response.json();
+    } catch(err) {
+      console.log(err);
+    }
+}
+
 export default {
   signup, 
   getUser,
   logout,
   login,
+  search,
   getProfile,
   reorderSkills,
   editProfile,

@@ -11,6 +11,7 @@ router.put('/reorder', usersCtrl.reorderSkills);
 router.get('/:username', usersCtrl.profile);
 router.put('/', upload.single('photo'), usersCtrl.editProfile);
 router.put('/changePassword', usersCtrl.changePassword);
+router.get('/search', usersCtrl.search);
 
 
 /*---------- Protected Routes ----------*/

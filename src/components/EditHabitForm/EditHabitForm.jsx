@@ -7,7 +7,7 @@ import { difficultyOptions } from '../../utils/options';
 import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 
-export default function EditHabitForm({habit, setEditState, editHabit, icon, index, handleShowEdit, subskillIndex, habitIndex}) {
+export default function EditHabitForm({habit, editHabit, icon, index, handleShowEdit, subskillIndex, habitIndex}) {
     const skillLevel = useContext(SkillLevelContext);
     const [error, setError] = useState(null);
 

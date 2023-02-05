@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
+import { Header, Container } from 'semantic-ui-react';
 import SearchResults from '../../components/SearchResults/SearchResults';
 
 function useQuery() {
@@ -17,7 +17,9 @@ export default function SearchPage() {
     return (
         <>
         <Header as='h1'>Search: <span style={{color: 'teal'}}>{query}</span></Header>
-        <SearchResults />
+        <Container style={{maxWidth: '1000px'}}>
+            <SearchResults />
+        </Container>
         </>
     )
 }
