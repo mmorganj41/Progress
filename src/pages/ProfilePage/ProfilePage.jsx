@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-
+import ProfileCard from '../../components/ProfileCard/ProfileCard';
 import userService from '../../utils/userService';
 
 import { useParams } from 'react-router-dom';
@@ -28,5 +28,8 @@ export default function ProfilePage() {
         getProfile();
     }, []);
 
-    return (<h1>ProfilePage</h1>)
+    return (<>
+        <h1>{profileUser?.username}</h1>
+        <ProfileCard profileUser={profileUser} />
+    </>)
 }
