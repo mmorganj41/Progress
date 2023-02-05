@@ -174,19 +174,15 @@ async function search(req, res) {
 
     if (!req.query.username) res.status(200).json({users: []});
 
-    const regex = new RegExp(req.query.username)
-    console.log(regex);
+    const regex = new RegExp(req.query.username);
 
-    const users = await User.find({username: {$regex: regex, $options: 'i'}});
-
-    console.log(users);
+    const users = await User.find({username: {$regex: regex, $options: 'i'}}).populate('skills').exec();
 
     return res.status(200).json({users})
   } catch(err) {
     console.log(err);
     return res.status(401).json(err);
   }  
-  
 }
 
 /*----- Helper Functions -----*/

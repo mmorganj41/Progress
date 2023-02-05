@@ -18,7 +18,7 @@ export default function SearchPage() {
     async function makeSearch() {
         try {
             const response = await userService.search(query);
-            setUsers(response);
+            setUsers(response.users);
             setLoading(false);
         } catch(err) {
             console.log(err);
@@ -27,7 +27,6 @@ export default function SearchPage() {
 
     useEffect(() => {
         makeSearch();
-        console.log(users);
     }, [query]);
 
     
@@ -35,7 +34,7 @@ export default function SearchPage() {
         <>
         <Header as='h1'>Search: <span style={{color: 'teal'}}>{query.get('username')}</span></Header>
         <Container style={{maxWidth: '1000px'}}>
-            <SearchResults />
+            <SearchResults users={users} loading={loading}/>
         </Container>
         </>
     )

@@ -41,14 +41,17 @@ export default function ProfilePage() {
         
         <div className="ProfilePage MainContent">
             <div className='Col1'>
+                <div style={{marginBottom: '25px'}}>
                 <Header as='h2' color='teal'>{profileUser?.username}</Header>                    
                 <Transition animation='fade right' transitionOnMount unmountOnHide duration={500}>
                     <div>
                     <ProfileCard profileUser={profileUser} editProfile={editProfile} loading={loading}/>
                     </div>
                 </Transition>
+                </div>
             </div>
             <div className='Col2'>
+                <div>
                 <Header as='h2'>Last 14 Days</Header>
                 <Transition animation='fade left' transitionOnMount unmountOnHide duration={500}>
                 <Segment placeholder>
@@ -58,6 +61,7 @@ export default function ProfilePage() {
                 }
                 </Segment>
                 </Transition>
+                </div>
             </div>
         </div>
     </>)
