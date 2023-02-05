@@ -4,7 +4,6 @@ import { Sidebar, Header, Message, Icon, Segment } from 'semantic-ui-react'
 import React, {useEffect, useRef, useState} from 'react';
 import Burger from '../Burger/Burger';
 import { useOnClickOutside } from '../../hooks/hooks';
-import Bar from '../Bar/Bar.jsx';
 import ExperienceGraph from '../ExperienceGraph/ExperienceGraph';
 
 export default function FeedSidebar({skills, totals, date, changeDate, createNotification}) {

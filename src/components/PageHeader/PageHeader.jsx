@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { Menu, Dropdown, Header, Sidebar, Button, Image, Icon } from "semantic-ui-react";
+import { Menu, Dropdown, Header, Sidebar, Button, Image, Icon, Transition } from "semantic-ui-react";
 import { UserContext } from "../../context/UserContext/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./PageHeader.css"
@@ -28,12 +28,14 @@ export default function PageHeader({ handleLogout }){
                 
 
                 <Dropdown item icon='user' text={loggedUser.username}>
+                    
                     <Dropdown.Menu>
                         <Dropdown.Item image={{avatar:true, src:(loggedUser?.photoUrl
                 ? loggedUser?.photoUrl
                 : "https://react.semantic-ui.com/images/wireframe/square-image.png")}} text="Profile" onClick={() => navigate(`/${loggedUser.username}`)}/>
                         <Dropdown.Item image={{avatar:true, src:'https://i.imgur.com/yM3EHLc.png'}} text="Logout" onClick={handleLogout}/>
                     </Dropdown.Menu>
+                    
                 </Dropdown>
             </Menu.Menu>
         </Menu></div>

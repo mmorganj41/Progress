@@ -1,0 +1,19 @@
+.ProfilePage.MainContent {
+    display: grid;
+    grid-template-columns: auto minmax(500px, max-content);
+}
+
+
+
+@media (max-width : 1000px) {
+    .ProfilePage.MainContent {
+        grid-template-columns: 500px;
+        grid-template-rows : auto auto; 
+    }
+    
+    .ProfilePage.MainContent > div{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}

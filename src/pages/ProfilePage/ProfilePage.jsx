@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
 import userService from '../../utils/userService';
-
+import { Segment } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
+import './ProfilePage.css'
 
 export default function ProfilePage() {
     const [profileUser, setProfileUser] = useState({});
@@ -30,6 +31,15 @@ export default function ProfilePage() {
 
     return (<>
         <h1>{profileUser?.username}</h1>
-        <ProfileCard profileUser={profileUser} />
+        <div className="ProfilePage MainContent">
+            <div>
+                <ProfileCard profileUser={profileUser} />
+            </div>
+            <div>
+                <Segment placeholder>
+
+                </Segment>
+            </div>
+        </div>
     </>)
 }
