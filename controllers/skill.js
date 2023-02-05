@@ -113,6 +113,7 @@ async function createSkillHabit(req, res) {
             difficulty: req.body.difficulty,
             startDate: req.body.startDate,
             endDate: req.body.ends ? req.body.endDate : null,
+            username: req.user._id,
         });
 
         const skillPromise = Skill.findById(req.params.skillId);
@@ -139,6 +140,7 @@ async function createSubskillHabit(req, res) {
             difficulty: req.body.difficulty,
             startDate: req.body.startDate,
             endDate: req.body.ends ? req.body.endDate : null,
+            username: req.user._id,
         })
         const subskillPromise = Subskill.findById(req.params.subskillId);
 

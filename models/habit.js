@@ -10,7 +10,8 @@ const habitSchema = new Schema({
     repeatDays: {type: Number, required: true, default: 0},
     completionDates: {type: Map, of: Boolean, default: new Map()},
     difficulty: {type: String, required: true, default: 'trivial', 
-        enum:['trivial', 'easy', 'average', 'challenging', 'difficult']}
+        enum:['trivial', 'easy', 'average', 'challenging', 'difficult']},
+    username: {type: Schema.Types.ObjectId, ref: 'User', required: true}
 })
 
 function dateToday() {
