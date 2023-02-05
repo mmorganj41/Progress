@@ -4,8 +4,9 @@ import {Card, Image, Icon, Header, Button} from 'semantic-ui-react';
 import { levelByExperience } from '../../utils/leveling';
 import LevelDetail from '../LevelDetail/LevelDetail';
 import './ProfileCard.css'
+import BasicLoader from '../BasicLoader/BasicLoader';
 
-export default function ProfileCard({profileUser}) {
+export default function ProfileCard({profileUser, loading}) {
     const user = useContext(UserContext);
     let icon;
 
@@ -44,6 +45,35 @@ export default function ProfileCard({profileUser}) {
             break;
     }
 
+    if (loading) {
+        return (
+        <Card>
+          <Image src='https://i.imgur.com/tdi3NGa.png' wrapped ui={false}>
+            
+          </Image>
+          <Card.Content>
+          
+            <Card.Header>Email</Card.Header>
+            <Card.Meta>
+              <span className='date'>Joined date</span>
+            </Card.Meta>
+            
+            <Card.Description>
+                <BasicLoader />
+            </Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+          <Header as='h5'>
+              <Icon name={icon} />
+              Skills
+              
+            </Header>
+                <BasicLoader />
+          </Card.Content>
+        </Card>
+        )
+    }
+
     return (
         <Card>
             {user.username === profileUser.username ? 
@@ -59,6 +89,7 @@ export default function ProfileCard({profileUser}) {
             <Card.Meta>
               <span className='date'>Joined in {profileUser?.createdAt?.split('T')[0]}</span>
             </Card.Meta>
+            
             <Card.Description>
               {profileUser?.bio ? profileUser.bio : 'Looks like their biography is empty.'}
             </Card.Description>
