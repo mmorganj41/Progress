@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 
 export default function ProfilePage() {
     const [profileUser, setProfileUser] = useState({});
+    const [habits, setHabits] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -15,7 +16,11 @@ export default function ProfilePage() {
         try {
             const response = await userService.getProfile(username);
             setLoading(false);
-
+            setProfileUser(response.user);
+            setHabits(response.data);
+        } catch(err) {
+            setLoading(false);
+            setError("Profile does not exist");
         }
     }
 
