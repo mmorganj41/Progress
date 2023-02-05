@@ -184,7 +184,6 @@ export default function FeedPage() {
         try {
             if (skillLevel <= 1) {
                 const response = await skillsService.editSkill(skill._id, data);
-                console.log(data);
                 updateSkills(draft => {
                     for (let key of data.keys()) {
                         if (key === 'photo') {
@@ -198,7 +197,7 @@ export default function FeedPage() {
             } else {
                 await skillsService.editSubskill(skill._id, data);
                 updateSkills(draft => {
-                    draft[skillIndex].subskills[subskillIndex].name = data.name;
+                    draft[skillIndex].subskills[subskillIndex].name = data.get('name');
                 });
             }
         } catch(err) {

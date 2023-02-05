@@ -13,7 +13,7 @@ router.post('/subskill/:subskillId/habit', skillController.createSubskillHabit);
 router.delete('/subskill/:subskillId', skillController.deleteSubskill);
 router.delete('/habit/:habitId', skillController.deleteHabit);
 
-router.put('/subskill/:subskillId', skillController.editSubskill);
+router.put('/subskill/:subskillId', upload.single('photo'), skillController.editSubskill);
 router.put('/habit/:habitId', skillController.editHabit);
 
 router.post('/:skillId', skillController.createSubskill);

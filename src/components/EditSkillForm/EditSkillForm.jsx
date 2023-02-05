@@ -22,7 +22,7 @@ export default function EditSkillForm({skill, handleShowEdit, editSkill, index, 
 
         const formData = new FormData();
         formData.append("photo", file);
-
+        
         formData.append('color', formState.color);
         formData.append('name', formState.name)
         try {

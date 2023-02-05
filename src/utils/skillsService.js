@@ -210,15 +210,13 @@ async function editSkill(skillId, data) {
 }
 
 async function editSubskill(subskillId, data) {
-    const header = new Headers();
-    header.append('Content-Type', 'application/json');
-    header.append('Authorization', `Bearer ${tokenService.getToken()}`);
-
     try {
         const response = await fetch(`${BASE_URL}subskill/${subskillId}`, {
             method: 'PUT',
-            body: JSON.stringify(data),
-            headers: header
+            body: data,
+            headers: {
+                Authorization: `Bearer ${tokenService.getToken()}`
+            }
         })
         if (response.ok) return await response.json();
         

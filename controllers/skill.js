@@ -335,6 +335,7 @@ async function editSkill(req, res) {
 
 async function editSubskill(req, res) {
     try {
+        console.log(req.body);
         const subskill = await Subskill.findByIdAndUpdate(req.params.subskillId, 
             {name: req.body.name}, {new: true})
 
