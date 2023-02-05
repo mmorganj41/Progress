@@ -28,14 +28,14 @@ export default function ChangePassPage(){
     try {
       if (formState.newPassword !== formState.passwordConf) throw new Error("Password do not match")
       await userService.changePassword(formState);
-      navigate(`/${user.username}`);
+      navigate(`/user/${user.username}`);
     } catch(err) {
       setError(err.message);
     }
   }
 
   return (
-    <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+    <Grid textAlign='center' style={{ height: '75vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as='h2' color='teal' textAlign='center'>
           Change Password:

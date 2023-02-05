@@ -32,9 +32,8 @@ function App() {
           <Route path="/" element={<HeaderLayout handleLogout={handleLogout} />} 
           >
               <Route index element={<FeedPage />} />
-              
-              <Route path="/:username" element={<ProfilePage />} />
-              <Route path="/:username/changePassword" element={<ChangePassPage />} />
+              <Route path="/user/:username" element={<ProfilePage />} />
+              <Route path="/changePassword" element={<ChangePassPage />} />
           </Route>
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} />
