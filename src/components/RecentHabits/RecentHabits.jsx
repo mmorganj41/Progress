@@ -1,4 +1,9 @@
 
+import React from 'react';
+import DayHeader from '../DayHeader/DayHeader';
+import DayList from '../DayList/DayList';
+import { Card, Segment } from 'semantic-ui-react';
+
 export default function RecentHabits({habits}) {
     
     const habitHistory = [];
@@ -6,15 +11,17 @@ export default function RecentHabits({habits}) {
     for (let key in habits) {
         if (habits[key].length) {
             habitHistory.push(
-                <Segment>
-                    <DayHeader />
+                <Card fluid>
+                    <DayHeader day={key}/>
                     <DayList habits={habits[key]}/>
-                </Segment>
+                </Card>
                 );
         }
     }
     
     return (
-        <h3>Hi</h3>
+        <>
+            {habitHistory}
+        </>
     )
 }

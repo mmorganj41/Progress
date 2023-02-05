@@ -11,6 +11,7 @@ import './FeedPage.css';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {experienceDictionary, levelByExperience} from '../../utils/leveling';
+import { readableDateString } from '../../utils/date';
 
 
 export default function FeedPage() {
@@ -233,15 +234,7 @@ export default function FeedPage() {
             console.log(err);
         }
     }
-
-    const readableDateString = (date) => {
-        return date.toLocaleDateString('en-US', 
-            {weekday: 'long',
-            year: "numeric",
-            month: "long",
-            day: "numeric",});
-    }
-
+  
     useEffect(() => {
         getSkills();
         setLoading(false);

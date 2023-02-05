@@ -5,6 +5,7 @@ import { Segment, Image, Transition } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import './ProfilePage.css'
 import Loading from '../../components/Loading/Loading';
+import RecentHabits from '../../components/RecentHabits/RecentHabits';
 
 export default function ProfilePage() {
     const [profileUser, setProfileUser] = useState({});
@@ -43,7 +44,10 @@ export default function ProfilePage() {
             <div className='Col2'>
                 <Transition animation='fade left' transitionOnMount unmountOnHide duration={500}>
                 <Segment placeholder>
-                    <Loading ><Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' /></Loading>
+                {loading ? 
+                    (<Loading ><Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' /></Loading>) :
+                    (<RecentHabits habits={habits} />)
+                }
                 </Segment>
                 </Transition>
             </div>
