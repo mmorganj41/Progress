@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import { Menu, Dropdown, Header, Sidebar, Image, Icon } from "semantic-ui-react";
+import { Menu, Dropdown, Header, Sidebar, Button, Image, Icon } from "semantic-ui-react";
 import { UserContext } from "../../context/UserContext/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./PageHeader.css"
@@ -13,8 +13,16 @@ export default function PageHeader({ handleLogout }){
     return (
         <div className="PageHeader">
         <Menu color='teal' inverted fixed="top">
-            <Menu.Item onClick={() => navigate('/')}>
-                    Progress
+            <Menu.Item animated onClick={() => navigate('/')}>
+                    <Button compact animated='fade' fluid color={"teal"}>
+                        <Button.Content hidden>
+                            Progress
+                        </Button.Content>
+                        <Button.Content visible>
+                            <Image rounded size="mini" src="https://i.imgur.com/2o8gKIA.png"/>
+                        </Button.Content>
+                        
+                    </Button>
             </Menu.Item>
             <Menu.Menu position="right">
                 

@@ -143,8 +143,8 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
         if (skillLevel < 1) {
             return(
                 <>
-                    <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} avatar />
-                    <h3>{skill?.name}</h3>
+                    <Image src={skill.photoUrl ? skill.photoUrl : "https://i.imgur.com/2o8gKIA.png"} rounded size='mini' />
+                    <h3>&nbsp;{skill?.name}</h3>
                 </>) 
         }
         

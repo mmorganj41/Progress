@@ -11,7 +11,7 @@ const StyledBurger = styled.div`
     justify-content: space-between;
     cursor: pointer;
     z-index: 150;
-    margin-top: 75px;
+    margin-top: 100px;
     height: 26px;
     width: 32px;
     

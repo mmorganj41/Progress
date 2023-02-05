@@ -26,9 +26,9 @@ export default function ActionSwitcher({state, setState}) {
     return(
         <Message compact>
         <div className='ActionSwitcher ButtonGroup'>
-            <Button icon labelPosition='left' toggle={/add/.test(state)} name='add' className='Button' onClick={handleClick}><Icon name='add circle' />Add</Button>
-            <Button icon labelPosition='left' toggle={/edit/.test(state)} name='edit' className='Button' onClick={handleClick}><Icon name='minus circle' />Edit</Button>
-            <Button icon labelPosition='left' toggle={/delete/.test(state)} name='delete' className='Button' onClick={handleClick}><Icon name='remove circle' />Delete</Button>
+            <Button icon basic color='teal' labelPosition='left' toggle={/add/.test(state)} name='add' className='Button' onClick={handleClick}><Icon name='add circle' />Add</Button>
+            <Button icon basic color='teal' labelPosition='left' toggle={/edit/.test(state)} name='edit' className='Button' onClick={handleClick}><Icon name='minus circle' />Edit</Button>
+            <Button icon basic color='teal' labelPosition='left' toggle={/delete/.test(state)} name='delete' className='Button' onClick={handleClick}><Icon name='remove circle' />Delete</Button>
         </div>
         </Message>
     )

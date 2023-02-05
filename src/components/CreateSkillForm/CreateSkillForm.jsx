@@ -45,13 +45,14 @@ export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}
             <Segment basic className='SkillTree main'>
                     <Segment inverted color={formState.color}>
                     <div className='SkillTree header'>
-                        <Form.Input
-                            type="file"
-                            name="photo"
-                            placeholder="upload image"
-                            onChange={handleFileInput}
-                        />
+
                         <Form className='EditSkillForm Form' onSubmit={handleSubmit}>
+                            <Form.Input
+                                type="file"
+                                name="photo"
+                                placeholder="upload image"
+                                onChange={handleFileInput}
+                            />
                             <Form.Input 
                                 name='name'
                                 placeholder='Name'
