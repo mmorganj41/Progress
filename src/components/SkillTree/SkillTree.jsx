@@ -210,7 +210,7 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
         
         <SkillLevelContext.Provider value={skillLevel + 1}>
             <Transition duration={250} animation='fade down' transitionOnMount visible={visible}>
-                <Segment basic inverted={draggedOver} disabled={dragging} className='SkillTree main'>
+                <Segment inverted={draggedOver} disabled={dragging} className={`SkillTree main ${skillLevel >= 1 && 'borderless'}`}>
                     <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                         {actionPanel()}
                     </Segment>
