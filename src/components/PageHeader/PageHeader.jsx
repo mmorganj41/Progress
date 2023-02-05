@@ -33,6 +33,11 @@ export default function PageHeader({ handleLogout }){
                         <Dropdown.Item image={{avatar:true, src:(loggedUser?.photoUrl
                 ? loggedUser?.photoUrl
                 : "https://react.semantic-ui.com/images/wireframe/square-image.png")}} text="Profile" onClick={() => navigate(`/${loggedUser.username}`)}/>
+                        <Dropdown.Item 
+                            image={{avatar: true, src:'https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/change-password-icon.png'}} 
+                            onClick={() => navigate(`/${loggedUser.username}/changePassword`)} 
+                            text='Password'
+                        />
                         <Dropdown.Item image={{avatar:true, src:'https://i.imgur.com/yM3EHLc.png'}} text="Logout" onClick={handleLogout}/>
                     </Dropdown.Menu>
                     

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
 import userService from '../../utils/userService';
-import { Segment, Image, Transition, Header } from 'semantic-ui-react';
+import { Segment, Image, Transition, Header, Button, Icon } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import './ProfilePage.css'
 import Loading from '../../components/Loading/Loading';
@@ -12,7 +12,7 @@ export default function ProfilePage() {
     const [habits, setHabits] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
+    
     const { username } = useParams();
 
     async function getProfile() {
@@ -41,7 +41,7 @@ export default function ProfilePage() {
         
         <div className="ProfilePage MainContent">
             <div className='Col1'>
-                <Header as='h2' color='teal'>{profileUser?.username}</Header>
+                <Header as='h2' color='teal'>{profileUser?.username}</Header>                    
                 <Transition animation='fade right' transitionOnMount unmountOnHide duration={500}>
                     <div>
                     <ProfileCard profileUser={profileUser} editProfile={editProfile} loading={loading}/>
