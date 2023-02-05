@@ -1,3 +1,9 @@
 .PageHeader {
     z-index: 9999;
 }
+
+.PageHeader .ui.item.dropdown {
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+}

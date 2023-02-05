@@ -5,7 +5,7 @@ import { getSkillLevelColor } from '../../utils/leveling';
 import { useNavigate } from 'react-router-dom';
 
 export default function SearchItem({user}) {
-    const highestSkill = user.skills.reduce((max, skill) => max.experience > skill.experience ? max : skill);
+    const highestSkill = user.skills.length ? user.skills.reduce((max, skill) => max.experience > skill.experience ? max : skill) : 0;
     const level = levelByExperience(highestSkill?.experience);
     const color = getSkillLevelColor(level);
 

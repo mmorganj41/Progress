@@ -42,7 +42,7 @@ async function profile(req, res){
       return {[key]: true}
     }); 
 
-    const habits = await Habit.find({$match: {username: user._id, $or: last14DaysQuery}});
+    const habits = await Habit.find({username: user._id, $or: last14DaysQuery});
   
     for (let key in days) {
       habits.forEach(e => {
