@@ -1,14 +1,13 @@
 import React, {useContext} from 'react';
 import { UserContext } from '../../context/UserContext/UserContext';
 import {Card, Image, Icon, Header, Button} from 'semantic-ui-react';
-import { levelByExperience } from '../../utils/leveling';
+import { levelByExperience, getTotalLevelIcon } from '../../utils/leveling';
 import LevelDetail from '../LevelDetail/LevelDetail';
 import './ProfileCard.css'
 import BasicLoader from '../BasicLoader/BasicLoader';
 
 export default function ProfileCard({profileUser, loading}) {
     const user = useContext(UserContext);
-    let icon;
 
     const levels = [];
     let totalLevels;
@@ -24,26 +23,7 @@ export default function ProfileCard({profileUser, loading}) {
         })
     })
 
-    switch (true) {
-        case (totalLevels > 200): 
-            icon = 'chess king'
-            break;
-        case (totalLevels > 125): 
-            icon = 'chess queen'
-            break;
-        case (totalLevels > 75): 
-            icon = 'chess rook'
-            break;
-        case (totalLevels > 40): 
-            icon = 'chess bishop'
-            break;
-        case (totalLevels > 15): 
-            icon = 'chess knight'
-            break;
-        default: 
-            icon = 'chess pawn'
-            break;
-    }
+    const icon = getTotalLevelIcon(totalLevels);
 
     if (loading) {
         return (

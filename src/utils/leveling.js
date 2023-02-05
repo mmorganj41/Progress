@@ -18,3 +18,56 @@ export function experienceThresholdLevel(level) {
 export function calculateTotalExperience(level) {
     return (level ** 2 - level) * 50 /2;
 }
+
+export function getTotalLevelIcon(totalLevels) {
+    let icon;
+    switch (true) {
+        case (totalLevels > 200): 
+            icon = 'chess king'
+            break;
+        case (totalLevels > 125): 
+            icon = 'chess queen'
+            break;
+        case (totalLevels > 75): 
+            icon = 'chess rook'
+            break;
+        case (totalLevels > 40): 
+            icon = 'chess bishop'
+            break;
+        case (totalLevels > 15): 
+            icon = 'chess knight'
+            break;
+        default: 
+            icon = 'chess pawn'
+            break;
+    }
+    return icon;
+}
+
+export function getSkillLevelColor(level) {
+    let skillColor;
+    switch (true) {
+        case (level > 100): 
+            skillColor = '#e6cc80'
+            break;
+        case (level > 50): 
+            skillColor = '#ff8000'
+            break;
+        case (level > 35): 
+            skillColor = '#a335ee'
+            break;
+        case (level > 20): 
+            skillColor = '#0070dd'
+            break;
+        case (level > 11): 
+            skillColor = '#1eff00'
+            break;
+        case (level > 5): 
+            skillColor = '#ffffff'
+            break;
+        default: 
+            skillColor = '#9d9d9d'
+            break;
+    }
+    return skillColor;
+}
