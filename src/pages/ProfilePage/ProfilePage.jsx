@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import './ProfilePage.css'
 import Loading from '../../components/Loading/Loading';
 import RecentHabits from '../../components/RecentHabits/RecentHabits';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 
 export default function ProfilePage() {
     const [profileUser, setProfileUser] = useState({});
@@ -36,6 +37,8 @@ export default function ProfilePage() {
     useEffect(() => {
         getProfile();
     }, []);
+
+    if (error) {return(<ErrorMessage error={error} />)}
 
     return (<>
         
