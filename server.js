@@ -24,6 +24,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 
+app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 // app.use("/src", assetsRouter);
 // Configure the auth middleware
