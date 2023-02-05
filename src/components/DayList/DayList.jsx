@@ -4,7 +4,6 @@ import { Header, List, Card} from 'semantic-ui-react';
 export default function DayList({habits}) {
 
     function difficultyColoring(difficulty) {
-        console.log(difficulty)
         let color;
         switch (difficulty) {
             case 'trivial':
@@ -32,7 +31,7 @@ export default function DayList({habits}) {
     const habitList = habits.map(habit => {
         const color = difficultyColoring(habit.difficulty);
 
-        return (<List.Item >
+        return (<List.Item key={habit._id} >
             <List.Content >
                 <List.Header>
                 <span style={{color: color}}>{habit?.name}</span>

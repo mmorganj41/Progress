@@ -1,13 +1,15 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { UserContext } from '../../context/UserContext/UserContext';
 import {Card, Image, Icon, Header, Button} from 'semantic-ui-react';
 import { levelByExperience, getTotalLevelIcon } from '../../utils/leveling';
 import LevelDetail from '../LevelDetail/LevelDetail';
 import './ProfileCard.css'
 import BasicLoader from '../BasicLoader/BasicLoader';
+import EditProfile from '../EditProfile/EditProfile';
 
 export default function ProfileCard({profileUser, loading}) {
     const user = useContext(UserContext);
+    const [showEdit, setShowEdit] = useState(false);
 
     const levels = [];
     let totalLevels;
@@ -29,24 +31,20 @@ export default function ProfileCard({profileUser, loading}) {
         return (
         <Card>
           <Image src='https://i.imgur.com/tdi3NGa.png' wrapped ui={false}>
-            
           </Image>
           <Card.Content>
-          
             <Card.Header>Email</Card.Header>
             <Card.Meta>
               <span className='date'>Joined date</span>
             </Card.Meta>
-            
             <Card.Description>
                 <BasicLoader />
             </Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-          <Header as='h5'>
-              <Icon name={icon} />
-              Skills
-              
+            </Card.Content>
+            <Card.Content extra>
+            <Header as='h5'>
+                <Icon name={icon} />
+                Skills
             </Header>
                 <BasicLoader />
           </Card.Content>
@@ -57,22 +55,25 @@ export default function ProfileCard({profileUser, loading}) {
     return (
         <Card>
             {user.username === profileUser.username ? 
-            (<Button attached='top' icon>
+            (<Button attached='top' icon onClick={() => setShowEdit(!showEdit)}>
                 <Icon name='setting'></Icon>
             </Button>) : null}
-          <Image src={profileUser?.photoUrl ? profileUser.photUrl : 'https://i.imgur.com/tdi3NGa.png'} wrapped ui={false}>
+          <Image src={profileUser?.photoUrl ? profileUser.photoUrl : 'https://i.imgur.com/tdi3NGa.png'} wrapped ui={false}>
             
           </Image>
           <Card.Content>
           
             <Card.Header>{profileUser?.email}</Card.Header>
             <Card.Meta>
-              <span className='date'>Joined in {profileUser?.createdAt?.split('T')[0]}</span>
+              <span className='date'>Joined {profileUser?.createdAt?.split('T')[0]}</span>
             </Card.Meta>
-            
+            {showEdit ? 
+            <EditProfile user={profileUser} setShowEdit={setShowEdit}/>
+            :
             <Card.Description>
               {profileUser?.bio ? profileUser.bio : 'Looks like their biography is empty.'}
             </Card.Description>
+            }
           </Card.Content>
           <Card.Content extra>
           <Header as='h5'>

@@ -7,12 +7,16 @@ import Habit from '../models/habit.js';
 // initialize the S3 consturctor function to give us the object that can perform crud operations to aws
 const s3 = new S3();
 
+import { v4 as uuidv4 } from 'uuid';
+
+const BUCKET_NAME = process.env.BUCKET_NAME
 
 export default {
   signup,
   login,
   reorderSkills,
-  profile
+  profile,
+  editProfile
 };
 
 async function profile(req, res){
@@ -80,6 +84,43 @@ async function login(req, res) {
     });
   } catch (err) {
     return res.status(401).json(err);
+  }
+}
+
+async function editProfile(req, res) {
+  try {
+    let user;
+    console.log(req);
+    if (req.file) {
+            const filePath = `progress/profile/${uuidv4()}-${req.file.originalname}`;
+            const params = {Bucket: BUCKET_NAME, Key: filePath, Body: req.file.buffer}; // req.file.buffer is the actually from the form when it was sent to our express server
+            // s3.upload is making the request to s3
+            s3.upload(params, async function(err, data){ // < inside the function in the response from aws
+                if(err){
+                console.log('===============================')
+                console.log(err, ' <- error from aws, Probably telling you your keys arent correct')
+                console.log('===============================')
+                return;
+                }
+            
+
+            user = await User.findByIdAndUpdate(req.user._id , {
+              bio: req.body.bio,
+              photoUrl: data.Location
+            })
+          });
+    } else {
+      user = await User.findByIdAndUpdate(req.user._id, {
+        bio: req.body.bio,
+      })
+    }
+
+    const token = createJWT(user);
+
+    res.status(200).json({user, token});
+  } catch(err){
+    console.log(err)
+    res.status(400).json({err})
   }
 }
 

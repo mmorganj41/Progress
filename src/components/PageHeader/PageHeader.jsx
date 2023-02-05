@@ -13,7 +13,7 @@ export default function PageHeader({ handleLogout }){
     return (
         <div className="PageHeader">
         <Menu color='teal' inverted fixed="top">
-            <Menu.Item animated onClick={() => navigate('/')}>
+            <Menu.Item onClick={() => navigate('/')}>
                     <Button compact animated='fade' fluid color={"teal"}>
                         <Button.Content hidden>
                             Progress

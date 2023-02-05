@@ -74,6 +74,30 @@ async function reorderSkills(data) {
   }
 }
 
+async function editProfile(data) {
+  const header = new Headers();
+  header.append('Authorization', `Bearer ${tokenService.getToken()}`);
+
+  try {
+    const response = await fetch(BASE_URL, {
+      method: 'PUT',
+      headers: header,
+      body: data,
+    })
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log(response.token);
+      tokenService.removeToken();
+      tokenService.setToken(responseData.token);
+      return responseData.user;
+    }
+
+  } catch(err) {
+    console.log(err);
+  }
+}
+
 export default {
   signup, 
   getUser,
@@ -81,4 +105,5 @@ export default {
   login,
   getProfile,
   reorderSkills,
+  editProfile,
 };

@@ -10,7 +10,7 @@ export default function RecentHabits({habits}) {
     for (let key in habits) {
         if (habits[key].length) {
             habitHistory.push(
-                <HabitHistoryCard day={key} habits={habits[key]} />
+                <HabitHistoryCard key={key} day={key} habits={habits[key]} />
                 );
         }
     }

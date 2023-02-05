@@ -8,12 +8,9 @@ import S3 from 'aws-sdk/clients/s3.js';
 // initialize the S3 constructor function to give us the object that can perform crud operations to aws
 const s3 = new S3();
 
-// We'll use this module to help us generate random names for our photo files on aws
 import { v4 as uuidv4 } from 'uuid';
 
-// So we don't have to worry about people having different bucket names we'll make the bucketname an environment variable
 const BUCKET_NAME = process.env.BUCKET_NAME
-console.log(BUCKET_NAME, 'bucketname')
 
 export default {
     create,
@@ -33,7 +30,6 @@ export default {
 
 async function create(req, res){
     try {
-        console.log(req);
         const userPromise = User.findById(req.user._id);
         if (req.file) {
             
