@@ -12,6 +12,7 @@ import userService from "./utils/userService";
 import FeedPage from "./pages/FeedPage/FeedPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import ChangePassPage from "./pages/ChangePassPage/ChangePassPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
   const [user, setUser] = useState(userService.getUser());
@@ -32,6 +33,7 @@ function App() {
           <Route path="/" element={<HeaderLayout handleLogout={handleLogout} />} 
           >
               <Route index element={<FeedPage />} />
+              <Route path="search" element={<SearchPage />} />
               <Route path="/user/:username" element={<ProfilePage />} />
               <Route path="/changePassword" element={<ChangePassPage />} />
           </Route>

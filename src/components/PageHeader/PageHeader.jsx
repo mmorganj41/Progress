@@ -3,6 +3,7 @@ import { Menu, Dropdown, Header, Sidebar, Button, Image, Icon, Transition } from
 import { UserContext } from "../../context/UserContext/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./PageHeader.css"
+import SearchBar from "../SearchBar/SearchBar";
 
 export default function PageHeader({ handleLogout }){
     const loggedUser = useContext(UserContext)
@@ -26,7 +27,7 @@ export default function PageHeader({ handleLogout }){
             </Menu.Item>
             <Menu.Menu position="right">
                 
-
+                <SearchBar />
                 <Dropdown item icon='user' text={loggedUser.username}>
                     
                     <Dropdown.Menu>

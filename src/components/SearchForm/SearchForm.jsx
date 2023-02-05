@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {Segment, Input, Grid, Divider, Button, Icon } from 'semantic-ui-react';
 
 export default function SearchForm({handleCreateSkillFormShow, showCreateSkillForm, search, setSearch}) {
+
+    const searchRef = useRef();
 
     function handleSearch(e) {
         setSearch(e.target.value);
     }
 
-    function handleSubmit(e) {
-        e.preventDefault(e);
-    }
 
     return(
         <Segment>
@@ -17,11 +16,10 @@ export default function SearchForm({handleCreateSkillFormShow, showCreateSkillFo
                 <Grid.Row>
                     <Grid.Column>
                         <Input
-                            icon={{border: true, color: 'teal', inverted: true, name: 'filter'}}
+                            icon={{color: 'teal', inverted: true, name: 'filter'}}
                             placeholder='Habit'
                             value={search}
                             onChange={handleSearch}
-                            onClick={handleSubmit}
                         />
                     </Grid.Column>
 
