@@ -121,7 +121,7 @@ async function search(query) {
     header.append('Authorization', `Bearer ${tokenService.getToken()}`);
 
     try {
-      const response = await fetch(`${BASE_URL}search?username={query}`, {
+      const response = await fetch(`${BASE_URL}search?${query}`, {
         method: 'GET',
         headers: header,
       });

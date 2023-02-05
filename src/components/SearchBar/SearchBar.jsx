@@ -13,7 +13,7 @@ export default function SearchBar() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        navigate(`/search?=${search}`)
+        navigate(`/search?username=${search}`)
     }
 
     return (

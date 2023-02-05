@@ -174,9 +174,12 @@ async function search(req, res) {
 
     if (!req.query.username) res.status(200).json({users: []});
 
-    const query = new RegExp(req.query.username);
+    const regex = new RegExp(req.query.username)
+    console.log(regex);
 
-    const users = await User.find({username: {$regex: query, $options: 'i'}});
+    const users = await User.find({username: {$regex: regex, $options: 'i'}});
+
+    console.log(users);
 
     return res.status(200).json({users})
   } catch(err) {
