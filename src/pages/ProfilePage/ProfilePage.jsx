@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import userService from '../../utils/userService';
 
@@ -23,6 +23,10 @@ export default function ProfilePage() {
             setError("Profile does not exist");
         }
     }
+
+    useEffect(() => {
+        getProfile();
+    }, []);
 
     return (<h1>ProfilePage</h1>)
 }

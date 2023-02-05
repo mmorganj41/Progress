@@ -6,6 +6,7 @@ import usersCtrl  from '../../controllers/users.js';
 router.post('/signup', usersCtrl.signup);
 router.post('/login', usersCtrl.login);
 router.put('/reorder', usersCtrl.reorderSkills);
+router.get('/:username', usersCtrl.profile);
 
 
 /*---------- Protected Routes ----------*/
