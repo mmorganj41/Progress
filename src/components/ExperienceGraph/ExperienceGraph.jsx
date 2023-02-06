@@ -6,7 +6,7 @@ import Bar from '../Bar/Bar';
 export default function ExperienceGraph({skills, createNotification}) {
 
     const bars = [];
-    let totalLevels;
+    let totalLevels = 0;
 
     skills?.forEach(skill => {
         const level = levelByExperience(skill.experience);

@@ -12,7 +12,7 @@ export default function ProfileCard({profileUser, loading, editProfile}) {
     const [showEdit, setShowEdit] = useState(false);
 
     const levels = [];
-    let totalLevels;
+    let totalLevels = 0;
 
     profileUser.skills?.forEach(skill => {
         const level = levelByExperience(skill.experience);
