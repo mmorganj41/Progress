@@ -4,6 +4,7 @@ import { DateContext } from '../../context/DateContext/DateContext';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 import './HabitCard.css';
 import EditHabitForm from '../EditHabitForm/EditHabitForm';
+import { difficultyColoring} from '../../utils/leveling';
 
 export default function HabitCard({habit, totals, updateTotals, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
     const [showEdit, setShowEdit] = useState(false);
@@ -12,6 +13,8 @@ export default function HabitCard({habit, totals, updateTotals, color, state, ed
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
     const skillLevel = useContext(SkillLevelContext);
+
+    let difficultyColor = difficultyColoring(habit?.difficulty);
     
     useEffect(() => {
         updateTotals(draft => {
@@ -79,7 +82,7 @@ export default function HabitCard({habit, totals, updateTotals, color, state, ed
        if (showDetails) return(
         <>
             <Card.Content extra>
-                <Header textAlign='right' as='h4' style={{textTransform: 'capitalize'}}>{habit?.difficulty}</Header>
+                <Header textAlign='right' as='h4' style={{textTransform: 'capitalize', color: difficultyColor}}>{habit?.difficulty}</Header>
                 {habit?.description}
             </Card.Content>
             <Card.Content extra>

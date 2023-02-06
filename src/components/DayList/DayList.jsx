@@ -1,31 +1,8 @@
 import React from 'react';
 import { Header, List, Card} from 'semantic-ui-react';
+import {difficultyColoring} from '../../utils/leveling';
 
 export default function DayList({habits}) {
-
-    function difficultyColoring(difficulty) {
-        let color;
-        switch (difficulty) {
-            case 'trivial':
-                color = '#A7A7A7'
-                break;
-            case 'easy':
-                color= '#999999'
-                break;
-            case 'average':
-                color= '#808080'
-                break;
-            case 'challenging':
-                color= '#686868'
-                break;     
-            case 'difficult':
-                color= 'black'
-                break;  
-            default:
-                color= 'black'
-        }
-        return color;
-    }
 
     const habitList = habits.map(habit => {
         const color = difficultyColoring(habit.difficulty);

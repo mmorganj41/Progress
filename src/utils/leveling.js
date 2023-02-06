@@ -72,3 +72,27 @@ export function getSkillLevelColor(level) {
     }
     return skillColor;
 }
+
+export function difficultyColoring(difficulty) {
+    let color;
+    switch (difficulty) {
+        case 'trivial':
+            color = '#A7A7A7'
+            break;
+        case 'easy':
+            color= '#999999'
+            break;
+        case 'average':
+            color= '#808080'
+            break;
+        case 'challenging':
+            color= '#686868'
+            break;     
+        case 'difficult':
+            color= 'black'
+            break;  
+        default:
+            color= 'black'
+    }
+    return color;
+}
