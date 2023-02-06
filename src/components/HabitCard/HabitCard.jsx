@@ -5,11 +5,14 @@ import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelCon
 import './HabitCard.css';
 import EditHabitForm from '../EditHabitForm/EditHabitForm';
 import { difficultyColoring} from '../../utils/leveling';
+import useFeedContext from '../../context/FeedContext/FeedContext';
 
-export default function HabitCard({habit, totals, updateTotals, color, state, editHabit, deleteHabit, completeHabit, uncompleteHabit, index, subskillIndex, habitIndex}) {
+export default function HabitCard({habit, color, state, index, subskillIndex, habitIndex}) {
     const [showEdit, setShowEdit] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const date = useContext(DateContext)?.toISOString().split('T')[0];
+    const {updateTotals, deleteHabit, completeHabit, uncompleteHabit} = useFeedContext();
+
     const complete = !!habit.completionDates[date];
     const icon = complete ? 'check circle' : 'circle outline';
     const skillLevel = useContext(SkillLevelContext);
@@ -114,7 +117,6 @@ export default function HabitCard({habit, totals, updateTotals, color, state, ed
                     index={index} 
                     subskillIndex={subskillIndex}
                     habitIndex={habitIndex}
-                    editHabit={editHabit}
                     handleShowEdit={handleShowEdit}
                     icon={icon}
                 />

@@ -8,12 +8,14 @@ import Masonry from "react-masonry-css";
 import { SearchContext } from "../../context/SearchContext/SearchContext";
 import CreateSkillForm from "../CreateSkillForm/CreateSkillForm";
 import Loading from "../Loading/Loading";
+import useFeedContext from "../../context/FeedContext/FeedContext";
 
-export default function HabitList({loading, skills, totals, updateTotals, setSkills, createSkill, editSkill, deleteSkill, editHabit, deleteHabit, createSubskill, completeHabit, createHabit, uncompleteHabit}) {
+export default function HabitList() {
     const [state, setState] = useState('default');
     const [search, setSearch] = useState('');
     const [dragging, setDragging] = useState({dragged: null, dragOver: null});
     const [showCreateSkillForm, setCreateSkillShowForm] = useState(false);
+    const {loading, skills, setSkills } = useFeedContext();
     
     function handleCreateSkillFormShow(e) {
         e.preventDefault();
@@ -51,23 +53,13 @@ export default function HabitList({loading, skills, totals, updateTotals, setSki
                 draggable>
                     <SkillTree
                         key={skill._id}
-                        skill={skill} 
+                        skill={skill}
                         state={state}
-                        createSubskill={createSubskill}
-                        createHabit={createHabit}
                         index={i}
-                        completeHabit={completeHabit}
-                        uncompleteHabit={uncompleteHabit}
-                        deleteSkill={deleteSkill}
-                        deleteHabit={deleteHabit}
-                        editSkill={editSkill}
-                        editHabit={editHabit}
                         dragEnter={dragEnter}
                         dragging={dragging.dragged === i}
                         draggedOver={dragging.dragOver === i}  
                         parentVisible={false}  
-                        totals={totals}
-                        updateTotals={updateTotals}
                         childrenRef={{current: false}}
                     />
             </div>)
@@ -89,7 +81,7 @@ export default function HabitList({loading, skills, totals, updateTotals, setSki
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column"
                     >
-                    {showCreateSkillForm && <CreateSkillForm handleCreateSkillFormShow={handleCreateSkillFormShow} createSkill={createSkill}/>}
+                    {showCreateSkillForm && <CreateSkillForm handleCreateSkillFormShow={handleCreateSkillFormShow}/>}
                     {skillTrees}
                 </Masonry>
                 }

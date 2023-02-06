@@ -273,23 +273,7 @@ export default function FeedPage() {
                     <span style={{color: '#008080', textDecoration: 'underline'}}> {readableDateString(selectedDate)}</span>
                 </Header>
                 <DateContext.Provider value={selectedDate}>
-                    <HabitList 
-                        loading={loading}
-                        skills={skills} 
-                        getSkills={getSkills} 
-                        createSkill={createSkill}
-                        createSubskill={createSubskill}
-                        createHabit={createHabit}
-                        completeHabit={completeHabit}
-                        uncompleteHabit={uncompleteHabit}
-                        deleteSkill={deleteSkill}
-                        deleteHabit={deleteHabit}
-                        editSkill={editSkill}
-                        editHabit={editHabit}
-                        setSkills={setSkills}
-                        totals={totals}
-                        updateTotals={updateTotals}
-                    />
+                    <HabitList />
                 </DateContext.Provider>
             </div>
             <NotificationContainer></NotificationContainer>

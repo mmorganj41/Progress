@@ -3,8 +3,10 @@ import { useImmer } from "use-immer";
 import { Form, Button, Segment, Select, Icon, Transition } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { colorOptions } from "../../utils/options";
+import useFeedContext from "../../context/FeedContext/FeedContext";
 
-export default function CreateSkillForm({createSkill, handleCreateSkillFormShow}){
+export default function CreateSkillForm({handleCreateSkillFormShow}){
+    const {createSkill} = useFeedContext();
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',

@@ -9,12 +9,12 @@ import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SearchContext } from '../../context/SearchContext/SearchContext';
 
-export default function SkillTree({skill, state, totals, updateTotals, deleteSkill, editSkill, editHabit, deleteHabit, createSubskill, createHabit, index, subskillIndex, parentVisible, completeHabit, uncompleteHabit, dragging, draggedOver, childrenRef, }) {
+export default function SkillTree({skill, state, index, subskillIndex, parentVisible, dragging, draggedOver, childrenRef, }) {
     const [showTree, setShowTree] = useState(true);
     const [showCreateSubskillForm, setShowCreateSubskillForm] = useState(false);
     const [showCreateHabitForm, setShowHabitForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
-    
+
     const search = useContext(SearchContext);
     const date = useContext(DateContext);
     const skillLevel = useContext(SkillLevelContext);
@@ -42,18 +42,9 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                 state={state} 
                 index={index} 
                 subskillIndex={i}
-                skill={subskillCopy} 
-                createHabit={createHabit} 
-                completeHabit={completeHabit} 
-                uncompleteHabit={uncompleteHabit}
-                deleteSkill={deleteSkill}
-                deleteHabit={deleteHabit}
-                editSkill={editSkill}
-                editHabit={editHabit}
+                skill={subskillCopy}      
                 parentVisible={nameMatch}
                 childrenRef={hasVisibleChildren}
-                totals={totals}
-                updateTotals={updateTotals}
         /></div>);
     }) : null; 
 
@@ -86,15 +77,9 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     habit={habit} 
                     color={skill.color} 
                     state={state} 
-                    completeHabit={completeHabit} 
-                    uncompleteHabit={uncompleteHabit} 
                     index={index} 
                     subskillIndex={subskillIndex} 
                     habitIndex={i}
-                    deleteHabit={deleteHabit}
-                    editHabit={editHabit}
-                    totals={totals}
-                    updateTotals={updateTotals}
                 />
             </Transition>);       
     }) : null;
@@ -171,7 +156,7 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
         } else if (state === 'edit') {
             if (showEdit) {
                 return(
-                    <EditSkillForm handleShowEdit={handleShowEdit} editSkill={editSkill} skill={skill} index={index} subskillIndex={subskillIndex}/>
+                    <EditSkillForm handleShowEdit={handleShowEdit} skill={skill} index={index} subskillIndex={subskillIndex}/>
                 )
             } else {
                 return(
@@ -214,9 +199,9 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     <Segment className={skillLevel >= 1 ? 'subskill' : ''} inverted color={skill?.color} onClick={handleShowTree}>
                         {actionPanel()}
                     </Segment>
-                    {showCreateHabitForm && (state === 'add') ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideCreateHabitForm} skill={skill} index={index} subskillIndex={subskillIndex} createHabit={createHabit}/> : null }
+                    {showCreateHabitForm && (state === 'add') ? <CreateHabitForm showTree={alwaysShowTree} hideForm={hideCreateHabitForm} skill={skill} index={index} subskillIndex={subskillIndex}/> : null }
                     {habitList}
-                    {showCreateSubskillForm && (state === 'add') && skillLevel < 1 ? <CreateSubskillForm draggedOver={draggedOver} disabled={dragging} showTree={alwaysShowTree} hideForm={hideSubskillCreateForm} index={index} skill={skill} createSubskill={createSubskill}/> : null}
+                    {showCreateSubskillForm && (state === 'add') && skillLevel < 1 ? <CreateSubskillForm draggedOver={draggedOver} disabled={dragging} showTree={alwaysShowTree} hideForm={hideSubskillCreateForm} index={index} skill={skill}/> : null}
                     {subskillList}
                     
                 </Segment>

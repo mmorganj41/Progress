@@ -4,8 +4,11 @@ import { colorOptions } from "../../utils/options";
 import { Form, Image, Button, Icon, Select } from "semantic-ui-react";
 import './EditSkillForm.css';
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
+import useFeedContext from "../../context/FeedContext/FeedContext";
 
-export default function EditSkillForm({skill, handleShowEdit, editSkill, index, subskillIndex}) {
+export default function EditSkillForm({skill, handleShowEdit, index, subskillIndex}) {
+    const {editSkill} = useFeedContext();
+
     const [formState, updateFormState] = useImmer(skill);
     const [file, setFile] = useState(null);
     const [error, setError] = useState('');

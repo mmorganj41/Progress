@@ -2,8 +2,10 @@ import React, {useState} from "react";
 import { useImmer } from "use-immer";
 import { Form, Button, Icon, Transition, Segment } from "semantic-ui-react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import useFeedContext from "../../context/FeedContext/FeedContext";
 
-export default function CreateSubskillForm({skill, createSubskill, index, showTree, hideForm, draggedOver, dragging}){
+export default function CreateSubskillForm({skill, index, showTree, hideForm, draggedOver, dragging}){
+    const {createSubskill} = useFeedContext();
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
         name: '',

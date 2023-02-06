@@ -5,10 +5,12 @@ import NumericInput from 'react-numeric-input';
 import { difficultyOptions } from '../../utils/options';
 import { SkillLevelContext } from '../../context/SkillLevelContext/SkillLevelContext';
 import ReactDatePicker from 'react-datepicker';
+import useFeedContext from '../../context/FeedContext/FeedContext';
 
-export default function EditHabitForm({habit, setEditState, editHabit, icon, index, handleShowEdit, subskillIndex, habitIndex}) {
+export default function EditHabitForm({habit, icon, index, handleShowEdit, subskillIndex, habitIndex}) {
     const skillLevel = useContext(SkillLevelContext);
     const [error, setError] = useState(null);
+    const {editHabit} = useFeedContext();
 
     const [formState, updateFormState] = useImmer({
         name: habit.name,

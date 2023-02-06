@@ -6,11 +6,13 @@ import { difficultyOptions } from "../../utils/options";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import { DateContext } from "../../context/DateContext/DateContext";
 import ReactDatePicker from "react-datepicker";
+import useFeedContext from "../../context/FeedContext/FeedContext";
 
 
-export default function CreateHabitForm({skill, createHabit, showTree, hideForm, index, subskillIndex}){
+export default function CreateHabitForm({skill,showTree, hideForm, index, subskillIndex}){
     const skillLevel = useContext(SkillLevelContext);
     const date = useContext(DateContext);
+    const {createHabit} = useFeedContext();
     
     const [error, setError] = useState(null);
     const [formState, updateFormState] = useImmer({
