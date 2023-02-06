@@ -16,7 +16,6 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 import { FeedContext } from '../../context/FeedContext/FeedContext';
 
 export default function FeedPage() {
-    const [skills, updateSkills] = useImmer(null);
     const [skills, dispatch] = useImmerReducer(skillsReducer, null);
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
