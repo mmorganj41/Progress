@@ -20,7 +20,6 @@ export function calculateTotalExperience(level) {
 }
 
 export function getTotalLevelIcon(totalLevels) {
-    console.log(totalLevels);
     let icon;
     switch (true) {
         case (totalLevels > 200): 

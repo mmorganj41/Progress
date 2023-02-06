@@ -68,6 +68,7 @@ export default function HabitList({loading, skills, totals, updateTotals, setSki
                         parentVisible={false}  
                         totals={totals}
                         updateTotals={updateTotals}
+                        childrenRef={{current: false}}
                     />
             </div>)
     }) : null;

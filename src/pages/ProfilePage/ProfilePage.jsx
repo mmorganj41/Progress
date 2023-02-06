@@ -36,7 +36,7 @@ export default function ProfilePage() {
 
     useEffect(() => {
         getProfile();
-    }, []);
+    }, [username]);
 
     if (error) {return(<ErrorMessage error={error} />)}
 

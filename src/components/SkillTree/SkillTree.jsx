@@ -53,14 +53,13 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                 parentVisible={nameMatch}
                 childrenRef={hasVisibleChildren}
                 totals={totals}
-                    updateTotals={updateTotals}
+                updateTotals={updateTotals}
         /></div>);
     }) : null; 
 
     const habitList = skill?.habits ? skill.habits.map((habit, i) => {
         let applicable = false;
-        // if (!habit.name.match(search) && !nameMatch) {
-
+        
         const startDateParsed = parseDays(Date.parse(habit.startDate));
         if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
         } else if (habit.repeatDays) {
@@ -76,6 +75,8 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
         if (applicable) {
             foundChild = true;
         }
+
+        if (habit.name.match(search)) console.log(habit.name, foundChild, applicable);
 
         if (!showTree) applicable = false;
         return (
@@ -95,9 +96,7 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                     totals={totals}
                     updateTotals={updateTotals}
                 />
-            </Transition>);
-        
-
+            </Transition>);       
     }) : null;
 
     function handleCreateSubskill(e) {
@@ -200,12 +199,13 @@ export default function SkillTree({skill, state, totals, updateTotals, deleteSki
                 </div>) 
         }
     }
-    
+
+    if (skillLevel >= 1) {
+        childrenRef.current = foundChild;
+    }
 
     let visible = foundChild || nameMatch || parentVisible || !!hasVisibleChildren?.current;
-    if (skillLevel >= 1) {
-        childrenRef.current = foundChild
-    }
+
     return(
         
         <SkillLevelContext.Provider value={skillLevel + 1}>

@@ -5,13 +5,15 @@ import Burger from '../Burger/Burger';
 import { useOnClickOutside } from '../../hooks/hooks';
 import ExperienceGraph from '../ExperienceGraph/ExperienceGraph';
 import ReactDatePicker from 'react-datepicker';
+import useFeedContext from '../../context/FeedContext/FeedContext';
 
-export default function FeedSidebar({skills, totals, date, changeDate, createNotification}) {
+export default function FeedSidebar() {
     const [windowSize, setWindowSize] = useState(0);
     const [open, setOpen] = useState(false);
     const node = useRef();
     useOnClickOutside(node, () => setOpen(false));
 
+    const {totals, date, changeDate} = useFeedContext();
 
 
     useEffect(() => {
@@ -57,7 +59,7 @@ export default function FeedSidebar({skills, totals, date, changeDate, createNot
                     
                 </Message>
                  
-                <ExperienceGraph skills={skills} createNotification={createNotification}/>
+                <ExperienceGraph />
                 
             </Sidebar>
             

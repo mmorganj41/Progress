@@ -1,11 +1,11 @@
-import React, {useContext, useState, useEffect, useRef} from 'react';
+import React, {useContext, useState, useEffect, useRef, createContext} from 'react';
 import { useImmer } from 'use-immer';
 import FeedSidebar from '../../components/FeedSidebar/FeedSidebar';
 import HabitList from '../../components/HabitList/HabitList';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { DateContext } from '../../context/DateContext/DateContext';
 import skillsService from '../../utils/skillsService';
-import { Header, Grid } from 'semantic-ui-react';
+import { Header, Grid, CommentText } from 'semantic-ui-react';
 import userService from '../../utils/userService';
 import './FeedPage.css';
 import 'react-notifications/lib/notifications.css';
@@ -13,7 +13,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import {experienceDictionary, levelByExperience} from '../../utils/leveling';
 import { readableDateString } from '../../utils/date';
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-
+import { FeedContext } from '../../context/FeedContext/FeedContext';
 
 export default function FeedPage() {
     const [skills, updateSkills] = useImmer(null);
@@ -245,34 +245,55 @@ export default function FeedPage() {
     if (error) return (<ErrorMessage error={error} />);
 
     return (
-        <>
-        <FeedSidebar totals={totals} skills={skills} date={date} changeDate={changeDate} createNotification={createNotification}/> 
-        <div className="container" style={{width:'100%'}}>
-            
-            <Header as="h1">Habits for  
-                <span style={{color: '#008080', textDecoration: 'underline'}}> {readableDateString(selectedDate)}</span>
-            </Header>
-            <DateContext.Provider value={selectedDate}>
-                <HabitList 
-                    loading={loading}
-                    skills={skills} 
-                    getSkills={getSkills} 
-                    createSkill={createSkill}
-                    createSubskill={createSubskill}
-                    createHabit={createHabit}
-                    completeHabit={completeHabit}
-                    uncompleteHabit={uncompleteHabit}
-                    deleteSkill={deleteSkill}
-                    deleteHabit={deleteHabit}
-                    editSkill={editSkill}
-                    editHabit={editHabit}
-                    setSkills={setSkills}
-                    totals={totals}
-                    updateTotals={updateTotals}
-                />
-            </DateContext.Provider>
-        </div>
-        <NotificationContainer></NotificationContainer>
-        </>
+        <FeedContext.Provider value={{
+            totals:totals, 
+            skills:skills,
+            date:date,
+            changeDate:changeDate,
+            createNotification:createNotification,
+            loading:loading,
+            skills:skills, 
+            getSkills:getSkills, 
+            createSkill:createSkill,
+            createSubskill:createSubskill,
+            createHabit:createHabit,
+            completeHabit:completeHabit,
+            uncompleteHabit:uncompleteHabit,
+            deleteSkill:deleteSkill,
+            deleteHabit:deleteHabit,
+            editSkill:editSkill,
+            editHabit:editHabit,
+            setSkills:setSkills,
+            updateTotals:updateTotals,
+        }}>
+            <FeedSidebar /> 
+            <div className="container" style={{width:'100%'}}>
+                
+                <Header as="h1">Habits for  
+                    <span style={{color: '#008080', textDecoration: 'underline'}}> {readableDateString(selectedDate)}</span>
+                </Header>
+                <DateContext.Provider value={selectedDate}>
+                    <HabitList 
+                        loading={loading}
+                        skills={skills} 
+                        getSkills={getSkills} 
+                        createSkill={createSkill}
+                        createSubskill={createSubskill}
+                        createHabit={createHabit}
+                        completeHabit={completeHabit}
+                        uncompleteHabit={uncompleteHabit}
+                        deleteSkill={deleteSkill}
+                        deleteHabit={deleteHabit}
+                        editSkill={editSkill}
+                        editHabit={editHabit}
+                        setSkills={setSkills}
+                        totals={totals}
+                        updateTotals={updateTotals}
+                    />
+                </DateContext.Provider>
+            </div>
+            <NotificationContainer></NotificationContainer>
+        </FeedContext.Provider>
     )
 }
+
