@@ -17,11 +17,12 @@ import { FeedContext } from '../../context/FeedContext/FeedContext';
 
 export default function FeedPage() {
     const [skills, dispatch] = useImmerReducer(skillsReducer, null);
+
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    console.log(skills, '<====skillls');
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
 
     const selectedDate = date || new Date();
@@ -68,7 +69,7 @@ export default function FeedPage() {
     async function createSkill(data) {
         const response = await skillsService.createSkill(data);
         dispatch({
-            type: 'get',
+            type: 'createSkill',
             data: response.skill,
         })
     }
@@ -172,6 +173,7 @@ export default function FeedPage() {
     }
     
     async function deleteSkill(skill, skillLevel, skillIndex, subskillIndex) {
+        console.log('Im deleting')
         try {
             if (skillLevel < 1) {
                 await skillsService.deleteSkill(skill._id);
@@ -376,9 +378,8 @@ function skillsReducer(draft, action) {
             break;
         }
         case 'editSkill': {
-            for (let key of data.keys()) {
+            for (let key of action.data.keys()) {
                 if (key === 'photo') {
-                    console.log(data.get(key));
                     draft[action.index].photoUrl = action.photoUrl
                 } else {
                     draft[action.index][key] = action.data.get(key);

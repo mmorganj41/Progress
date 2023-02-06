@@ -8,12 +8,14 @@ import CreateHabitForm from '../CreateHabitForm/CreateHabitForm';
 import EditSkillForm from '../EditSkillForm/EditSkillForm';
 import { DateContext } from '../../context/DateContext/DateContext';
 import { SearchContext } from '../../context/SearchContext/SearchContext';
+import useFeedContext from '../../context/FeedContext/FeedContext';
 
 export default function SkillTree({skill, state, index, subskillIndex, parentVisible, dragging, draggedOver, childrenRef, }) {
     const [showTree, setShowTree] = useState(true);
     const [showCreateSubskillForm, setShowCreateSubskillForm] = useState(false);
     const [showCreateHabitForm, setShowHabitForm] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+    const {deleteSkill} = useFeedContext();
 
     const search = useContext(SearchContext);
     const date = useContext(DateContext);
