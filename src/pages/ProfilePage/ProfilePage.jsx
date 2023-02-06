@@ -45,7 +45,7 @@ export default function ProfilePage() {
         <div className="ProfilePage MainContent">
             <div className='Col1'>
                 <div style={{marginBottom: '25px'}}>
-                <Header as='h2' color='teal'>{profileUser?.username}</Header>                    
+                <Header as='h2' color='teal'>{username}</Header>                    
                 <Transition animation='fade right' transitionOnMount unmountOnHide duration={500}>
                     <div>
                     <ProfileCard profileUser={profileUser} editProfile={editProfile} loading={loading}/>
