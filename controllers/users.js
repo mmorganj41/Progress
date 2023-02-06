@@ -2,10 +2,9 @@ import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
 const SECRET = process.env.SECRET;
 
-import S3 from 'aws-sdk/clients/s3.js';
 import Habit from '../models/habit.js';
 // initialize the S3 consturctor function to give us the object that can perform crud operations to aws
-const s3 = new S3();
+import {s3} from '../config/s3-config.js'
 
 import { v4 as uuidv4 } from 'uuid';
 

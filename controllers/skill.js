@@ -4,9 +4,8 @@ import Skill from '../models/skill.js';
 import Subskill from '../models/subskill.js';
 import { experienceDictionary } from '../src/utils/leveling.js';
 
-import S3 from 'aws-sdk/clients/s3.js';
 // initialize the S3 constructor function to give us the object that can perform crud operations to aws
-const s3 = new S3();
+import {s3} from '../config/s3-config.js'
 
 import { v4 as uuidv4 } from 'uuid';
 

@@ -8,7 +8,6 @@ let config = {}
 // aws names are reserved on cyclic, so we have to use differnt names for our variables
 // refer to the docs for more information - https://docs.cyclic.sh/concepts/env_vars#reserved-environment-variables
 if(process.env.CYCLIC_APP_ID){
-	console.log('ahppeingg!')
 	config = {
 		region: process.env.MY_REGION,
 		credentials:{
