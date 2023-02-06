@@ -54,13 +54,14 @@ export default function ProfileCard({profileUser, loading, editProfile}) {
 
     return (
         <Card>
-            {user.username === profileUser.username ? 
+          
+          <Image src={profileUser?.photoUrl ? profileUser.photoUrl : 'https://i.imgur.com/tdi3NGa.png'} wrapped ui={false}>
+            
+          </Image>  
+          {user.username === profileUser.username ? 
             (<Button attached='top' icon onClick={() => setShowEdit(!showEdit)}>
                 <Icon name='setting'></Icon>
             </Button>) : null}
-          <Image src={profileUser?.photoUrl ? profileUser.photoUrl : 'https://i.imgur.com/tdi3NGa.png'} wrapped ui={false}>
-            
-          </Image>
           <Card.Content>
           
             <Card.Header>{profileUser?.email}</Card.Header>

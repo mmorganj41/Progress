@@ -7,25 +7,24 @@ export default function DayList({habits}) {
         let color;
         switch (difficulty) {
             case 'trivial':
-                color = 'teal'
+                color = '#A7A7A7'
                 break;
             case 'easy':
-                color= 'green'
+                color= '#999999'
                 break;
             case 'average':
-                color= 'yellow'
+                color= '#808080'
                 break;
             case 'challenging':
-                color= 'orange'
+                color= '#686868'
                 break;     
             case 'difficult':
-                color= 'red'
+                color= 'black'
                 break;  
             default:
                 color= 'black'
         }
         return color;
-        
     }
 
     const habitList = habits.map(habit => {

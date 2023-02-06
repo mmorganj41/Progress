@@ -20,6 +20,7 @@ export function calculateTotalExperience(level) {
 }
 
 export function getTotalLevelIcon(totalLevels) {
+    console.log(totalLevels);
     let icon;
     switch (true) {
         case (totalLevels > 200): 
@@ -63,7 +64,7 @@ export function getSkillLevelColor(level) {
             skillColor = '#1eff00'
             break;
         case (level > 5): 
-            skillColor = '#ffffff'
+            skillColor = '#000000'
             break;
         default: 
             skillColor = '#9d9d9d'
