@@ -173,7 +173,6 @@ export default function FeedPage() {
     }
     
     async function deleteSkill(skill, skillLevel, skillIndex, subskillIndex) {
-        console.log('Im deleting')
         try {
             if (skillLevel < 1) {
                 await skillsService.deleteSkill(skill._id);
@@ -328,7 +327,7 @@ function skillsReducer(draft, action) {
             break;
         }
         case 'createSubskill': {
-            draft[action.index].subskils.unshift(action.data);
+            draft[action.index].subskills.unshift(action.data);
             break;
         }
         case 'createHabitSkill': {
