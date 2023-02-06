@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const habitSchema = new Schema({
     name: {type: String, required: true},
     description: {type: String},
-    startDate: {type: String, required: true, default: dateToday()},
-    endDate: {type: String, default: null},
+    startDate: {type: Date, required: true, default: dateToday()},
+    endDate: {type: Date, default: null},
     repeatDays: {type: Number, required: true, default: 0},
     completionDates: {type: Map, of: Boolean, default: new Map()},
     difficulty: {type: String, required: true, default: 'trivial', 

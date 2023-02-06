@@ -17,6 +17,7 @@ import { FeedContext } from '../../context/FeedContext/FeedContext';
 
 export default function FeedPage() {
     const [skills, updateSkills] = useImmer(null);
+    const [skills, dispatch] = useImmerReducer(skillsReducer, null);
     const loggedUser = useContext(UserContext);
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(true);
@@ -34,16 +35,20 @@ export default function FeedPage() {
 
     async function setSkills(array) {
         const data = {skills: array.map(skill => skill._id)}
-        console.log(data);
         await userService.reorderSkills(data);
-        updateSkills(array);
+        dispatch({
+            type: 'set',
+            data: array,
+        })
     }
 
     async function getSkills() {
         try {
             const response = await skillsService.getUserSkills(loggedUser._id);
-            console.log(response)
-            updateSkills(response.skills)
+            dispatch({
+                type: 'get',
+                data: response.skills,
+            });
         } catch(err) {
             console.log(err);
             setError('Error loading skills');
@@ -63,15 +68,18 @@ export default function FeedPage() {
 
     async function createSkill(data) {
         const response = await skillsService.createSkill(data);
-        updateSkills(draft => {
-            draft.unshift(response.skill)
-        });
+        dispatch({
+            type: 'get',
+            data: response.skill,
+        })
     }
 
     async function createSubskill(data, skill, index) {
         const response = await skillsService.createSubskill(data, skill._id);
-        updateSkills(draft => {
-            draft[index].subskills.unshift(response.subskill)
+        dispatch({
+            type: 'createSubskill',
+            index, 
+            data: response.subskill,
         });
     }
 
@@ -83,12 +91,17 @@ export default function FeedPage() {
         };
         const response = await skillsService.createHabit(newData, skill._id, skillLevel)
         if (skillLevel <= 1) {
-            updateSkills(draft => {
-                draft[skillIndex].habits.unshift(response.habit);
+            dispatch({
+                type: 'createHabitSkill',
+                index: skillIndex,
+                data: response.habit,
             });
         } else {
-            updateSkills(draft => {
-                draft[skillIndex].subskills[subskillIndex].habits.unshift(response.habit);
+            dispatch({
+                type: 'createHabitSubskill',
+                index: skillIndex,
+                subskillIndex,
+                data: response.habit,
             });
         }
     }
@@ -102,11 +115,13 @@ export default function FeedPage() {
                 if (levelByExperience(skills[skillIndex].experience) < levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty])) {
                     levelUp = levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty]);
                 }
-                    updateSkills(draft => {
-                    draft[skillIndex].habits[habitIndex].completionDates[data.date] = true;
-                    draft[skillIndex].experience += experienceDictionary[habit.difficulty];
+                dispatch({
+                    type: 'completeHabitSkill',
+                    index: skillIndex,
+                    habitIndex,
+                    data: data.date,
+                    difficulty: habit.difficulty,
                 });
-                
             } else {
                 if (levelByExperience(skills[skillIndex].experience) < levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty])) {
                     levelUp = levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty]);
@@ -114,10 +129,13 @@ export default function FeedPage() {
                 if (levelByExperience(skills[skillIndex].subskills[subskillIndex].experience) < levelByExperience(skills[skillIndex].subskills[subskillIndex].experience + experienceDictionary[habit.difficulty])) {
                     levelUpSubskill = levelByExperience(skills[skillIndex].subskills[subskillIndex].experience + experienceDictionary[habit.difficulty]);
                 }
-                updateSkills(draft => {
-                    draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = true;
-                    draft[skillIndex].experience += experienceDictionary[habit.difficulty];
-                    draft[skillIndex].subskills[subskillIndex].experience += experienceDictionary[habit.difficulty];
+                dispatch({
+                    type: 'completeHabitSubskill',
+                    index: skillIndex,
+                    subskillIndex,
+                    habitIndex,
+                    data: data.date,
+                    difficulty: habit.difficulty,
                 });
             }
             createNotification('complete', {habit: habit.name, experience: experienceDictionary[habit.difficulty]});
@@ -132,15 +150,21 @@ export default function FeedPage() {
         try {
             const response = await skillsService.uncompleteHabit(data, habit._id);
             if (skillLevel <= 1) {
-                updateSkills(draft => {
-                    draft[skillIndex].habits[habitIndex].completionDates[data.date] = false;
-                    draft[skillIndex].experience -= experienceDictionary[habit.difficulty];
+                dispatch({
+                    type: 'uncompleteHabitSkill',
+                    index: skillIndex,
+                    habitIndex,
+                    data: data.date,
+                    difficulty: habit.difficulty,
                 });
             } else {
-                updateSkills(draft => {
-                    draft[skillIndex].subskills[subskillIndex].habits[habitIndex].completionDates[data.date] = false;
-                    draft[skillIndex].experience -= experienceDictionary[habit.difficulty];
-                    draft[skillIndex].subskills[subskillIndex].experience -= experienceDictionary[habit.difficulty];
+                dispatch({
+                    type: 'uncompleteHabitSubkill',
+                    index: skillIndex,
+                    subskillIndex,
+                    habitIndex,
+                    data: data.date,
+                    difficulty: habit.difficulty,
                 });
             }
         } catch(err) {
@@ -152,13 +176,16 @@ export default function FeedPage() {
         try {
             if (skillLevel < 1) {
                 await skillsService.deleteSkill(skill._id);
-                updateSkills(draft => {
-                    draft.splice(skillIndex, 1);
+                dispatch({
+                    type: 'deleteSkill',
+                    index: skillIndex,
                 });
             } else {
                 await skillsService.deleteSubkill(skill._id);
-                updateSkills(draft => {
-                    draft[skillIndex].subskills.splice(subskillIndex, 1);
+                dispatch({
+                    type: 'deleteSubskill',
+                    index: skillIndex,
+                    subskillIndex
                 });
             }
         } catch(err) {
@@ -170,12 +197,17 @@ export default function FeedPage() {
         try {
             await skillsService.deleteHabit(habit._id);
             if (skillLevel <= 1) {
-                updateSkills(draft => {
-                    draft[skillIndex].habits.splice(habitIndex, 1);
+                dispatch({
+                    type: 'deleteHabitSkill',
+                    index: skillIndex,
+                    habitIndex,
                 });
             } else {
-                updateSkills(draft => {
-                    draft[skillIndex].subskills[subskillIndex].habits.splice(habitIndex, 1);
+                dispatch({
+                    type: 'deleteHabitSubskill',
+                    index: skillIndex,
+                    subskillIndex,
+                    habitIndex,
                 });
             }
         } catch(err) {
@@ -187,20 +219,19 @@ export default function FeedPage() {
         try {
             if (skillLevel <= 1) {
                 const response = await skillsService.editSkill(skill._id, data);
-                updateSkills(draft => {
-                    for (let key of data.keys()) {
-                        if (key === 'photo') {
-                            console.log(data.get(key));
-                            draft[skillIndex].photoUrl = response.skill.photoUrl;
-                        } else {
-                            draft[skillIndex][key] = data.get(key);
-                        }
-                    }
+                dispatch({
+                    type: 'editSkill',
+                    index: skillIndex,
+                    data,
+                    photoUrl: response.skill.photoUrl,
                 });
             } else {
                 await skillsService.editSubskill(skill._id, data);
-                updateSkills(draft => {
-                    draft[skillIndex].subskills[subskillIndex].name = data.get('name');
+                dispatch({
+                    type: 'editSubskill',
+                    index: skillIndex,
+                    subskillIndex,
+                    data,
                 });
             }
         } catch(err) {
@@ -211,24 +242,26 @@ export default function FeedPage() {
     async function editHabit(data, habit, skillLevel, skillIndex, subskillIndex, habitIndex) {
         const newData = {
             ...data,
-            startDate: data.startDate.toISOString().split('T')[0],
-            endDate: data.ends ? data.endDate.toISOString().split('T')[0] : null,
+            endDate: data.ends ? data.endDate : null,
         };
         console.log(skillIndex, subskillIndex, habitIndex)
         try {
             if (skillLevel <= 1) {
                 await skillsService.editHabit(habit._id, newData);
-                updateSkills(draft => {
-                    for (let key in newData) {
-                        draft[skillIndex].habits[habitIndex][key] = newData[key];
-                    }
+                dispatch({
+                    type: 'editHabitSkill',
+                    index: skillIndex,
+                    habitIndex,
+                    data: newData,                    
                 });
             } else {
                 await skillsService.editHabit(habit._id, newData);
-                updateSkills(draft => {
-                    for (let key in newData) {
-                        draft[skillIndex].subskills[subskillIndex].habits[habitIndex][key] = newData[key];
-                    }
+                dispatch({
+                    type: 'editHabitSubskill',
+                    index: skillIndex,
+                    subskillIndex,
+                    habitIndex,
+                    data: newData,                    
                 });
             }
 
@@ -365,7 +398,9 @@ function skillsReducer(draft, action) {
             break;
         }
         case 'editHabitSubskill': {
-            draft[action.index].subskills[action.subskillIndex].habits[action.habitIndex][key] = action.data[key];
+            for (let key in action.data) {
+                draft[action.index].subskills[action.subskillIndex].habits[action.habitIndex][key] = action.data[key];
+            }
             break;
         }
         default: {
