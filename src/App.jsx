@@ -6,6 +6,7 @@ import { UserContext } from "./context/UserContext/UserContext";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SignupPage from "./pages/SignupPage/SignupPage";
 import HeaderLayout from './pages/HeaderLayout/HeaderLayout'
+import "react-datepicker/dist/react-datepicker.css";
 
 import userService from "./utils/userService";
 import FeedPage from "./pages/FeedPage/FeedPage";

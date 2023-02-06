@@ -1,16 +1,17 @@
 import './FeedSidebar.css'
-import SemanticDatepicker from 'react-semantic-ui-datepickers'
 import { Sidebar, Header, Message, Icon, Segment } from 'semantic-ui-react'
 import React, {useEffect, useRef, useState} from 'react';
 import Burger from '../Burger/Burger';
 import { useOnClickOutside } from '../../hooks/hooks';
 import ExperienceGraph from '../ExperienceGraph/ExperienceGraph';
+import ReactDatePicker from 'react-datepicker';
 
 export default function FeedSidebar({skills, totals, date, changeDate, createNotification}) {
     const [windowSize, setWindowSize] = useState(0);
     const [open, setOpen] = useState(false);
     const node = useRef();
     useOnClickOutside(node, () => setOpen(false));
+
 
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export default function FeedSidebar({skills, totals, date, changeDate, createNot
             >
                 <div>
                     <Header>Selected Day:</Header>
-                    <SemanticDatepicker clearable={false} value={date} onChange={(e, data) => changeDate(e, data)} />
+                    <ReactDatePicker selected={date} onChange={(data) => changeDate(data)} />
                 </div>
                 
                 <Message compact icon color={color} className='FeedSideBar Message' >

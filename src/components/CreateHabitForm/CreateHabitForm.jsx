@@ -2,13 +2,10 @@ import React, {useState, useContext} from "react";
 import { useImmer } from "use-immer";
 import { Card, Form, Transition, Icon, Header, Button, Input, Select, TextArea, Checkbox, Divider } from "semantic-ui-react";
 import NumericInput from 'react-numeric-input'; 
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { difficultyOptions } from "../../utils/options";
 import { SkillLevelContext } from "../../context/SkillLevelContext/SkillLevelContext";
 import { DateContext } from "../../context/DateContext/DateContext";
-import SemanticDatepicker from 'react-semantic-ui-datepickers';
-import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
-
+import ReactDatePicker from "react-datepicker";
 
 
 export default function CreateHabitForm({skill, createHabit, showTree, hideForm, index, subskillIndex}){
@@ -36,11 +33,11 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
         });
     }
 
-    function handleSelectDate(e, data, name) {
+    function handleSelectDate(data, name) {
         console.log(data, name);
         console.log(formState);
         updateFormState(draft => {
-            draft[name] = data.value;
+            draft[name] = data;
         });
     }
 
@@ -114,16 +111,16 @@ export default function CreateHabitForm({skill, createHabit, showTree, hideForm,
             <Card.Content extra>
                 <div className='EditHabitForm HabitCard Details'>
                     <div><strong>Start Date: </strong></div>
-                    <div><SemanticDatepicker clearable={false} value={formState.startDate} onChange={(e, data) => handleSelectDate(e, data, 'startDate')}/></div>
+                    <div><ReactDatePicker selected={formState.startDate} onChange={(data) => handleSelectDate(data, 'startDate')}/></div>
                     <div>
                         <Checkbox checked={formState.ends} onChange={(e, data) => handleCheck(e, data, 'ends')}/>
                         <strong>{` End Date: `}</strong>
                     </div>
                     <div>
                         {formState.ends ?
-                        <SemanticDatepicker value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} /> 
+                        <ReactDatePicker selected={formState.endDate} onChange={(data) => handleSelectDate(data, 'endDate')} /> 
                         :
-                        <SemanticDatepicker disabled value={formState.endDate} onChange={(e, data) => handleSelectDate(e, data, 'endDate')} />
+                        <ReactDatePicker disabled selected={formState.endDate} onChange={(data) => handleSelectDate(data, 'endDate')} />
                         }
                     </div>
                     <div>

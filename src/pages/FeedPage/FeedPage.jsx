@@ -28,8 +28,8 @@ export default function FeedPage() {
 
     selectedDate.setHours(0,0,0,0);
 
-    function changeDate(e, data) {
-        setDate(data.value);
+    function changeDate(data) {
+        setDate(data);
     }
 
     async function setSkills(array) {
