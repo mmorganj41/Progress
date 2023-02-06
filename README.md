@@ -68,7 +68,9 @@ The core functionality is there, but it's important for habits to be social. I'd
 - MongoDB
 - Mongoose
 - React
-- Semantic
+- Semantic React UI
 - Express
 - Node.js
+- AWS
+- Java Web Tokens
 - Trello (https://trello.com/b/kzK4PbGO/progress-web-app-project)
