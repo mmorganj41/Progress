@@ -1,11 +1,11 @@
-import React, {useContext, useState, useEffect, useRef, createContext} from 'react';
-import { useImmer } from 'use-immer';
+import React, {useContext, useState, useEffect} from 'react';
+import { useImmer, useImmerReducer } from 'use-immer';
 import FeedSidebar from '../../components/FeedSidebar/FeedSidebar';
 import HabitList from '../../components/HabitList/HabitList';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { DateContext } from '../../context/DateContext/DateContext';
 import skillsService from '../../utils/skillsService';
-import { Header, Grid, CommentText } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import userService from '../../utils/userService';
 import './FeedPage.css';
 import 'react-notifications/lib/notifications.css';
@@ -281,3 +281,95 @@ export default function FeedPage() {
     )
 }
 
+function skillsReducer(draft, action) {
+    switch (action.type){ 
+        case 'set': {
+            return action.data;
+        } 
+        case 'get': {
+            return action.data;
+        }
+        case 'createSkill': {
+            draft.unshift(action.data);
+            break;
+        }
+        case 'createSubskill': {
+            draft[action.index].subskils.unshift(action.data);
+            break;
+        }
+        case 'createHabitSkill': {
+            draft[action.index].habits.unshift(action.data);
+            break;
+        }
+        case 'createHabitSubskill': {
+            draft[action.index].subskills[action.subskillIndex].habits.unshift(action.data);
+            break;
+        }
+        case 'completeHabitSkill': {
+            draft[action.index].habits[action.habitIndex].completionDates[action.data] = true;
+            draft[action.index].experience += experienceDictionary[action.difficulty];
+            break;
+        }
+        case 'completeHabitSubskill': {
+            draft[action.index].subskills[action.subskillIndex].habits[action.habitIndex].completionDates[action.data] = true;
+            draft[action.index].experience += experienceDictionary[action.difficulty];
+            draft[action.index].subskills[action.subskillIndex].experience += experienceDictionary[action.difficulty];
+            break;
+        }
+        case 'uncompleteHabitSkill': {
+            draft[action.index].habits[action.habitIndex].completionDates[action.data] = false;
+            draft[action.index].experience -= experienceDictionary[action.difficulty];
+            break;
+        }
+        case 'uncompleteHabitSubskill': {
+            draft[action.index].subskills[action.subskillIndex].habits[action.habitIndex].completionDates[action.data] = false;
+            draft[action.index].experience -= experienceDictionary[action.difficulty];
+            draft[action.index].subskills[action.subskillIndex].experience -= experienceDictionary[action.difficulty];
+            break;
+        }
+        case 'deleteSkill': {
+            draft.splice(action.index, 1);
+            break;
+        }
+        case 'deleteSubskill': {
+            draft[action.index].subskills.splice(action.subskillIndex, 1);
+            break;
+        }
+        case 'deleteHabitSkill': {
+            draft[action.index].habits.splice(action.habitIndex, 1);
+            break;
+        }
+        case 'deleteHabitSubskill': {
+            draft[action.index].subskills[action.subskillIndex].habits.splice(action.habitIndex, 1);
+            break;
+        }
+        case 'editSkill': {
+            for (let key of data.keys()) {
+                if (key === 'photo') {
+                    console.log(data.get(key));
+                    draft[action.index].photoUrl = action.photoUrl
+                } else {
+                    draft[action.index][key] = action.data.get(key);
+                }
+            }
+            break;
+        }
+        case 'editSubskill': {
+            draft[action.index].subskills[action.subskillIndex].name = action.data.get('name');
+            break;
+        }
+        case 'editHabitSkill': {
+            for (let key in action.data) {
+                draft[action.index].habits[action.habitIndex][key] = action.data[key];
+            }
+            break;
+        }
+        case 'editHabitSubskill': {
+            draft[action.index].subskills[action.subskillIndex].habits[action.habitIndex][key] = action.data[key];
+            break;
+        }
+        default: {
+            throw Error('Unknown action: ' + action.type);
+        }
+    }
+}
