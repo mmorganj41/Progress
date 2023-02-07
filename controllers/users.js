@@ -7,6 +7,7 @@ import Habit from '../models/habit.js';
 import {s3} from '../config/s3-config.js'
 
 import { v4 as uuidv4 } from 'uuid';
+import user from '../models/user.js';
 
 const BUCKET_NAME = process.env.BUCKET_NAME
 
@@ -57,13 +58,20 @@ async function profile(req, res){
 }
 
 async function signup(req, res) {
-  const user = new User(req.body);
   try {
-    await user.save();
+    const usernameP = User.exists({username: req.body.username});
+    const emailP = User.exists({email: req.body.email});
+
+    const [username, email] = await Promise.all([usernameP, emailP])
+    console.log(username, email);
+    if (username) return res.status(400).json({err: 'Username taken.'});
+    if (email) return res.status(400).json({err: 'Email taken.'});
+  
+    const user = await User.create(req.body);
     const token = createJWT(user);
     res.json({ token });
   } catch (err) {
-    // Probably a duplicate email
+    console.log(err);
     res.status(400).json(err);
   }
 }
