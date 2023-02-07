@@ -22,7 +22,7 @@ export default function FeedPage() {
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    console.log(skills, '<====skillls');
+
     const [totals, updateTotals] = useImmer({complete: 0, total: 0});
 
     const selectedDate = date || new Date();

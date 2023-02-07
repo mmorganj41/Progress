@@ -60,7 +60,6 @@ export default function HabitList() {
                         dragging={dragging.dragged === i}
                         draggedOver={dragging.dragOver === i}  
                         parentVisible={false}  
-                        childrenRef={{current: false}}
                     />
             </div>)
     }) : null;

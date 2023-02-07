@@ -10,7 +10,7 @@ import { DateContext } from '../../context/DateContext/DateContext';
 import { SearchContext } from '../../context/SearchContext/SearchContext';
 import useFeedContext from '../../context/FeedContext/FeedContext';
 
-export default function SkillTree({skill, state, index, subskillIndex, parentVisible, dragging, draggedOver, childrenRef, }) {
+export default function SkillTree({skill, state, index, subskillIndex, parentVisible, dragging, draggedOver, habits }) {
     const [showTree, setShowTree] = useState(true);
     const [showCreateSubskillForm, setShowCreateSubskillForm] = useState(false);
     const [showCreateHabitForm, setShowHabitForm] = useState(false);
@@ -21,12 +21,10 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
     const date = useContext(DateContext);
     const skillLevel = useContext(SkillLevelContext);
 
-    const hasVisibleChildren = useRef(null);
+    let hasVisibleChildren = false;
 
     const dateParsed = parseDays(Date.parse(date.toISOString().split('T')[0]));
     const nameMatch = (search ? !!skill.name.match(search)?.[0] : true) || !!parentVisible;
-
-    let foundChild = false;
 
     function parseDays(date) {
         const result = Math.round(date/(1000 * 60 * 60 * 24));
@@ -35,41 +33,45 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
 
     const subskillList = skill?.subskills ? skill.subskills.map((subskill, i) => {
         if (nameMatch || subskill.name.match(search)) {
-            foundChild = true;
+            hasVisibleChildren = true;
         } 
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
+
+        const habitList = generateHabitList(subskill);
+
         return (<div key={subskill._id}>
             <SkillTree     
                 state={state} 
                 index={index} 
                 subskillIndex={i}
                 skill={subskillCopy}      
-                parentVisible={nameMatch}
-                childrenRef={hasVisibleChildren}
+                parentVisible={hasVisibleChildren}
+                habits={habitList}
         /></div>);
     }) : null; 
 
-    const habitList = skill?.habits ? skill.habits.map((habit, i) => {
-        let applicable = false;
-        
-        const startDateParsed = parseDays(Date.parse(habit.startDate));
-        if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
-        } else if (habit.repeatDays) {
-            if (dateParsed < startDateParsed || (dateParsed - startDateParsed) % habit.repeatDays) {
-            } else {
+    const habitList = habits ? habits : generateHabitList(skill);
+
+    function generateHabitList(skill) {
+        return skill?.habits ? skill.habits.map((habit, i) => {
+            let applicable = false;
+            
+            const startDateParsed = parseDays(Date.parse(habit.startDate));
+            if (habit.endDate && dateParsed > parseDays(Date.parse(habit.endDate))) {
+            } else if (habit.repeatDays) {
+                if (dateParsed < startDateParsed || (dateParsed - startDateParsed) % habit.repeatDays) {
+                } else {
+                    applicable = true;
+                }
+            } else if (dateParsed === startDateParsed) {
                 applicable = true;
-            }
-        } else if (dateParsed === startDateParsed) {
-            applicable = true;
         }
 
         if (applicable && !habit.name.match(search) && !nameMatch) applicable = false;
         if (applicable) {
-            foundChild = true;
+            hasVisibleChildren = true;
         }
-
-        if (habit.name.match(search)) console.log(habit.name, foundChild, applicable);
 
         if (!showTree) applicable = false;
         return (
@@ -77,7 +79,7 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
                 <HabitCard 
                     key={habit._id} 
                     habit={habit} 
-                    color={skill.color} 
+                    color={skill?.color} 
                     state={state} 
                     index={index} 
                     subskillIndex={subskillIndex} 
@@ -85,6 +87,7 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
                 />
             </Transition>);       
     }) : null;
+    }
 
     function handleCreateSubskill(e) {
         e.stopPropagation();
@@ -187,11 +190,7 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
         }
     }
 
-    if (skillLevel >= 1) {
-        childrenRef.current = foundChild;
-    }
-
-    let visible = foundChild || nameMatch || parentVisible || !!hasVisibleChildren?.current;
+    let visible = hasVisibleChildren || nameMatch || parentVisible
 
     return(
         
