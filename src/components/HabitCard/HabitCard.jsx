@@ -91,10 +91,10 @@ export default function HabitCard({habit, color, state, index, subskillIndex, ha
             <Card.Content extra>
                 <div className='HabitCard Details'>
                     <div>
-                        <Icon name="calendar"/><strong>Start Date: </strong>{habit?.startDate}
+                        <Icon name="calendar"/><strong>Start Date: </strong>{habit?.startDate?.split('T')[0]}
                     </div>
                     <div>
-                        <strong>End Date: </strong> {habit?.endDate ? habit?.endDate : 'Never'}
+                        <strong>End Date: </strong> {habit?.endDate ? habit?.endDate?.split('T')[0] : 'Never'}
                     </div>
                     <div>
                         <strong>Repeats: </strong> {habit?.repeatDays ? `Every ${habit.repeatDays} days` : 'Never'}
