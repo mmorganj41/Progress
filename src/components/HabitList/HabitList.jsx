@@ -76,7 +76,7 @@ export default function HabitList() {
                 </Segment> 
                 :
                 <Masonry 
-                    breakpointCols={{default: 2, 1500: 1}}
+                    breakpointCols={{default: 2, 1000: 1}}
                     className="my-masonry-grid"
                     columnClassName="my-masonry-grid_column"
                     >
