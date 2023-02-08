@@ -111,7 +111,7 @@ export default function FeedPage() {
             let levelUp = 0;
             let levelUpSubskill = 0;
             const response = await skillsService.completeHabit(data, habit._id);
-            if (skillLevel < 1) {
+            if (skillLevel <= 1) {
                 if (levelByExperience(skills[skillIndex].experience) < levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty])) {
                     levelUp = levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty]);
                 }
@@ -123,14 +123,12 @@ export default function FeedPage() {
                     difficulty: habit.difficulty,
                 });
             } else {
-                console.log('subskill');
                 if (levelByExperience(skills[skillIndex].experience) < levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty])) {
                     levelUp = levelByExperience(skills[skillIndex].experience + experienceDictionary[habit.difficulty]);
                 }
                 if (levelByExperience(skills[skillIndex].subskills[subskillIndex].experience) < levelByExperience(skills[skillIndex].subskills[subskillIndex].experience + experienceDictionary[habit.difficulty])) {
                     levelUpSubskill = levelByExperience(skills[skillIndex].subskills[subskillIndex].experience + experienceDictionary[habit.difficulty]);
                 }
-                console.log(index, subskillIndex, habitIndex);
                 dispatch({
                     type: 'completeHabitSubskill',
                     index: skillIndex,

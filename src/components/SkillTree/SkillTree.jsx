@@ -38,7 +38,7 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
         const subskillCopy = {...subskill}
         subskillCopy.color = skill.color;
 
-        const habitList = generateHabitList(subskill);
+        const habitList = generateHabitList(subskill, i);
 
         return (<div key={subskill._id}>
             <SkillTree     
@@ -53,7 +53,7 @@ export default function SkillTree({skill, state, index, subskillIndex, parentVis
 
     const habitList = habits ? habits : generateHabitList(skill);
 
-    function generateHabitList(skill) {
+    function generateHabitList(skill, subskillIndex) {
         return skill?.habits ? skill.habits.map((habit, i) => {
             let applicable = false;
             
