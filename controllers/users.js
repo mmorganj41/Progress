@@ -224,6 +224,7 @@ async function createExampleSkill(user) {
                     whether they repeat or not. Click on the circle to complete or uncomplete a habit. \
                     Watch for a notification and for the experience bar to change",
       username: user._id,
+      repeatDays: 1,
     });
 
     const habitPromiseSubskill = Habit.create({
@@ -233,6 +234,7 @@ async function createExampleSkill(user) {
                     filter, you can use the search bar. Try creating your own skills, subskills, or habits \
                     to track your journey. You can also rearrange skills by dragging.",
       username: user._id,
+      repeatDays: 1,
     });
 
     const subskillPromise = Subskill.create({
