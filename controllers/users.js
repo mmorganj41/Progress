@@ -231,12 +231,12 @@ async function createExampleSkill(user) {
       description: "You can toggle the ability to add, edit, or delete skills, subskills, and habits by \
                     using one of the three buttons above in the middle of the screen. To add a skill or \
                     filter, you can use the search bar. Try creating your own skills, subskills, or habits \
-                    to track your journey",
+                    to track your journey. You can also rearrange skills by dragging.",
       username: user._id,
     });
 
     const subskillPromise = Subskill.create({
-      name: "Example Subskil (Click me)",
+      name: "Example Subskill",
     });
 
     const [_, subskill, habitSkill, habitSubskill] = await Promise.all([
