@@ -208,7 +208,7 @@ function createJWT(user) {
   );
 }
 
-// Create example skill when signup as a tutorial
+// Create example skill tree when signup as a tutorial
 async function createExampleSkill(user) {
   try {
     const skill = await Skill.create({
@@ -239,14 +239,14 @@ async function createExampleSkill(user) {
       name: req.body.name,
     });
 
-    const [_, subskill, habitSkill] = await Promise.all([user.save(), subskillPromise, habitPromiseSkill]);
+    const [_, subskill, habitSkill, habitSubskill] = await Promise.all([
+      user.save(), subskillPromise, habitPromiseSkill, habitPromiseSubskill]);
 
     skill.habits.splice(0,0, habitSkill);
     skill.subskills.splice(0,0, subskill);
+    subskill.habits.splice(0,0, habitSubskill);
 
-
-
-    await skill.save();
+    await Promise.all([skill.save(), subskill.save()]);
   } catch(err) {
     console.log("error creating example skill");
   }
