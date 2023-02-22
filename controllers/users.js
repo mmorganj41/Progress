@@ -72,7 +72,7 @@ async function signup(req, res) {
   
     const user = await User.create(req.body);
 
-    createExampleSkill(user);
+    await createExampleSkill(user);
 
     const token = createJWT(user);
     res.json({ token });
@@ -236,7 +236,7 @@ async function createExampleSkill(user) {
     });
 
     const subskillPromise = Subskill.create({
-      name: req.body.name,
+      name: "Example Subskil (Click me)",
     });
 
     const [_, subskill, habitSkill, habitSubskill] = await Promise.all([
