@@ -73,7 +73,7 @@ async function signup(req, res) {
     const user = await User.create(req.body);
 
     createExampleSkill(user);
-    
+
     const token = createJWT(user);
     res.json({ token });
   } catch (err) {
@@ -208,7 +208,7 @@ function createJWT(user) {
   );
 }
 
-
+// Create example skill when signup as a tutorial
 async function createExampleSkill(user) {
   try {
     const skill = await Skill.create({
@@ -217,7 +217,36 @@ async function createExampleSkill(user) {
 
     user.skills.splice(0,0, skill);
 
-    await user.save();  
+    const habitPromiseSkill = Habit.create({
+      name: "Example Skill Habit (Click me)",
+      description: "Habits can associated with either skills (like this one) or subskills (see below). \
+                    Habits have a variable difficulty, a start date, an end date, and a section to show \
+                    whether they repeat or not. Click on the circle to complete or uncomplete a habit. \
+                    Watch for a notification and for the experience bar to change",
+      username: user._id,
+    });
+
+    const habitPromiseSubskill = Habit.create({
+      name: "Example Subkill Habit (Click me)",
+      description: "You can toggle the ability to add, edit, or delete skills, subskills, and habits by \
+                    using one of the three buttons above in the middle of the screen. To add a skill or \
+                    filter, you can use the search bar. Try creating your own skills, subskills, or habits \
+                    to track your journey",
+      username: user._id,
+    });
+
+    const subskillPromise = Subskill.create({
+      name: req.body.name,
+    });
+
+    const [_, subskill, habitSkill] = await Promise.all([user.save(), subskillPromise, habitPromiseSkill]);
+
+    skill.habits.splice(0,0, habitSkill);
+    skill.subskills.splice(0,0, subskill);
+
+
+
+    await skill.save();
   } catch(err) {
     console.log("error creating example skill");
   }
