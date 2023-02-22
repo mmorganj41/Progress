@@ -1,7 +1,6 @@
 import User from '../models/user.js'
 import Skill from '../models/skill.js'
 import Subskill from '../models/subskill.js';
-import Habit from '../models/habit.js';
 
 import jwt from 'jsonwebtoken'
 const SECRET = process.env.SECRET;
@@ -72,6 +71,9 @@ async function signup(req, res) {
     if (email) return res.status(400).json({err: 'Email taken.'});
   
     const user = await User.create(req.body);
+
+    createExampleSkill(user);
+    
     const token = createJWT(user);
     res.json({ token });
   } catch (err) {
@@ -207,6 +209,16 @@ function createJWT(user) {
 }
 
 
-function createExampleSkill(user) {
+async function createExampleSkill(user) {
+  try {
+    const skill = await Skill.create({
+      name: "Example Skill (Click Me or Drag Me)"
+    });
 
+    user.skills.splice(0,0, skill);
+
+    await user.save();  
+  } catch(err) {
+    console.log("error creating example skill");
+  }
 }
